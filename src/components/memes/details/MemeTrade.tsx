@@ -1,3 +1,5 @@
+"use client";
+
 import { MemeData } from "@/services/meme/types";
 import { BuyMemeButton } from "../buy/BuyMemeButton";
 import { SellMemeButton } from "../sell/SellMemeButton";

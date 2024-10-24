@@ -18,9 +18,9 @@ export default function MemeCard({
       )}
       href={`/memes/${meme.id}`}
     >
-      <div className="self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="h-[325px] self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
-          className="self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px]"
+          className="h-full self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px] object-cover"
           src={image}
         />
       </div>
