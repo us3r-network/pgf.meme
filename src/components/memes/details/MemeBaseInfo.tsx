@@ -57,7 +57,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           pgf421...2425
         </div>
       </div>
-      <div className="h-[617px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="flex-col justify-start items-start gap-2.5 flex">
         <div className="text-[#626976] text-[22px] font-bold capitalize leading-9">
           Description
         </div>
