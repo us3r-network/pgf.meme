@@ -1,32 +1,29 @@
-"use client";
-
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
-import MemePosts from "./MemePosts";
-import MemeTrades from "./MemeTrades";
-import MemeLeaderboard from "./MemeLeaderboard";
-import { MemeData } from "@/services/meme/types";
+import Posts from "./Posts";
+import Trades from "./Trades";
+import Owned from "./Owned";
 
-export default function MemeTabs({ meme }: { meme: MemeData }) {
+export default function UserTabs({ address }: { address: string }) {
   return (
     <Tabs defaultValue="posts" className="w-full">
       <TabsList className="w-full mb-6">
         <TabsTrigger value="posts">Posts</TabsTrigger>
         <TabsTrigger value="trades">Trades</TabsTrigger>
-        <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+        <TabsTrigger value="owned">Owned</TabsTrigger>
       </TabsList>
       <TabsContent value="posts">
-        <MemePosts meme={meme} />
+        <Posts address={address} />
       </TabsContent>
       <TabsContent value="trades">
-        <MemeTrades meme={meme} />
+        <Trades address={address} />
       </TabsContent>
-      <TabsContent value="leaderboard">
-        <MemeLeaderboard meme={meme} />
+      <TabsContent value="owned">
+        <Owned address={address} />
       </TabsContent>
     </Tabs>
   );

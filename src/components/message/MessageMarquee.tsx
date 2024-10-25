@@ -4,71 +4,56 @@ import { useEffect, useRef, useState } from "react";
 // import Marquee from "react-fast-marquee";
 export default function MessageMarquee() {
   const messageQueue = useRef<any[]>([]);
-  const messageCounter = useRef(0);
   const [renderedMessages, setRenderedMessages] = useState<any[]>([]);
 
-  // 每秒向消息队列中推送一个消息
+  const mockMessage = useRef(0);
+
+  // 模拟消息推送，每秒向消息队列中推送一个消息
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("messageCounter", messageCounter.current);
-      if (messageCounter.current > 20) {
-        clearInterval(intervalId);
-        return;
-      }
-      messageCounter.current = messageCounter.current + 1;
-      messageQueue.current = [...messageQueue.current, messageCounter.current];
+      ++mockMessage.current;
+      messageQueue.current.push(mockMessage.current);
     }, 1000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // 每三秒从消息队列中取一个消息放到渲染列表
+  // 每2秒从消息队列中取一个消息放到渲染列表
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (messageQueue.current.length > 0) {
-        setRenderedMessages((prev) => [messageQueue.current[0], ...prev]);
+        const message = messageQueue.current[0];
         messageQueue.current = messageQueue.current.slice(1);
+        setRenderedMessages((prev) => [message, ...prev]);
       }
     }, 3000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // 超过6个每三秒删除渲染列表中最右侧的消息
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (messageCounter.current < 6) {
-        return;
-      }
-      setRenderedMessages((prev) => {
-        if (prev.length > 6) {
-          return prev.slice(0, prev.length - 1);
-        }
-        return prev;
-      });
-    }, 3000);
-    return () => clearInterval(intervalId);
-  }, []);
-  console.log("renderedMessages", renderedMessages);
+  const renderedLen = renderedMessages.length;
 
   return (
     <div className="flex overflow-hidden items-center h-12 space-x-2">
-      {renderedMessages.map((message, index) => (
-        <div
-          key={message}
-          className={cn(
-            "",
-            index === 0
-              ? "animate-message-slide-in animate-message-shake"
-              : "transition-transform duration-500"
-          )}
-        >
-          <MessageItem />
-        </div>
-      ))}
+      {renderedMessages.map((message, index) => {
+        if (index > 3) {
+          return null;
+        }
+        return (
+          <div
+            key={`${renderedLen}_${index}`}
+            className={cn(
+              " transition-transform duration-1000 message-fade-out",
+              index === 0 ? "animate-message-slide-in" : "animate-message-move"
+            )}
+          >
+            <MessageItem message={message} />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-function MessageItem() {
+function MessageItem({ message }: { message: any }) {
   return (
     <div className="w-[410px] h-12 p-4 bg-[#fad719] rounded-[10px] justify-start items-center gap-2 inline-flex">
       <div className="justify-start items-start gap-2 flex">
@@ -100,7 +85,7 @@ function MessageItem() {
           </div>
         </div>
         <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug text-nowrap">
-          meme name
+          meme {message}
         </div>
       </div>
     </div>

@@ -1,16 +1,26 @@
+import { cn } from "@/lib/utils";
 import { MemeData } from "@/services/meme/types";
 import Link from "next/link";
 
-export default function MemeCard({ meme }: { meme: MemeData }) {
+export default function MemeCard({
+  meme,
+  className,
+}: {
+  meme: MemeData;
+  className?: string;
+}) {
   const { name, image } = meme;
   return (
     <Link
-      className=" bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex-col justify-start items-center inline-flex"
+      className={cn(
+        " bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex-col justify-start items-center inline-flex",
+        className
+      )}
       href={`/memes/${meme.id}`}
     >
-      <div className="self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="h-[325px] self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
-          className="self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px]"
+          className="h-full self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px] object-cover"
           src={image}
         />
       </div>

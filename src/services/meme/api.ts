@@ -14,7 +14,7 @@ export function getMemes(params: {
     return {
       id,
       name: "meme_" + id,
-      image: "https://via.placeholder.com/325",
+      image: "https://picsum.photos/325/400?random=" + id,
       createdAt: new Date().toISOString(),
       lastModifiedAt: new Date().toISOString(),
     };

@@ -1,14 +1,16 @@
+"use client";
+
 import { MemeData } from "@/services/meme/types";
 import { BuyMemeButton } from "../buy/BuyMemeButton";
 import { SellMemeButton } from "../sell/SellMemeButton";
+import MemeChart, { mockMemeChartdata } from "./MemeChart";
 
 export default function MemeTrade({ meme }: { meme: MemeData }) {
   return (
     <div className="w-full">
-      <img
-        className="self-stretch h-[642px] rounded-[20px]"
-        src="https://via.placeholder.com/1043x642"
-      />
+      <div className="w-full h-[642px]">
+        <MemeChart data={mockMemeChartdata} />
+      </div>
       <div className="self-stretch  items-center gap-6 flex mt-6">
         <div className="justify-start items-start gap-6 flex">
           <div className="text-[#16181d] text-4xl font-bold font-['Inter']">

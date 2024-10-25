@@ -54,6 +54,7 @@ export type TradeTransactionStats = {
 export enum SortBy {
   trending = "trending",
   owned = "owned",
+  created = "created",
   newest = "newest",
   launching = "launching",
   marketCap = "marketCap",
