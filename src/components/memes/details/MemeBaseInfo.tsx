@@ -1,35 +1,76 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import { shortPubKey } from "@/lib/shortAddress";
 import { MemeData } from "@/services/meme/types";
+import { Copy } from "lucide-react";
+import Link from "next/link";
+import { BuyMemeButton } from "../buy/BuyMemeButton";
+import { SellMemeButton } from "../sell/SellMemeButton";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
+  const { toast } = useToast();
   return (
-    <div className="w-[325px] flex-col justify-start items-start gap-6 inline-flex">
-      <div className="text-[#16181d] text-4xl font-bold capitalize leading-[50.40px]">
-        Meme name
+    <div className="w-[400px] flex-col justify-start items-start gap-6 flex shrink-0">
+      <div className="w-full flex justify-between items-center">
+        <BuyMemeButton />
+        <SellMemeButton />
       </div>
-      <div className="justify-start items-start gap-6 inline-flex">
-        <div className="text-[#16181d] text-4xl font-bold">$SYMBOL</div>
+      <div className="text-[#16181d] text-2xl font-bold font-['Inter'] capitalize leading-[33.60px]">
+        {meme.name}(${meme.symbol})
       </div>
-      <div className="w-full h-[325px] rounded-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="w-full h-[400px] rounded-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
           className="w-full h-full grow shrink basis-0 rounded-[20px] object-cover"
-          src="https://picsum.photos/325/400?random=1"
+          src={meme.image}
         />
       </div>
       <div className="w-full justify-start items-center gap-10 inline-flex">
-        <Button className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex">
+        <Button
+          className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
+          onClick={() => {
+            const host = window.location.origin;
+            const url = `${host}/memes/${meme.address}`;
+            navigator.clipboard.writeText(url);
+            toast({
+              title: "URL copied",
+              description: url,
+            });
+          }}
+        >
           <div className="text-[#fefaf6] text-xl font-bold">
             Earn by Sharing
           </div>
         </Button>
       </div>
-      <div className="w-full justify-start items-start gap-2.5 inline-flex">
-        <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
+      {!!meme?.tgGroupLink && (
+        <div className="w-full justify-start items-center gap-10 inline-flex">
+          <Button
+            className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
+            onClick={() => {
+              window.open(meme.tgGroupLink);
+            }}
+          >
+            <div className="text-[#fefaf6] text-xl font-bold">
+              Join Telegram Group
+            </div>
+          </Button>
+        </div>
+      )}
+
+      <div className="self-stretch justify-start items-start gap-2.5 inline-flex">
+        <div className="text-[#626976] text-base font-bold font-['Inter'] capitalize leading-relaxed">
           Created By
         </div>
-        <div className="grow shrink basis-0 h-6 rounded-[20px] justify-end items-center gap-1 flex">
+        <Link
+          className="grow shrink basis-0 text-right text-[#16181d] text-base font-bold font-['Inter'] leading-snug"
+          href={`/u/${meme.createdBy.walletAddress}`}
+        >
+          {shortPubKey(meme.createdBy.walletAddress)}
+        </Link>
+        {/* <div className="grow shrink basis-0 h-6 rounded-[20px] justify-end items-center gap-1 flex">
           <div className="justify-start items-start gap-2.5 flex">
             <div className="w-6 h-6 justify-center items-center flex">
               <img
@@ -38,47 +79,74 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
               />
             </div>
           </div>
-          <div className="text-[#16181d] text-base font-bold capitalize leading-snug">
+          <div className="text-[#16181d] text-base font-bold font-['Inter'] capitalize leading-snug">
             Orbitian
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="w-full justify-start items-center gap-2.5 inline-flex">
-        <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
-          Progress
-        </div>
-        <div className="grow shrink basis-0 text-right text-[#16181d] text-base font-bold leading-snug">
-          5%
-        </div>
-      </div>
-      <div className="w-full justify-start items-center gap-2.5 inline-flex">
-        <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
+      <div className="self-stretch justify-start items-center gap-2.5 inline-flex">
+        <div className="text-[#626976] text-base font-bold font-['Inter'] capitalize leading-relaxed">
           Aderess
         </div>
-        <div className="grow shrink basis-0 text-right text-[#16181d] text-base font-bold leading-snug">
-          pgf421...2425
+        <div className="grow shrink basis-0 text-right text-[#16181d] text-base font-bold font-['Inter'] leading-snug">
+          {shortPubKey(meme.address)}
         </div>
+        <Copy
+          className=" cursor-pointer"
+          onClick={() => {
+            navigator.clipboard.writeText(meme.address);
+            toast({
+              title: "Address copied",
+              description: meme.address,
+            });
+          }}
+        />
       </div>
-      <div className="flex-col justify-start items-start gap-2.5 flex">
-        <div className="text-[#626976] text-[22px] font-bold capitalize leading-9">
+      <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
+        <div className="text-[#626976] text-base font-bold font-['Inter'] capitalize leading-relaxed">
           Description
         </div>
-        <div className="text-[#16181d] text-base font-medium leading-relaxed">
-          The Orbitians
-          <br />
-          is a collection of 10,000 unique NFTs on the Ethereum blockchain,
-          There are all sorts of beings in the NFT Universe. The most advanced
-          and friendly of the bunch are Orbitians. They live in a metal space
-          machines, high up in the sky and only have one foot on Earth.
-          <br />
-          These Orbitians are a peaceful race, but they have been at war with a
-          group of invaders for many generations. The invaders are called
-          Upside-Downs, because of their inverted bodies that live on the
-          ground, yet do not know any other way to be. Upside-Downs believe that
-          they will be able to win this war if they could only get an eye into
-          Orbitian territory, so they've taken to make human beings their
-          target.
+        <div className="self-stretch text-[#16181d] text-base font-medium font-['Inter'] leading-relaxed">
+          {meme.description}
         </div>
+      </div>
+      <div className="self-stretch flex-col justify-start items-start gap-2 flex">
+        <div className="self-stretch justify-start items-center gap-2.5 inline-flex">
+          <div className="text-[#626976] text-base font-bold font-['Inter'] capitalize leading-relaxed">
+            Progress
+          </div>
+          <div className="grow shrink basis-0 text-right text-[#16181d] text-base font-bold font-['Inter'] leading-snug">
+            {Number(meme.progress)}%
+          </div>
+        </div>
+        <Progress
+          value={Number(meme.progress)}
+          className="w-full bg-[#16181d]/20 h-6"
+          indicatorClassName="bg-[#fad719] rounded-[20px]"
+        />
+      </div>
+      <div className="self-stretch">
+        <span className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+          Purchases are made using a step-based price curve, and once the total
+          reaches $69k, the meme coin is launched on Uniswap V3, enabling full
+          buy/sell trading on the Ethereum mainnet.
+          <br />
+          There are{" "}
+        </span>
+        <span className="text-[#0b7558] text-base font-normal font-['Inter'] leading-snug">
+          {meme.stats.availableAmount.toLocaleString()}
+        </span>
+        <span className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+          {" "}
+          tokens still available for sale in the curve and there is{" "}
+        </span>
+        <span className="text-[#0b7558] text-base font-normal font-['Inter'] leading-snug">
+          {meme.stats.bondingCurveEth} ETH
+        </span>
+        <span className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+          {" "}
+          in the curve.
+        </span>
       </div>
     </div>
   );

@@ -39,7 +39,11 @@ export default function MemeList({ sortBy }: { sortBy: SortBy }) {
         {items.map((item, idx) => {
           return (
             <div ref={idx === items.length - 1 ? observe : null}>
-              <MemeCard key={item.id} meme={item} className="w-full h-full" />
+              <MemeCard
+                key={item.address}
+                meme={item}
+                className="w-full h-full"
+              />
             </div>
           );
         })}

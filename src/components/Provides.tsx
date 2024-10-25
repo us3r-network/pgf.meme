@@ -13,6 +13,7 @@ import { WagmiProvider } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { WALLET_CONNECT_PROJECT_ID } from "@/constants";
+import { Toaster } from "./ui/toaster";
 
 const config = getDefaultConfig({
   appName: "pgf.meme",
@@ -23,19 +24,22 @@ const config = getDefaultConfig({
 const queryClient = new QueryClient();
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={lightTheme({
-            accentColor: "#16181d",
-            accentColorForeground: "#ffffff",
-          })}
-        >
-          {children}
+    <>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            theme={lightTheme({
+              accentColor: "#16181d",
+              accentColorForeground: "#ffffff",
+            })}
+          >
+            {children}
 
-          {/* <Provider store={store}>{children}</Provider> */}
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+            {/* <Provider store={store}>{children}</Provider> */}
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+      <Toaster />
+    </>
   );
 }

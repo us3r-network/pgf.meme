@@ -16,7 +16,7 @@ export default function MemeCard({
         " bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex-col justify-start items-center inline-flex",
         className
       )}
-      href={`/memes/${meme.id}`}
+      href={`/memes/${meme.address}`}
     >
       <div className="h-[325px] self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
