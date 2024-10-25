@@ -2,24 +2,32 @@
 
 // import { store } from "@/store/store";
 // import { Provider } from "react-redux";
-
 // import "@rainbow-me/rainbowkit/styles.css";
+import { WALLET_CONNECT_PROJECT_ID } from "@/constants";
 import {
   getDefaultConfig,
   lightTheme,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  arbitrum,
+  base,
+  baseSepolia,
+  mainnet,
+  optimism,
+  polygon,
+  sepolia,
+} from "viem/chains";
 import { WagmiProvider } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { WALLET_CONNECT_PROJECT_ID } from "@/constants";
 
 const config = getDefaultConfig({
   appName: "pgf.meme",
   projectId: WALLET_CONNECT_PROJECT_ID,
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: [mainnet, polygon, optimism, arbitrum, sepolia, base, baseSepolia],
   // ssr: true, // If your dApp uses server side rendering (SSR)
 });
+
 const queryClient = new QueryClient();
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (

@@ -4,7 +4,8 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
-import Providers from "@/components/Provides";
+import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/toaster";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );
