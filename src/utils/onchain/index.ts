@@ -1,6 +1,4 @@
-import * as all from "viem/chains";
-
-const { ...chains } = all;
+import { config } from "@/components/Providers";
 
 /**
  * Gets the chain object for the given chain id.
@@ -8,8 +6,8 @@ const { ...chains } = all;
  * @returns Viem's chain object.
  */
 export function getChain(chainId: number) {
-  console.log("all chains", all);
-  for (const chain of Object.values(chains)) {
+  console.log("all chains", config.chains);
+  for (const chain of Object.values(config.chains)) {
     if (chain.id === chainId) {
       return chain;
     }

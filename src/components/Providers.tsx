@@ -21,7 +21,7 @@ import {
 } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
   appName: "pgf.meme",
   projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [mainnet, polygon, optimism, arbitrum, sepolia, base, baseSepolia],

@@ -1,6 +1,5 @@
 import { getChain } from "@/utils/onchain";
 import { Address } from "viem";
-import { sepolia } from "viem/chains";
 
 export const PGF_CONTRACT_CHAIN_ID: number = Number(process.env
   .NEXT_PUBLIC_PGF_CONTRACT_CHAIN_ID);

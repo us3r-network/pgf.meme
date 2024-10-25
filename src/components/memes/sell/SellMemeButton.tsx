@@ -7,8 +7,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../../ui/button";
 import { SellMemeForm } from "./SellMemeForm";
+import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
+import { Address } from "viem";
 
 export function SellMemeButton() {
+  const token = {
+    contractAddress: "0xDf975872992F5a65584aCD620F9E41e6C145628C" as Address,
+    chainId: PGF_CONTRACT_CHAIN_ID,
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -20,7 +26,7 @@ export function SellMemeButton() {
         <DialogHeader>
           <DialogTitle>Sell Meme</DialogTitle>
         </DialogHeader>
-        <SellMemeForm />
+        <SellMemeForm token={token} />
       </DialogContent>
     </Dialog>
   );
