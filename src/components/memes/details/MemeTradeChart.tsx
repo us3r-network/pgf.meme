@@ -1,9 +1,18 @@
 "use client";
 
 import { MemeData } from "@/services/meme/types";
-import MemeChart, { mockMemeChartdata } from "./MemeChart";
+import MemeChart, { MemeChartData, mockMemeChartdata } from "./MemeChart";
+import useLoadMemeOhlct from "@/hooks/trade/useLoadMemeOhlct";
+import { useEffect } from "react";
 
 export default function MemeTradeChart({ meme }: { meme: MemeData }) {
+  const address = meme.address;
+  const { ohlct, pending, loadMemeOhlct } = useLoadMemeOhlct({
+    address: address,
+  });
+  useEffect(() => {
+    loadMemeOhlct();
+  }, []);
   return (
     <div className="w-full flex flex-col justify-start items-start gap-6">
       <div className="justify-start items-center gap-6 inline-flex">
@@ -28,7 +37,13 @@ export default function MemeTradeChart({ meme }: { meme: MemeData }) {
         </div>
       </div>
       <div className="w-full h-[642px]">
-        <MemeChart data={mockMemeChartdata} />
+        {pending ? (
+          <div className="flex justify-center items-start gap-6">
+            Loading...
+          </div>
+        ) : (
+          <MemeChart data={ohlct as MemeChartData} />
+        )}
       </div>
     </div>
   );

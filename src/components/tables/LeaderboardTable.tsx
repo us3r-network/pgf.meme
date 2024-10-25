@@ -1,15 +1,10 @@
+import { shortPubKey } from "@/lib/shortAddress";
+import { UserLeaderboardData } from "@/services/user/types";
 import Link from "next/link";
-
-type LeaderboardItem = {
-  address: string;
-  amount: number;
-  proportion: number;
-};
-
 export default function LeaderboardTable({
   data,
 }: {
-  data: LeaderboardItem[];
+  data: UserLeaderboardData[];
 }) {
   return (
     <div className="w-full flex-col justify-start items-start gap-6 flex">
@@ -32,10 +27,16 @@ export default function LeaderboardTable({
           </div>
         </div>
       </div>
-      <div className="self-stretch h-16 py-3 bg-[#3b3b3b] rounded-[20px] flex-col justify-start items-center gap-2.5 flex">
-        <div className="self-stretch px-5 justify-between items-center inline-flex">
-          <div className="grow shrink basis-0 h-10 rounded-[20px] justify-center items-center gap-2 flex">
-            {/* <div className="flex-col justify-start items-end inline-flex">
+
+      {data.map((item, index) => {
+        return (
+          <div
+            key={`${item.user.walletAddress}_${index}`}
+            className="self-stretch h-16 py-3 bg-[#3b3b3b] rounded-[20px] flex-col justify-start items-center gap-2.5 flex"
+          >
+            <div className="self-stretch px-5 justify-between items-center inline-flex">
+              <div className="grow shrink basis-0 h-10 rounded-[20px] justify-center items-center gap-2 flex">
+                {/* <div className="flex-col justify-start items-end inline-flex">
               <div className="w-10 h-10 justify-start items-start gap-2.5 inline-flex">
                 <div className="w-10 h-10 justify-center items-center flex">
                   <img
@@ -45,29 +46,31 @@ export default function LeaderboardTable({
                 </div>
               </div>
             </div> */}
-            <Link
-              href={"/u/0x123456"}
-              className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex"
-            >
-              <div className="self-stretch text-[#fefaf6] text-base font-bold font-['Inter'] capitalize leading-snug">
-                0x123456
+                <Link
+                  href={`/u/${item.user.walletAddress}`}
+                  className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex"
+                >
+                  <div className="self-stretch text-[#fefaf6] text-base font-bold font-['Inter'] capitalize leading-snug">
+                    {shortPubKey(item.user.walletAddress)}
+                  </div>
+                </Link>
               </div>
-            </Link>
-          </div>
-          <div className="justify-end items-center gap-5 flex">
-            <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
-              <div className="self-stretch text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
-                6.02
+              <div className="justify-end items-center gap-5 flex">
+                <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
+                  <div className="self-stretch text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
+                    {item.ethAmount}
+                  </div>
+                </div>
+                <div className="w-20 flex-col justify-start items-center gap-2.5 inline-flex">
+                  <div className="self-stretch text-center text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
+                    {item.proportion}
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="w-20 flex-col justify-start items-center gap-2.5 inline-flex">
-              <div className="self-stretch text-center text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
-                12%
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }

@@ -41,6 +41,7 @@ export default function Home() {
             <Input
               className="w-full h-full box-border py-3 pr-10 rounded-[20px] border border-[#16181d] grow shrink basis-0 text-[#626976] text-base font-normal leading-snug"
               placeholder="search your favorite meme"
+              disabled
             />
             <Search className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 transform text-muted-foreground" />
           </div>

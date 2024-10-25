@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { MemeData } from "@/services/meme/types";
+import { UserRound } from "lucide-react";
 import Link from "next/link";
 
 export default function MemeCard({
@@ -18,16 +19,16 @@ export default function MemeCard({
       )}
       href={`/memes/${meme.address}`}
     >
-      <div className="h-[325px] self-stretch rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="self-stretch h-[325px] rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
-          className="h-full self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px] object-cover"
-          src={image}
+          className="h-full self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px]"
+          src={meme.image}
         />
       </div>
       <div className="self-stretch h-[158px] px-[30px] py-5 rounded-bl-xl rounded-br-xl flex-col justify-start items-start gap-2 flex">
         <div className="self-stretch h-[50px] flex-col justify-start items-start gap-2 flex">
           <div className="self-stretch text-[#16181d] text-4xl font-bold font-['Inter'] capitalize leading-[50.40px]">
-            {name}
+            {meme.name}
           </div>
         </div>
         <div className="self-stretch justify-center items-end inline-flex">
@@ -36,12 +37,21 @@ export default function MemeCard({
               Market Cap
             </div>
             <div className="self-stretch text-[#16181d] text-2xl font-normal font-['Inter'] leading-[33.60px]">
-              1.63 ETH
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 0,
+                notation: "compact",
+              }).format(meme.stats.marketCap)}
             </div>
           </div>
-          <div className="grow shrink basis-0 flex-col justify-center items-end gap-2 inline-flex">
-            <div className="self-stretch text-right text-[#0b7558] text-2xl font-normal font-['Inter'] leading-[33.60px]">
-              +10%
+          <div className="justify-start items-center gap-1 flex">
+            <UserRound />
+            <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(meme.stats.buyersNumber)}
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import request, { RequestPromise } from "../request";
-import { ApiResp, ApiRespCode } from "../types";
+import { ApiResp } from "../types";
+import { UserLeaderboardData } from "../user/types";
 import { MemeData, SortBy } from "./types";
 
 export function getMemes(params: {
@@ -7,27 +8,10 @@ export function getMemes(params: {
   pageNumber?: number;
   sortBy?: SortBy;
 }): RequestPromise<ApiResp<Array<MemeData>>> {
-  const { pageSize = 20, pageNumber = 1, sortBy } = params || {};
-  // mock data
-  const data = Array.from({ length: pageSize }).map((_, index) => {
-    const address = (pageNumber - 1) * pageSize + index;
-    return {
-      address,
-      name: "meme_" + address,
-      image: "https://picsum.photos/325/400?random=" + address,
-    };
-  });
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        data: {
-          code: ApiRespCode.SUCCESS,
-          data: data,
-          msg: "success",
-        },
-      } as unknown as RequestPromise<ApiResp<Array<MemeData>>>);
-    }, 2000);
+  return request({
+    url: `/memes`,
+    method: "get",
+    params,
   });
 }
 
@@ -38,6 +22,17 @@ export function getMeme({
 }): RequestPromise<ApiResp<MemeData>> {
   return request({
     url: `/memes/${address}`,
+    method: "get",
+  });
+}
+
+export function getMemeLeaderboard({
+  address,
+}: {
+  address: string;
+}): RequestPromise<ApiResp<UserLeaderboardData[]>> {
+  return request({
+    url: `/memes/${address}/leaderboard`,
     method: "get",
   });
 }
