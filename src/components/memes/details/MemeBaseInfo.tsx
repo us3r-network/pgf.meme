@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { MemeData } from "@/services/meme/types";
 
@@ -10,20 +12,20 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
       <div className="justify-start items-start gap-6 inline-flex">
         <div className="text-[#16181d] text-4xl font-bold">$SYMBOL</div>
       </div>
-      <div className="w-[325px] h-[325px] rounded-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="w-full h-[325px] rounded-[20px] flex-col justify-start items-start gap-2.5 flex">
         <img
-          className="self-stretch grow shrink basis-0 rounded-[20px]"
-          src="https://via.placeholder.com/325x325"
+          className="w-full h-full grow shrink basis-0 rounded-[20px] object-cover"
+          src="https://picsum.photos/325/400?random=1"
         />
       </div>
-      <div className="self-stretch justify-start items-center gap-10 inline-flex">
+      <div className="w-full justify-start items-center gap-10 inline-flex">
         <Button className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex">
           <div className="text-[#fefaf6] text-xl font-bold">
             Earn by Sharing
           </div>
         </Button>
       </div>
-      <div className="w-[325px] justify-start items-start gap-2.5 inline-flex">
+      <div className="w-full justify-start items-start gap-2.5 inline-flex">
         <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
           Created By
         </div>
@@ -41,7 +43,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           </div>
         </div>
       </div>
-      <div className="w-[325px] justify-start items-center gap-2.5 inline-flex">
+      <div className="w-full justify-start items-center gap-2.5 inline-flex">
         <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
           Progress
         </div>
@@ -49,7 +51,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           5%
         </div>
       </div>
-      <div className="w-[325px] justify-start items-center gap-2.5 inline-flex">
+      <div className="w-full justify-start items-center gap-2.5 inline-flex">
         <div className="text-[#626976] text-base font-bold capitalize leading-relaxed">
           Aderess
         </div>
@@ -57,11 +59,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           pgf421...2425
         </div>
       </div>
-      <div className="h-[617px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="flex-col justify-start items-start gap-2.5 flex">
         <div className="text-[#626976] text-[22px] font-bold capitalize leading-9">
           Description
         </div>
-        <div className="self-stretch text-[#16181d] text-base font-medium leading-relaxed">
+        <div className="text-[#16181d] text-base font-medium leading-relaxed">
           The Orbitians
           <br />
           is a collection of 10,000 unique NFTs on the Ethereum blockchain,

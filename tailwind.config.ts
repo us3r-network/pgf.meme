@@ -69,13 +69,31 @@ const config: Config = {
       keyframes: {
         "message-slide-in": {
           "0%": { transform: "translateX(-100%)" },
+          "10%": {
+            transform: "translateX(-90%) rotate(-6deg)",
+          },
+          "20%": { transform: "translateX(-80%) rotate(6deg)" },
+          "30%": {
+            transform: "translateX(-70%) rotate(-6deg)",
+          },
+          "40%": { transform: "translateX(-60%) rotate(6deg)" },
+          "50%": {
+            transform: "translateX(-50%) rotate(-6deg)",
+          },
+          "60%": { transform: "translateX(-40%) rotate(6deg)" },
+          "70%": {
+            transform: "translateX(-30%) rotate(-6deg)",
+          },
+          "80%": { transform: "translateX(-20%) rotate(6deg)" },
+          "90%": {
+            transform: "translateX(-10%) rotate(-6deg)",
+          },
+
           "100%": { transform: "translateX(0)" },
         },
-        "message-shake": {
-          "0%, 100%": { transform: "translateX(0)" },
-          "25%": { transform: "translateX(-5px)" },
-          "50%": { transform: "translateX(5px)" },
-          "75%": { transform: "translateX(-5px)" },
+        "message-move": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0)" },
         },
         "message-fade-out": {
           "0%": { opacity: "1" },
@@ -83,9 +101,9 @@ const config: Config = {
         },
       },
       animation: {
-        "message-slide-in": "message-slide-in 0.5s forwards",
-        "message-shake": "message-shake 0.5s ease-in-out 0.5s",
-        "message-fade-out": "message-fade-out 0.5s forwards",
+        "message-slide-in": "message-slide-in 0.5s ease-in-out",
+        "message-move": "message-move 0.5s ease-in-out",
+        "message-fade-out": "message-fade-out 0.5s ease-in-out",
       },
     },
   },

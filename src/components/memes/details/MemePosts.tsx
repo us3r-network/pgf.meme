@@ -1,9 +1,12 @@
+
+"use client";
 import {
   TelegramCommentsWidget,
   TelegramLoginWidget,
   TelegramPostWidget,
   TelegramShareWidget,
 } from "@/components/telegram/TelegramWidget";
+
 import { MemeData } from "@/services/meme/types";
 
 export default function MemePosts({ meme }: { meme: MemeData }) {
