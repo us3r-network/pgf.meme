@@ -15,6 +15,11 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { WALLET_CONNECT_PROJECT_ID } from "@/constants";
 import { Toaster } from "./ui/toaster";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+
 const config = getDefaultConfig({
   appName: "pgf.meme",
   projectId: WALLET_CONNECT_PROJECT_ID,
