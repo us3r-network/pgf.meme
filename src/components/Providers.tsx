@@ -20,6 +20,7 @@ import {
   sepolia,
 } from "viem/chains";
 import { WagmiProvider } from "wagmi";
+import { Toaster } from "./ui/toaster";
 
 export const config = getDefaultConfig({
   appName: "pgf.meme",
@@ -31,19 +32,22 @@ export const config = getDefaultConfig({
 const queryClient = new QueryClient();
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={lightTheme({
-            accentColor: "#16181d",
-            accentColorForeground: "#ffffff",
-          })}
-        >
-          {children}
+    <>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            theme={lightTheme({
+              accentColor: "#16181d",
+              accentColorForeground: "#ffffff",
+            })}
+          >
+            {children}
 
-          {/* <Provider store={store}>{children}</Provider> */}
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+            {/* <Provider store={store}>{children}</Provider> */}
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+      <Toaster />
+    </>
   );
 }

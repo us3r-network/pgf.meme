@@ -1,4 +1,4 @@
-import { RequestPromise } from "../request";
+import request, { RequestPromise } from "../request";
 import { ApiResp, ApiRespCode } from "../types";
 import { MemeData, SortBy } from "./types";
 
@@ -10,13 +10,11 @@ export function getMemes(params: {
   const { pageSize = 20, pageNumber = 1, sortBy } = params || {};
   // mock data
   const data = Array.from({ length: pageSize }).map((_, index) => {
-    const id = (pageNumber - 1) * pageSize + index;
+    const address = (pageNumber - 1) * pageSize + index;
     return {
-      id,
-      name: "meme_" + id,
-      image: "https://picsum.photos/325/400?random=" + id,
-      createdAt: new Date().toISOString(),
-      lastModifiedAt: new Date().toISOString(),
+      address,
+      name: "meme_" + address,
+      image: "https://picsum.photos/325/400?random=" + address,
     };
   });
 
@@ -30,5 +28,16 @@ export function getMemes(params: {
         },
       } as unknown as RequestPromise<ApiResp<Array<MemeData>>>);
     }, 2000);
+  });
+}
+
+export function getMeme({
+  address,
+}: {
+  address: string;
+}): RequestPromise<ApiResp<MemeData>> {
+  return request({
+    url: `/memes/${address}`,
+    method: "get",
   });
 }
