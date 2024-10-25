@@ -14,7 +14,7 @@ export type UserLeaderboardData = {
   proportion: number | string;
 };
 
-export type UserOwnedData = {
+export type OwnedMemeData = {
   user: {
     walletAddress: string;
     name?: string;
@@ -22,4 +22,24 @@ export type UserOwnedData = {
   };
   memeAmount: number;
   ethAmount: number;
+};
+
+export type EnsProfile = {
+  address: string;
+  identity: string;
+  platform: string;
+  displayName: string;
+  avatar: string;
+  description: string;
+  email: string;
+  location: string;
+  header: string;
+  contenthash: string;
+  links: {
+    website: {
+      link: string;
+      handle: string;
+    };
+  };
+  social: {};
 };

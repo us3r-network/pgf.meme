@@ -1,12 +1,12 @@
-import { getMemeLeaderboard } from "@/services/meme/api";
 import { ApiRespCode, AsyncRequestStatus } from "@/services/types";
-import { UserLeaderboardData } from "@/services/user/types";
+import { getOwnedMemes } from "@/services/user/api";
+import { OwnedMemeData } from "@/services/user/types";
 import { useRef, useState } from "react";
 
 const PAGE_SIZE = 20;
 
-export default function useLoadMemeLeaderboard(props: { address: string }) {
-  const [items, setItems] = useState<UserLeaderboardData[]>([]);
+export default function useLoadOwnedMemes(props: { address: string }) {
+  const [items, setItems] = useState<OwnedMemeData[]>([]);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
   const addressRef = useRef(props.address);
   const pageInfoRef = useRef({
@@ -30,7 +30,7 @@ export default function useLoadMemeLeaderboard(props: { address: string }) {
         pageNumber: nextPageNumber,
         address,
       };
-      const resp = await getMemeLeaderboard(params);
+      const resp = await getOwnedMemes(params);
       const { code, data, msg } = resp.data || {};
       if (code !== ApiRespCode.SUCCESS) {
         throw new Error(msg);
