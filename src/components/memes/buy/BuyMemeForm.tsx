@@ -111,7 +111,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
   }, [writeError, transationError]);
 
   return (
-    <div className="rounded-xl flex-col justify-start items-start gap-8 inline-flex">
+    <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <div className="self-stretch justify-start items-center gap-4 inline-flex">
         <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
           ETH
