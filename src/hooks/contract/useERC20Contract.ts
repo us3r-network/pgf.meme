@@ -142,7 +142,7 @@ export async function getTokenInfo({
 }: {
   contractAddress: Address;
   chainId: number;
-  account: Address | undefined;
+  account?: Address;
 }) {
   if (!contractAddress || !chainId) return undefined;
   const chain = getChain(chainId);
@@ -152,42 +152,48 @@ export async function getTokenInfo({
     abi: erc20Abi,
     chainId: chain.id,
   };
-  const data = await readContracts(config, {
-    contracts: [
-      {
-        ...contract,
-        functionName: "name",
-      },
-      {
-        ...contract,
-        functionName: "symbol",
-      },
-      {
-        ...contract,
-        functionName: "decimals",
-      },
-      {
-        ...contract,
-        functionName: "balanceOf",
-        args: [account || "0x"],
-      },
-    ],
-  });
-  if (!data || data.length < 4) return undefined;
-  if (data[0].error || data[1].error || data[2].error || data[3].error) {
-    return undefined;
+
+  const contracts = [
+    {
+      ...contract,
+      functionName: "name",
+    },
+    {
+      ...contract,
+      functionName: "symbol", 
+    },
+    {
+      ...contract,
+      functionName: "decimals",
+    },
+  ];
+
+  if (account) {
+    contracts.push({
+      ...contract,
+      functionName: "balanceOf",
+      args: [account],
+    } as any);
   }
-  const logoURI = undefined;
+
+  const data = await readContracts(config, {
+    contracts,
+  });
+
+  if (!data || data.length < (account ? 4 : 3)) return undefined;
+  
+  const hasError = data.some((d, i) => d.error && (account ? true : i < 3));
+  if (hasError) return undefined;
+
   return {
     contractAddress,
     chainId,
-    name: data[0].result,
-    symbol: data[1].result,
-    decimals: data[2].result,
-    rawBalance: data[3].result,
-    balance: Number(
+    name: data[0].result as string,
+    symbol: data[1].result as string,
+    decimals: data[2].result as number,
+    rawBalance: account ? data[3].result as bigint : undefined,
+    balance: account ? Number(
       formatUnits(data[3].result as bigint, data[2].result as unknown as number)
-    ),
-    logoURI,
+    ) : undefined,
   };
 }

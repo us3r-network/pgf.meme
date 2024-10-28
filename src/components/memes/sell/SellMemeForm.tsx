@@ -18,31 +18,32 @@ import { useEffect, useState } from "react";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
+import { useDebounce } from "use-debounce";
 
 export function SellMemeForm({ token }: { token: PGFToken }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
-    account.address,
+    account?.address,
     PGF_CONTRACT_CHAIN_ID
   );
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   useEffect(() => {
-    if (account.address) {
       getTokenInfo({
         contractAddress: token.contractAddress,
         chainId: token.chainId,
-        account: account.address,
+        account: account?.address,
       }).then((info) => {
         // console.log("token info", info);
         setTokenInfo(info);
       });
-    }
   }, [account]);
 
   const [inAmount, setInAmount] = useState(
-    tokenInfo?.rawBalance ? tokenInfo.rawBalance : 0n
+    tokenInfo?.rawBalance ? tokenInfo.rawBalance : parseUnits("1000000", nativeTokenInfo?.decimals || 18)
   );
-  const { outAmount } = useOutEthAmountAfterFee(token, inAmount);
+
+  const [debouncedInAmount] = useDebounce(inAmount, 500);
+  const { outAmount } = useOutEthAmountAfterFee(token, debouncedInAmount);
 
   const {
     sell,
@@ -163,7 +164,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
                 <Button
                   className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
                   onClick={onSubmit}
-                  disabled={isPending || !inAmount || !outAmount}
+                  disabled={isPending || !inAmount || !outAmount || !account.address}
                 >
                   {isPending ? (
                     <div className="text-[#fefaf6]">Confirming ...</div>
