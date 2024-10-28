@@ -13,6 +13,17 @@ export function getMemeTrades({
   });
 }
 
+export function getUserTrades({
+  address,
+}: {
+  address: string;
+}): RequestPromise<ApiResp<TradeData[]>> {
+  return request({
+    url: `/users/${address}/trades`,
+    method: "get",
+  });
+}
+
 export function getMemeOhlct({
   address,
 }: {
