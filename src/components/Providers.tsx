@@ -10,6 +10,8 @@ import {
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import {
   arbitrum,
   base,
@@ -21,6 +23,8 @@ import {
 } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 import { Toaster } from "./ui/toaster";
+
+dayjs.extend(relativeTime);
 
 export const config = getDefaultConfig({
   appName: "pgf.meme",

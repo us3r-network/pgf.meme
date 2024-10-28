@@ -19,6 +19,7 @@ export type MemeStats = {
   marketCap: number;
   availableAmount: number;
   bondingCurveEth: number;
+  buyersNumber: number;
 };
 
 export enum SortBy {
