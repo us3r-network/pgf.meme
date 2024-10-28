@@ -1,3 +1,4 @@
+import { PGFToken } from "../contract/types";
 import request, { RequestPromise } from "../request";
 import { ApiResp } from "../types";
 import { UserLeaderboardData } from "../user/types";
@@ -23,6 +24,15 @@ export function getMeme({
   return request({
     url: `/memes/${address}`,
     method: "get",
+  });
+}
+
+export function postMeme(token: PGFToken): RequestPromise<ApiResp<MemeData>> {
+  const data = { address: token.contractAddress, ...token };
+  return request({
+    url: `/memes/infos`,
+    method: "post",
+    data,
   });
 }
 
