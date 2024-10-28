@@ -11,33 +11,37 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
 export function BuyMemeForm({ token }: { token: PGFToken }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
-    account.address,
+    account?.address,
     PGF_CONTRACT_CHAIN_ID
   );
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   useEffect(() => {
-    if (account.address) {
-      getTokenInfo({
-        contractAddress: token.contractAddress,
-        chainId: token.chainId,
-        account: account.address,
-      }).then((info) => {
-        // console.log("token info", info);
-        setTokenInfo(info);
-      });
-    }
+    getTokenInfo({
+      contractAddress: token.contractAddress,
+      chainId: token.chainId,
+      account: account?.address,
+    }).then((info) => {
+      // console.log("token info", info);
+      setTokenInfo(info);
+    });
   }, [account]);
 
+  // console.log("tokens in buy", nativeTokenInfo, tokenInfo);
   const [inAmount, setInAmount] = useState(
-    nativeTokenInfo?.value ? nativeTokenInfo.value / 10n : 0n
+    nativeTokenInfo?.value
+      ? nativeTokenInfo.value / 10n
+      : parseUnits("0.01", nativeTokenInfo?.decimals || 18)
   );
-  const { outAmount } = useOutTokenAmountAfterFee(token, inAmount);
+
+  const [debouncedInAmount] = useDebounce(inAmount, 500);
+  const { outAmount } = useOutTokenAmountAfterFee(token, debouncedInAmount);
 
   const {
     buy,
@@ -144,7 +148,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
           <Button
             className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
             onClick={onSubmit}
-            disabled={isPending || !inAmount || !outAmount}
+            disabled={isPending || !inAmount || !outAmount || !account.address}
           >
             {isPending ? (
               <div className="text-[#fefaf6]">Confirming ...</div>
