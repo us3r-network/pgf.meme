@@ -1,3 +1,5 @@
+"use client";
+
 import useReferral from "@/hooks/app/useReferral";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
