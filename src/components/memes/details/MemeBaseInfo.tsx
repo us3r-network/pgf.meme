@@ -15,7 +15,7 @@ import MemeShareButton from "./MemeShareButton";
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const { toast } = useToast();
   const token = {
-    contractAddress: "0xDf975872992F5a65584aCD620F9E41e6C145628C" as Address,
+    contractAddress: meme.address as Address,
     chainId: PGF_CONTRACT_CHAIN_ID,
   };
   return (
