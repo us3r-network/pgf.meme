@@ -12,12 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PGF_CONTRACT_CHAIN } from "@/constants/pgf";
+import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { usePGFFactoryContractLaunch } from "@/hooks/contract/usePGFFactoryContract";
 import { toast } from "@/hooks/use-toast";
+import { PGFToken } from "@/services/contract/types";
+import { postMeme } from "@/services/meme/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { Address } from "viem";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -27,7 +30,7 @@ const FormSchema = z.object({
   symbol: z.string().min(2, {
     message: "Meme coin symbol must be at least 2 characters.",
   }),
-  imageUri: z.string().url({
+  image: z.string().url({
     message: "Meme coin image must be a valid uri.",
   }),
   description: z.string().min(20, {
@@ -41,7 +44,7 @@ export function CreateMemeForm() {
     defaultValues: {
       name: "",
       symbol: "",
-      imageUri: "",
+      image: "",
       description: "",
     },
   });
@@ -56,25 +59,41 @@ export function CreateMemeForm() {
     isSuccess,
   } = usePGFFactoryContractLaunch();
 
+  let newToken = useRef<PGFToken>();
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log("create token submit", data);
+    newToken.current = {
+      contractAddress: "0x",
+      chainId: PGF_CONTRACT_CHAIN_ID,
+      name: data.name,
+      symbol: data.symbol,
+      image: data.image,
+      description: data.description,
+    };
     launch(data.name, data.symbol);
   };
 
   useEffect(() => {
-    if (isSuccess && transactionReceipt) {
+    if (isSuccess && transactionReceipt && newToken.current) {
+      newToken.current.contractAddress = transactionReceipt.logs[0]
+        .address as Address;
+      console.log(newToken);
+      postMeme(newToken.current);
+      console.log("Launch token successful!", transactionReceipt);
       toast({
-        title: "Token launch",
+        title: "Launch Token",
         description: (
           <pre className="mt-2 w-[340px] p-4">
-            Launch token successful!
+            <p>Launch token successful!</p>
             {PGF_CONTRACT_CHAIN?.blockExplorers && (
-              <a
-                className="text-white"
-                href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}${transactionReceipt.transactionHash}`}
-              >
-                View Detail
-              </a>
+              <p>
+                <a
+                  href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}/tx/${transactionReceipt.transactionHash}`}
+                  target="_blank"
+                >
+                  View Detail
+                </a>
+              </p>
             )}
           </pre>
         ),
@@ -89,9 +108,7 @@ export function CreateMemeForm() {
         title: "Token launch",
         variant: "destructive",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
-            Launch token failed!
-          </pre>
+          <pre className="mt-2 w-[340px] p-4">Launch token failed!</pre>
         ),
       });
     }
@@ -140,7 +157,7 @@ export function CreateMemeForm() {
         />
         <FormField
           control={form.control}
-          name="imageUri"
+          name="image"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
               <FormLabel className="text-[#16181d] text-2xl">Image</FormLabel>

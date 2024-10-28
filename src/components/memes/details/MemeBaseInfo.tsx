@@ -2,21 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { useToast } from "@/hooks/use-toast";
 import { shortPubKey } from "@/lib/shortAddress";
 import { MemeData } from "@/services/meme/types";
 import { Copy } from "lucide-react";
 import Link from "next/link";
-import { BuyMemeButton } from "../buy/BuyMemeButton";
-import { SellMemeButton } from "../sell/SellMemeButton";
+import { Address } from "viem";
+import MemeActions from "../MemeActions";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const { toast } = useToast();
+  const token = {
+    contractAddress: "0xDf975872992F5a65584aCD620F9E41e6C145628C" as Address,
+    chainId: PGF_CONTRACT_CHAIN_ID,
+  };
   return (
     <div className="w-[400px] flex-col justify-start items-start gap-6 flex shrink-0">
       <div className="w-full flex justify-between items-center">
-        <BuyMemeButton />
-        <SellMemeButton />
+        <MemeActions token={token} />
       </div>
       <div className="text-[#16181d] text-2xl font-bold font-['Inter'] capitalize leading-[33.60px]">
         {meme.name}(${meme.symbol})

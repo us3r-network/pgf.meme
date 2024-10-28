@@ -33,7 +33,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
         chainId: token.chainId,
         account: account.address,
       }).then((info) => {
-        console.log("token info", info);
+        // console.log("token info", info);
         setTokenInfo(info);
       });
     }
@@ -150,13 +150,6 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
           className="h-6"
         />
       )}
-      <div className="self-stretch h-[22px] flex-col justify-start items-start gap-6 flex">
-        <div className="self-stretch h-[22px] flex-col justify-start items-start gap-4 flex">
-          <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
-            *Your meme coin can be purchased across multiple blockchains.
-          </div>
-        </div>
-      </div>
       <div className="self-stretch h-12 justify-start items-center gap-10 inline-flex">
         {tokenInfo?.decimals &&
           tokenInfo?.symbol &&
