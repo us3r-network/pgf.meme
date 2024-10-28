@@ -4618,6 +4618,13 @@ react-cool-inview@^3.0.1:
   resolved "https://registry.npmmirror.com/react-cool-inview/-/react-cool-inview-3.0.1.tgz#345b0a36d124d9da4d8dfc354397d54c40bfd165"
   integrity sha512-ly6i3Pv5p0fvm12NmJGfKS34eOhA+iU43Th+gZ6t3G6UwsxQsWoITHTHzA9pdkOc/3VmnReqvC/hJkQUDGhQFA==
 
+react-device-detect@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.npmjs.org/react-device-detect/-/react-device-detect-2.2.3.tgz#97a7ae767cdd004e7c3578260f48cf70c036e7ca"
+  integrity sha512-buYY3qrCnQVlIFHrC5UcUoAj7iANs/+srdkwsnNjI7anr3Tt7UY6MqNxtMLlr0tMBied0O49UZVK8XKs3ZIiPw==
+  dependencies:
+    ua-parser-js "^1.0.33"
+
 react-dom@^18:
   version "18.3.1"
   resolved "https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz#c2265d79511b57d479b3dd3fdfa51536494c5cb4"
@@ -5376,7 +5383,7 @@ typescript@^5:
   resolved "https://registry.npmmirror.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
   integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==
 
-ua-parser-js@^1.0.37:
+ua-parser-js@^1.0.33, ua-parser-js@^1.0.37:
   version "1.0.39"
   resolved "https://registry.npmmirror.com/ua-parser-js/-/ua-parser-js-1.0.39.tgz#bfc07f361549bf249bd8f4589a4cccec18fd2018"
   integrity sha512-k24RCVWlEcjkdOxYmVJgeD/0a1TiSpqLg+ZalVGV9lsnr4yqu0w7tX/x2xX6G4zpkgQnRf89lxuZ1wsbjXM8lw==
