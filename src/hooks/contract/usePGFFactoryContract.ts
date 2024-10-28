@@ -24,7 +24,7 @@ export const useOutTokenAmountAfterFee = (token: PGFToken, amount: bigint) => {
     args: [token.contractAddress, amount],
   });
   const outAmount = data ? ((data as any)[1] as bigint) : undefined;
-  console.log("getOutTokenAmountAfterFee", outAmount);
+  // console.log("getOutTokenAmountAfterFee", outAmount);
   return { outAmount, status };
 };
 
@@ -35,7 +35,7 @@ export const useOutEthAmountAfterFee = (token: PGFToken, amount: bigint) => {
     args: [token.contractAddress, amount],
   });
   const outAmount = data ? (data as bigint) : undefined;
-  console.log("getOutEthAmountAfterFee", outAmount);
+  // console.log("getOutEthAmountAfterFee", outAmount);
   return { outAmount, status };
 };
 

@@ -33,7 +33,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
         chainId: token.chainId,
         account: account.address,
       }).then((info) => {
-        console.log("token info", info);
+        // console.log("token info", info);
         setTokenInfo(info);
       });
     }

@@ -6,7 +6,7 @@ import { config } from "@/components/Providers";
  * @returns Viem's chain object.
  */
 export function getChain(chainId: number) {
-  console.log("all chains", config.chains);
+  // console.log("all chains", config.chains);
   for (const chain of Object.values(config.chains)) {
     if (chain.id === chainId) {
       return chain;
