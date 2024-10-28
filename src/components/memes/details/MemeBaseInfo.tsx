@@ -10,6 +10,7 @@ import { Copy } from "lucide-react";
 import Link from "next/link";
 import { Address } from "viem";
 import MemeActions from "../MemeActions";
+import MemeShareButton from "./MemeShareButton";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const { toast } = useToast();
@@ -32,22 +33,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
         />
       </div>
       <div className="w-full justify-start items-center gap-10 inline-flex">
-        <Button
-          className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
-          onClick={() => {
-            const host = window.location.origin;
-            const url = `${host}/memes/${meme.address}`;
-            navigator.clipboard.writeText(url);
-            toast({
-              title: "URL copied",
-              description: url,
-            });
-          }}
-        >
-          <div className="text-[#fefaf6] text-xl font-bold">
-            Earn by Sharing
-          </div>
-        </Button>
+        <MemeShareButton meme={meme} />
       </div>
       {!!meme?.tgGroupLink && (
         <div className="w-full justify-start items-center gap-10 inline-flex">

@@ -1,16 +1,21 @@
 "use client";
 
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@/components/ui/tabs-underline";
 import { PGFToken } from "@/services/contract/types";
 import { BuyMemeForm } from "./buy/BuyMemeForm";
 import { SellMemeForm } from "./sell/SellMemeForm";
+import useReferral from "@/hooks/app/useReferral";
 
 export default function MemeActions({ token }: { token: PGFToken }) {
+  const { referral } = useReferral();
+  // @bufan
+  console.log("referral", referral);
+
   const tabs = [
     { name: "Buy", value: "buy" },
     { name: "Sell", value: "sell" },

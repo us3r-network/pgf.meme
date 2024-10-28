@@ -1,8 +1,8 @@
 "use client";
 
-// import { store } from "@/store/store";
-// import { Provider } from "react-redux";
-// import "@rainbow-me/rainbowkit/styles.css";
+import { store } from "@/store/store";
+import { Provider } from "react-redux";
+import "@rainbow-me/rainbowkit/styles.css";
 import { WALLET_CONNECT_PROJECT_ID } from "@/constants";
 import {
   getDefaultConfig,
@@ -23,6 +23,7 @@ import {
 } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 import { Toaster } from "./ui/toaster";
+import AsyncData from "./AsyncData";
 
 dayjs.extend(relativeTime);
 
@@ -45,9 +46,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               accentColorForeground: "#ffffff",
             })}
           >
-            {children}
-
-            {/* <Provider store={store}>{children}</Provider> */}
+            <Provider store={store}>
+              {children}
+              <AsyncData />
+            </Provider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

@@ -2,12 +2,15 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import { enableMapSet } from "immer";
+
+import app from "./app";
 import userAuthSlice from "./user/userAuthSlice";
 
 enableMapSet();
 
 export const store = configureStore({
   reducer: {
+    app,
     userAuth: userAuthSlice,
   },
   middleware: (getDefaultMiddleware) =>
