@@ -2,9 +2,9 @@
 
 import useReferral from "@/hooks/app/useReferral";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
-export default function AsyncData() {
+function AsyncDataSuspense() {
   const searchParams = useSearchParams();
 
   const { setReferral } = useReferral();
@@ -15,4 +15,12 @@ export default function AsyncData() {
     }
   }, [searchParams]);
   return <></>;
+}
+
+export default function AsyncData() {
+  return (
+    <Suspense>
+      <AsyncDataSuspense />
+    </Suspense>
+  );
 }
