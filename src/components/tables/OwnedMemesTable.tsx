@@ -50,10 +50,10 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
               </div> */}
               <Link
                 className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex"
-                href={`/u/${item.user.walletAddress}`}
+                href={`/memes/${item.meme.address}`}
               >
                 <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize leading-snug">
-                  {shortPubKey(item.user.walletAddress)}
+                  {shortPubKey(item.meme.address)}
                 </div>
               </Link>
               <div className="justify-end items-center gap-5 flex">

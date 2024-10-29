@@ -20,6 +20,11 @@ export type OwnedMemeData = {
     name?: string;
     avatar?: string;
   };
+  meme: {
+    address: string;
+    name: string;
+    image: string;
+  };
   memeAmount: number;
   ethAmount: number;
 };

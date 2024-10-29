@@ -13,6 +13,7 @@ export type TradeData = {
   ethAmount: number;
   memeAmount: number;
   date: string;
+  txHash: string;
 };
 
 export type OhlctData = {

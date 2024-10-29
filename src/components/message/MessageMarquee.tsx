@@ -1,15 +1,15 @@
 "use client";
-import useMemeMessage from "@/hooks/message/useMemeMessage";
+import useTradesMessage from "@/hooks/message/useTradesMessage";
 import { shortPubKey } from "@/lib/shortAddress";
 import { cn } from "@/lib/utils";
 import { TradeData } from "@/services/trade/types";
 export default function MessageMarquee() {
-  const { messages } = useMemeMessage();
-  const renderedLen = messages.length;
+  const { trades } = useTradesMessage();
+  const renderedLen = trades.length;
 
   return (
     <div className="flex overflow-hidden items-center h-12 space-x-2">
-      {messages.map((message, index) => {
+      {trades.map((trade, index) => {
         if (index > 3) {
           return null;
         }
@@ -21,7 +21,7 @@ export default function MessageMarquee() {
               index === 0 ? "animate-message-slide-in" : "animate-message-move"
             )}
           >
-            <MessageItem data={message} />
+            <MessageItem data={trade} />
           </div>
         );
       })}

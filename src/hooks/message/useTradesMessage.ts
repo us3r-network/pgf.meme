@@ -11,7 +11,7 @@ export default function useMemeMessage() {
     null
   );
   const messageQueue = useRef<TradeData[]>([]);
-  const [messages, setMessages] = useState<TradeData[]>([]);
+  const [trades, setTrades] = useState<TradeData[]>([]);
 
   useEffect(() => {
     const newSocket = io(API_BASE_URL, {
@@ -40,11 +40,11 @@ export default function useMemeMessage() {
       if (messageQueue.current.length > 0) {
         const message = messageQueue.current[0];
         messageQueue.current = messageQueue.current.slice(1);
-        setMessages((prev) => [message, ...prev]);
+        setTrades((prev) => [message, ...prev]);
       }
     }, 3000);
     return () => clearInterval(intervalId);
   }, []);
 
-  return { messages };
+  return { trades };
 }

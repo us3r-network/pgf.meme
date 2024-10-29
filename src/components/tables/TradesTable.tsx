@@ -1,3 +1,5 @@
+import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
+import { getBlockExploreTxUrl } from "@/lib/onchain";
 import { shortPubKey } from "@/lib/shortAddress";
 import { cn } from "@/lib/utils";
 import { TradeData } from "@/services/trade/types";
@@ -100,7 +102,14 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
                   </div>
                 </div>
                 <div className="w-[60px] flex-col justify-start items-center gap-2.5 inline-flex">
-                  <SquareArrowOutUpRight className=" stroke-[#FEFAF6] size-6 cursor-pointer" />
+                  <SquareArrowOutUpRight
+                    className=" stroke-[#FEFAF6] size-6 cursor-pointer"
+                    onClick={() => {
+                      window.open(
+                        getBlockExploreTxUrl(PGF_CONTRACT_CHAIN_ID, item.txHash)
+                      );
+                    }}
+                  />
                 </div>
               </div>
             </div>

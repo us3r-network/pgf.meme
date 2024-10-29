@@ -14,3 +14,8 @@ export function getChain(chainId: number) {
   }
   throw new Error(`Chain with id ${chainId} not found`);
 }
+
+export function getBlockExploreTxUrl(chainId: number, txHash: string) {
+  const chain = getChain(chainId);
+  return `${chain.blockExplorers.default.url}/tx/${txHash}`;
+}
