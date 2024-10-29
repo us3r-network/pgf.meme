@@ -1,39 +1,15 @@
 "use client";
+import useMemeMessage from "@/hooks/message/useMemeMessage";
+import { shortPubKey } from "@/lib/shortAddress";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
-// import Marquee from "react-fast-marquee";
+import { TradeData } from "@/services/trade/types";
 export default function MessageMarquee() {
-  const messageQueue = useRef<any[]>([]);
-  const [renderedMessages, setRenderedMessages] = useState<any[]>([]);
-
-  const mockMessage = useRef(0);
-
-  // 模拟消息推送，每秒向消息队列中推送一个消息
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      ++mockMessage.current;
-      messageQueue.current.push(mockMessage.current);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // 每2秒从消息队列中取一个消息放到渲染列表
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (messageQueue.current.length > 0) {
-        const message = messageQueue.current[0];
-        messageQueue.current = messageQueue.current.slice(1);
-        setRenderedMessages((prev) => [message, ...prev]);
-      }
-    }, 3000);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const renderedLen = renderedMessages.length;
+  const { messages } = useMemeMessage();
+  const renderedLen = messages.length;
 
   return (
     <div className="flex overflow-hidden items-center h-12 space-x-2">
-      {renderedMessages.map((message, index) => {
+      {messages.map((message, index) => {
         if (index > 3) {
           return null;
         }
@@ -45,7 +21,7 @@ export default function MessageMarquee() {
               index === 0 ? "animate-message-slide-in" : "animate-message-move"
             )}
           >
-            <MessageItem message={message} />
+            <MessageItem data={message} />
           </div>
         );
       })}
@@ -53,39 +29,39 @@ export default function MessageMarquee() {
   );
 }
 
-function MessageItem({ message }: { message: any }) {
+function MessageItem({ data }: { data: TradeData }) {
+  const { user, meme, memeAmount, ethAmount, txType } = data;
   return (
-    <div className="w-[410px] h-12 p-4 bg-[#fad719] rounded-[10px] justify-start items-center gap-2 inline-flex">
-      <div className="justify-start items-start gap-2 flex">
+    <div className="w-[410px] h-12 p-4 bg-[#fad719] rounded-[10px] justify-center items-center gap-2 inline-flex">
+      {/* <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
-            <img
-              className="w-6 h-6 rounded-[120px]"
-              src="https://via.placeholder.com/24x24"
-            />
+            <img className="w-6 h-6 rounded-[120px]" src={data.user.avatar} />
           </div>
         </div>
         <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
-          username
+          {data.user.name}
+        </div>
+      </div> */}
+      <div className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex">
+        <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize leading-snug">
+          {shortPubKey(user.walletAddress)}
         </div>
       </div>
       <div className="text-black text-base font-normal font-['Inter'] leading-snug">
-        bought
+        {txType === "sell" ? "sell" : "bought"}
       </div>
       <div className="text-black text-base font-normal font-['Inter'] leading-snug text-nowrap">
-        XX ETH
+        {ethAmount} ETH
       </div>
       <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
-            <img
-              className="w-6 h-6 rounded-[120px]"
-              src="https://via.placeholder.com/24x24"
-            />
+            <img className="w-6 h-6 rounded-[120px]" src={meme.image} />
           </div>
         </div>
         <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug text-nowrap">
-          meme {message}
+          {meme.name}
         </div>
       </div>
     </div>

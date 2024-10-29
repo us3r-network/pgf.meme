@@ -38,7 +38,10 @@ export default function MemeList({ sortBy }: { sortBy: SortBy }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {items.map((item, idx) => {
           return (
-            <div ref={idx === items.length - 1 ? observe : null}>
+            <div
+              key={`${item.address}_${idx}`}
+              ref={idx === items.length - 1 ? observe : null}
+            >
               <MemeCard
                 key={item.address}
                 meme={item}
