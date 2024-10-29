@@ -1,26 +1,23 @@
 import { shortPubKey } from "@/lib/shortAddress";
 import { OwnedMemeData } from "@/services/user/types";
 import Link from "next/link";
+import { formatUnits } from "viem";
 
 export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
   return (
     <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
       <div className="self-stretch px-5 justify-between items-center inline-flex">
         <div className="grow shrink basis-0 h-[22px] justify-start items-center gap-5 flex">
-          <div className="text-[#858584] text-base font-normal font-['Inter'] leading-snug">
-            Token
-          </div>
+          <div className="text-[#858584] text-base font-normal">Token</div>
         </div>
         <div className="justify-end items-center gap-5 flex">
           <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
-            <div className="self-stretch text-[#858584] text-base font-normal font-['Inter'] leading-snug">
+            <div className="self-stretch text-[#858584] text-base font-normal">
               Amount
             </div>
           </div>
           <div className="w-40 flex-col justify-start items-center gap-2.5 inline-flex">
-            <div className="text-[#858584] text-base font-normal font-['Inter'] leading-snug">
-              Value
-            </div>
+            <div className="text-[#858584] text-base font-normal">Value</div>
           </div>
         </div>
       </div>
@@ -43,7 +40,7 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
                   </div>
                 </div>
                 <div className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex">
-                  <div className="self-stretch text-[#fefaf6] text-base font-bold font-['Inter'] capitalize leading-snug">
+                  <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize">
                     Jaydon Ekstrom Bothman
                   </div>
                 </div>
@@ -52,19 +49,24 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
                 className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex"
                 href={`/memes/${item.meme.address}`}
               >
-                <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize leading-snug">
+                <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize">
                   {shortPubKey(item.meme.address)}
                 </div>
               </Link>
               <div className="justify-end items-center gap-5 flex">
                 <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
-                  <div className="self-stretch text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
-                    {item.memeAmount}
+                  <div className="self-stretch text-[#fefaf6] text-base font-normal">
+                    {new Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                    }).format(Number(item.memeAmount))}{" "}
                   </div>
                 </div>
                 <div className="w-40 flex-col justify-start items-center gap-2.5 inline-flex">
-                  <div className="self-stretch text-center text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
-                    ～ ${item.ethAmount}
+                  <div className="self-stretch text-center text-[#fefaf6] text-base font-normal">
+                    ～ $
+                    {Intl.NumberFormat("en-US", {
+                      maximumFractionDigits: 6,
+                    }).format(Number(item.usdAmount || 0))}
                   </div>
                 </div>
               </div>

@@ -52,7 +52,10 @@ function MessageItem({ data }: { data: TradeData }) {
         {txType === "sell" ? "sell" : "bought"}
       </div>
       <div className="text-black text-base font-normal font-['Inter'] leading-snug text-nowrap">
-        {ethAmount} ETH
+        {Intl.NumberFormat("en-US", {
+          maximumFractionDigits: 6,
+        }).format(Number(ethAmount))}{" "}
+        ETH
       </div>
       <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">

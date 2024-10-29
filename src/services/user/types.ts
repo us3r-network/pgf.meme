@@ -27,6 +27,7 @@ export type OwnedMemeData = {
   };
   memeAmount: number;
   ethAmount: number;
+  usdAmount: number;
 };
 
 export type EnsProfile = {

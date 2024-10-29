@@ -88,17 +88,21 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
                 </div>
                 <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
                   <div className="self-stretch text-[#fefaf6] text-base font-normal leading-snug">
-                    {item.ethAmount}
+                    {Intl.NumberFormat("en-US", {
+                      maximumFractionDigits: 6,
+                    }).format(Number(item.ethAmount))}
                   </div>
                 </div>
                 <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
                   <div className="self-stretch text-[#fefaf6] text-base font-normal leading-snug">
-                    {item.memeAmount}
+                    {new Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                    }).format(Number(item.memeAmount))}{" "}
                   </div>
                 </div>
                 <div className="w-20 flex-col justify-start items-start gap-2.5 inline-flex">
                   <div className="w-20 text-[#fefaf6] text-base font-normal leading-snug">
-                    {dayjs(item.date).fromNow(true)}
+                    {dayjs(item.date * 1000).fromNow(true)}
                   </div>
                 </div>
                 <div className="w-[60px] flex-col justify-start items-center gap-2.5 inline-flex">

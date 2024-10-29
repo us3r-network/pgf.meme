@@ -58,7 +58,9 @@ export default function LeaderboardTable({
               <div className="justify-end items-center gap-5 flex">
                 <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
                   <div className="self-stretch text-[#fefaf6] text-base font-normal font-['Inter'] leading-snug">
-                    {item.ethAmount}
+                    {Intl.NumberFormat("en-US", {
+                      maximumFractionDigits: 6,
+                    }).format(Number(item.ethAmount))}
                   </div>
                 </div>
                 <div className="w-20 flex-col justify-start items-center gap-2.5 inline-flex">

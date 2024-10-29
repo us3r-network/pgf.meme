@@ -6,7 +6,7 @@ import io, { Socket } from "socket.io-client";
 type EventsMap = {
   memeTrades: string;
 };
-export default function useMemeMessage() {
+export default function useTradesMessage() {
   const [socket, setSocket] = useState<Socket<EventsMap, EventsMap> | null>(
     null
   );
