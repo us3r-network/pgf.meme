@@ -1,4 +1,4 @@
-import { getChain } from "@/utils/onchain";
+import { getChain } from "@/lib/onchain";
 import { useBalance } from "wagmi";
 
 export function useNativeToken(

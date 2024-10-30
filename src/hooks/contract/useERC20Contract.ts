@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import { readContracts } from "@wagmi/core";
 import { config } from "@/components/Providers";
-import { getChain } from "@/utils/onchain";
+import { getChain } from "@/lib/onchain";
 
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
@@ -160,7 +160,7 @@ export async function getTokenInfo({
     },
     {
       ...contract,
-      functionName: "symbol", 
+      functionName: "symbol",
     },
     {
       ...contract,
@@ -181,7 +181,7 @@ export async function getTokenInfo({
   });
 
   if (!data || data.length < (account ? 4 : 3)) return undefined;
-  
+
   const hasError = data.some((d, i) => d.error && (account ? true : i < 3));
   if (hasError) return undefined;
 
@@ -191,9 +191,14 @@ export async function getTokenInfo({
     name: data[0].result as string,
     symbol: data[1].result as string,
     decimals: data[2].result as number,
-    rawBalance: account ? data[3].result as bigint : undefined,
-    balance: account ? Number(
-      formatUnits(data[3].result as bigint, data[2].result as unknown as number)
-    ) : undefined,
+    rawBalance: account ? (data[3].result as bigint) : undefined,
+    balance: account
+      ? Number(
+          formatUnits(
+            data[3].result as bigint,
+            data[2].result as unknown as number
+          )
+        )
+      : undefined,
   };
 }
