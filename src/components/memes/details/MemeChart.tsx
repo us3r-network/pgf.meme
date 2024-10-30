@@ -31,6 +31,11 @@ export default function MemeChart({ data }: { data: MemeChartData }) {
         background: { type: ColorType.Solid, color: "#16181D" },
       },
       autoSize: true,
+      localization: {
+        priceFormatter: (price: number) => {
+          return price.toFixed(6);
+        },
+      },
     };
     const chart = createChart(container, chartOptions);
     const candlestickSeries = chart.addCandlestickSeries({
