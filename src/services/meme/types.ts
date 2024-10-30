@@ -8,6 +8,10 @@ export type MemeData = {
   progress: number;
   stats: MemeStats;
   tgGroupLink?: string; // tg群链接
+  graduation?: {
+    tokenAddress: string;
+    poolAddress: string;
+  };
 };
 
 export type MemeCreatedBy = {
