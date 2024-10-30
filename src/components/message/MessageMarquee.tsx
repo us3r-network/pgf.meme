@@ -43,10 +43,8 @@ function MessageItem({ data }: { data: TradeData }) {
           {data.user.name}
         </div>
       </div> */}
-      <div className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex">
-        <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize leading-snug">
-          {shortPubKey(user.walletAddress)}
-        </div>
+      <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+        {shortPubKey(user.walletAddress)}
       </div>
       <div className="text-black text-base font-normal font-['Inter'] leading-snug">
         {txType === "sell" ? "sell" : "bought"}

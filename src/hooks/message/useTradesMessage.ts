@@ -25,7 +25,6 @@ export default function useTradesMessage() {
     });
 
     newSocket.on("memeTrades", (data) => {
-      console.log("Received message", data);
       messageQueue.current.push(data);
     });
 
