@@ -32,7 +32,7 @@ export default function MessageMarquee() {
 function MessageItem({ data }: { data: TradeData }) {
   const { user, meme, memeAmount, ethAmount, txType } = data;
   return (
-    <div className="w-[410px] h-12 p-4 bg-[#fad719] rounded-[10px] justify-center items-center gap-2 inline-flex">
+    <div className="w-[410px] h-12 p-4 box-border bg-[#fad719] rounded-[10px] justify-center items-center gap-2 inline-flex">
       {/* <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
@@ -55,7 +55,7 @@ function MessageItem({ data }: { data: TradeData }) {
         }).format(Number(ethAmount))}{" "}
         ETH
       </div>
-      <div className="justify-start items-start gap-2 flex">
+      <div className="justify-start items-start gap-2 flex flex-1 overflow-hidden">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
             <img className="w-6 h-6 rounded-[120px]" src={meme.image} />
