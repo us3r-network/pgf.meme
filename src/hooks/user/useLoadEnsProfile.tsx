@@ -23,7 +23,9 @@ export default function useLoadEnsProfile({ address }: { address: string }) {
       const resp = await getEnsProfile({
         address,
       });
-      const profile = resp?.data || null;
+      const profiles = resp?.data || [];
+      const findAvatarProfile = profiles.find((p) => !!p.avatar);
+      const profile = findAvatarProfile || profiles[0];
       setEnsProfile(profile);
       setStatus(AsyncRequestStatus.FULFILLED);
     } catch (err) {

@@ -34,6 +34,6 @@ export function getEnsProfile({
   address,
 }: {
   address: string;
-}): RequestPromise<EnsProfile> {
-  return axios.get(`https://api.web3.bio/profile/ens/${address}`);
+}): RequestPromise<EnsProfile[]> {
+  return axios.get(`https://api.web3.bio/profile/${address}`);
 }
