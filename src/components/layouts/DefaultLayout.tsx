@@ -66,8 +66,8 @@ export default function DefaultLayout({
         <SidebarRail />
       </Sidebar> */}
       <SidebarInset>
-        <header className="w-screen h-24  fixed top-0 left-0 bg-background z-10">
-          <div className="w-full max-w-screen-2xl mx-auto h-full flex shrink-0 items-center px-6 gap-2 box-border">
+        <header className="w-screen h-24  fixed top-0 left-0 bg-background z-10 max-sm:h-[72px]">
+          <div className="w-full max-w-screen-2xl mx-auto h-full flex shrink-0 items-center px-6 gap-2 box-border max-sm:px-3">
             {/* <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="h-6" />
@@ -78,7 +78,7 @@ export default function DefaultLayout({
                 href="/"
               >
                 <div className="w-12 h-12 relative bg-[#16181d] rounded-xl" />
-                <div className="justify-start items-center flex">
+                <div className="justify-start items-center flex max-sm:hidden">
                   <div className="text-[#16181d] text-2xl font-bold font-['Inter']">
                     pgf.meme
                   </div>
@@ -96,18 +96,20 @@ export default function DefaultLayout({
               </Button>
             )}
 
-            <div className="flex-1 flex-shrink-0 z-10 overflow-hidden">
+            <div className="flex-1 flex-shrink-0 z-10 overflow-hidden max-sm:hidden">
               <MessageMarquee />
             </div>
-            <div className="flex items-center gap-4 z-20">
+            <div className="flex items-center gap-4 z-20 ml-auto">
               <AboutDialogButton />
-              <CreateMemeButton />
-              <ConnectButton />
+              <div className="max-sm:hidden">
+                <CreateMemeButton />
+              </div>
+              <ConnectButton showBalance={false} chainStatus={"none"} />
             </div>
           </div>
         </header>
 
-        <main className="w-screen mt-24 p-6 max-w-screen-2xl mx-auto box-border">
+        <main className="w-screen mt-24 p-6 max-w-screen-2xl mx-auto box-border overflow-hidden max-sm:p-3 max-sm:mt-[72px] max-sm:pt-0">
           {children}
         </main>
       </SidebarInset>

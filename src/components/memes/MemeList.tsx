@@ -35,7 +35,7 @@ export default function MemeList({ sortBy }: { sortBy: SortBy }) {
   });
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-sm:gap-3">
         {items.map((item, idx) => {
           return (
             <div
