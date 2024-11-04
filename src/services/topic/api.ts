@@ -1,3 +1,4 @@
+import { MemeData } from "../meme/types";
 import request, { RequestPromise } from "../request";
 import { ApiResp } from "../types";
 import { TopicData, TopicSortBy } from "./types";
@@ -8,7 +9,7 @@ export function getTopics(params: {
   sortBy?: TopicSortBy;
 }): RequestPromise<ApiResp<Array<TopicData>>> {
   return request({
-    url: `/topics`,
+    url: `/memes/topics`,
     method: "get",
     params,
   });
@@ -17,17 +18,25 @@ export function getTopics(params: {
 export function getTopic({
   id,
 }: {
-  id: string;
+  id: number;
 }): RequestPromise<ApiResp<TopicData>> {
   return request({
-    url: `/topics/${id}`,
+    url: `/memes/topics/${id}`,
     method: "get",
   });
 }
 
-export function getTopicsBanner(): RequestPromise<ApiResp<TopicData[]>> {
+export type TrendingTopicData = {
+  topic: TopicData;
+  memes: MemeData[];
+};
+export function getTrendingTopics(params?: {
+  pageSize?: number;
+  pageNumber?: number;
+}): RequestPromise<ApiResp<Array<TrendingTopicData>>> {
   return request({
-    url: `/topics/banner`,
+    url: `/memes/topics/trending`,
     method: "get",
+    params,
   });
 }

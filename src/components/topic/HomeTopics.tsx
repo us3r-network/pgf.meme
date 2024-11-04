@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,129 +10,136 @@ import {
 import { cn } from "@/lib/utils";
 import { TopicData } from "@/services/topic/types";
 import Link from "next/link";
-import Image from "next/image";
 import { MemeData } from "@/services/meme/types";
+import { UserRound } from "lucide-react";
+import useHotTopics from "@/hooks/topic/useHotTopics";
+import TopicCard from "./TopicCard";
+import { Skeleton } from "../ui/skeleton";
 
 export default function HomeTopics() {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap());
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-  const items = Array.from({ length: 5 }).map((_, index) => (
-    <CarouselItem key={index}>
-      <HomeTopicItem />
-    </CarouselItem>
-  ));
+  const { items, loadItems, loading } = useHotTopics();
+  const [api, setApi] = useState<CarouselApi>();
+  useEffect(() => {
+    loadItems();
+  }, []);
 
   return (
     <div className="w-full flex-col gap-2.5 flex">
       <div className="w-full justify-between items-end flex">
-        <div className=" text-black text-[32px] font-bold leading-[44.80px]">
-          🔥Hot Topic
-        </div>
-        <div className="text-black text-2xl font-bold leading-[33.60px]">
+        <div className=" text-black text-[32px] font-bold">🔥Hot Topic</div>
+        <Link className="text-black text-2xl font-bold" href={"/topics"}>
           View all
-        </div>
+        </Link>
       </div>
       <div className="w-full flex flex-col items-center">
         <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>{items}</CarouselContent>
+          <CarouselContent>
+            {items.map((item, idx) => {
+              return (
+                <CarouselItem key={item.topic.id}>
+                  <HomeTopicItem data={item} />
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
         </Carousel>
-        <div className="w-full flex justify-center gap-2 mt-4">
-          {items.map((_, index) => (
-            <button
-              key={index}
-              className={cn(
-                "w-2 h-2 rounded-full transition-all",
-                current === index ? "bg-primary" : "bg-primary/50"
-              )}
-              onClick={() => api?.scrollTo(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        <CarouselPagination itemsLength={items.length} carouselApi={api} />
       </div>
+      {loading && <HomeTopicSkeleton />}
     </div>
   );
 }
-export function HomeTopicItem() {
+
+function CarouselPagination({
+  itemsLength,
+  carouselApi,
+}: {
+  itemsLength: number;
+  carouselApi: CarouselApi;
+}) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
+    setCurrent(carouselApi.selectedScrollSnap());
+
+    carouselApi.on("select", () => {
+      setCurrent(carouselApi.selectedScrollSnap());
+    });
+  }, [carouselApi]);
+  if (!carouselApi || itemsLength <= 1) {
+    return null;
+  }
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="w-full flex justify-center gap-8 mt-6">
+      {Array.from({ length: itemsLength }).map((_, index) => (
+        <button
+          key={index}
+          className={cn(
+            "w-6 h-6 rounded-full transition-all",
+            current === index ? "bg-primary" : "bg-[#D9D9D9]"
+          )}
+          onClick={() => carouselApi.scrollTo(index)}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
+}
+<Skeleton className="rounded-[20px]" />;
+
+export function HomeTopicSkeleton() {
+  return (
+    <div className="w-full">
+      <div className="w-full grid grid-cols-2 gap-4">
         {/* Left box - 50% width */}
-        <div>
-          <TopicCard topic={null as any} />
+        <div className="min-h-[680px]">
+          <Skeleton className="rounded-[20px] w-full h-full" />
         </div>
 
         {/* Right section - 2x2 grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <MemeCard meme={null as any} />
-          </div>
-          <div>
-            <MemeCard meme={null as any} />
-          </div>
-          <div>
-            <MemeCard meme={null as any} />
-          </div>
-          <div>
-            <MemeCard meme={null as any} />
-          </div>
+        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+          {/* Skeleton for each item */}
+          <Skeleton className="rounded-[20px]" />
+          <Skeleton className="rounded-[20px]" />
+          <Skeleton className="rounded-[20px]" />
+          <Skeleton className="rounded-[20px]" />
         </div>
       </div>
     </div>
   );
 }
-
-function TopicCard({
-  topic,
-  className,
+export function HomeTopicItem({
+  data,
 }: {
-  topic: TopicData;
-  className?: string;
+  data: {
+    topic: TopicData;
+    memes: MemeData[];
+  };
 }) {
+  const { topic, memes } = data;
   return (
-    <Link
-      className={cn(
-        "w-full h-full relative rounded-2xl overflow-hidden block",
-        className
-      )}
-      href={`/topics/${topic?.id || ""}`}
-    >
-      <img
-        src={`https://picsum.photos/400/400?random=1`}
-        className="w-full h-full"
-        alt="topic image"
-      />
-      <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-black/80 to-transparent">
-        <div className="flex justify-between items-center p-6 text-white">
-          <h1 className="text-4xl font-bold">#Dogs</h1>
-          <span className="text-2xl">120 memes</span>
+    <div className="w-full">
+      <div className="w-full grid grid-cols-2 gap-4">
+        {/* Left box - 50% width */}
+        <div className="min-h-[680px]">
+          <TopicCard topic={topic} />
+        </div>
+
+        {/* Right section - 2x2 grid */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+          {memes.map((item, idx) => {
+            return (
+              <div key={`${item.address}_${idx}`}>
+                <MemeCard meme={item} />
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black/80 to-transparent">
-        <div className="flex justify-between items-center p-6 text-white">
-          <div className="grow shrink basis-0 h-12 px-4 py-3 bg-[#28a7e8] rounded-[30px] justify-center items-center gap-6 flex">
-            <div className="text-white text-xl font-bold font-['Inter']">
-              Follow Topic & Join Telegram
-            </div>
-          </div>
-        </div>
-      </div>
-    </Link>
+    </div>
   );
 }
 
@@ -146,19 +153,35 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
       href={`/memes/${meme?.address || ""}`}
     >
       <img
-        src={`https://picsum.photos/400/400?random=1`}
-        className="w-full h-full"
-        alt="topic image"
+        src={meme.image}
+        className="w-full h-full object-cover"
+        loading="lazy"
+        alt={meme.name}
       />
-      <div className="absolute top-0 w-full h-24 bg-gradient-to-b from-black/80 to-transparent">
+      <div className="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
         <div className="p-6 ">
-          <span className="text-2xl text-white">120 memes</span>
+          <span className="text-2xl text-white">{meme.name}</span>
         </div>
       </div>
-      <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black/80 to-transparent">
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
         <div className="p-6 flex justify-between items-end">
-          <span className="text-2xl text-white">$24.4K</span>
-          <span className="text-base text-white">1</span>
+          <span className="text-2xl text-white">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 0,
+              notation: "compact",
+            }).format(meme.stats?.marketCap || 0)}
+          </span>
+          <div className="justify-start items-center gap-1 flex">
+            <UserRound className="size-6 stroke-white" />
+            <div className="text-white text-base font-normal">
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(meme.stats?.buyersNumber || 0)}
+            </div>
+          </div>
         </div>
       </div>
     </Link>

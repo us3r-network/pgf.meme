@@ -3,7 +3,7 @@ import { TopicData } from "@/services/topic/types";
 import { ApiRespCode, AsyncRequestStatus } from "@/services/types";
 import { useRef, useState } from "react";
 
-export default function useLoadTopic({ id }: { id: string }) {
+export default function useLoadTopic({ id }: { id: number }) {
   const [topic, setTopic] = useState<TopicData | null>(null);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
   const idRef = useRef(id);

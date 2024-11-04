@@ -7,9 +7,16 @@ import MemeCard from "@/components/memes/MemeCard";
 import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
 
-export default function MemeList({ sortBy }: { sortBy: SortBy }) {
+export default function MemeList({
+  sortBy,
+  topicId,
+}: {
+  sortBy: SortBy;
+  topicId?: number;
+}) {
   const { items, loading, loadItems } = useLoadMemes({
     sortBy,
+    topicId,
   });
 
   const [mounted, setMounted] = useState(false);
