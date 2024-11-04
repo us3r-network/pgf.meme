@@ -51,7 +51,7 @@ export default function MemeTradeChart({ meme }: { meme: MemeData }) {
           <div className="text-[#16181d] max-w-sm:text-4xl text-2xl font-bold">
             Market Cap:
           </div>
-          <div className="text-right text-[#16181d] max-w-sm:text-4xl text-2xl font-bold">
+          <div className="text-right text-[#16181d] text-4xl max-sm:text-2xl font-bold">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "USD",

@@ -14,29 +14,27 @@ export default function MemeCard({
   return (
     <Link
       className={cn(
-        " bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex-col justify-start items-center inline-flex",
+        "bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex flex-col max-sm:flex-row",
         className
       )}
       href={`/memes/${meme.address}`}
     >
-      <div className="self-stretch h-[325px] rounded-tl-[20px] rounded-tr-[20px] flex-col justify-start items-start gap-2.5 flex">
+      <div className="max-sm:size-40">
         <img
-          className="h-full self-stretch grow shrink basis-0 rounded-tl-[20px] rounded-tr-[20px]"
+          className="w-full rounded-t-[20px] max-sm:rounded-tr-none max-sm:rounded-l-[20px]"
           src={meme.image}
         />
       </div>
-      <div className="self-stretch h-[158px] px-[30px] py-5 rounded-bl-xl rounded-br-xl flex-col justify-start items-start gap-2 flex">
-        <div className="self-stretch h-[50px] flex-col justify-start items-start gap-2 flex">
-          <div className="self-stretch text-[#16181d] text-4xl font-bold font-['Inter'] capitalize leading-[50.40px]">
-            {meme.name}
-          </div>
+      <div className="p-6 max-sm:p-4 h-full flex flex-col justify-between gap-2 flex-1">
+        <div className="text-[#16181d] text-4xl max-sm:text-2xl font-bold">
+          {meme.name}
         </div>
-        <div className="self-stretch justify-center items-end inline-flex">
-          <div className="grow shrink basis-0 pr-[21px] flex-col justify-start items-start gap-2 inline-flex">
-            <div className="self-stretch text-[#626976] text-base font-normal font-['Inter'] leading-[17.60px]">
+        <div className="w-full flex justify-between items-end">
+          <div className="flex flex-col gap-1">
+            <div className="text-[#626976] text-base">
               Market Cap
             </div>
-            <div className="self-stretch text-[#16181d] text-2xl font-normal font-['Inter'] leading-[33.60px]">
+            <div className="text-[#16181d] text-2xl">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -46,9 +44,9 @@ export default function MemeCard({
               }).format(meme.stats.marketCap)}
             </div>
           </div>
-          <div className="justify-start items-center gap-1 flex">
+          <div className="flex items-center gap-1">
             <UserRound />
-            <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+            <div className="text-[#16181d] text-base">
               {new Intl.NumberFormat("en-US", {
                 notation: "compact",
               }).format(meme.stats.buyersNumber)}
