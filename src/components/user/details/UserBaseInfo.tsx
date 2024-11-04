@@ -24,11 +24,13 @@ export default function UserBaseInfo({ address }: { address: string }) {
     }
   }, [mounted]);
   return (
-    <div className="w-[325px] flex-col justify-start items-start gap-6 inline-flex">
-      <Avatar className="w-[325px] h-[325px] rounded-[20px]">
-        <AvatarImage src={ensProfile?.avatar} />
-        <AvatarFallback className="rounded-[20px]">^_^</AvatarFallback>
-      </Avatar>
+    <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
+      <div className="w-full pb-[100%] relative">
+          <Avatar className="w-full h-full absolute inset-0 rounded-[20px]">
+            <AvatarImage src={ensProfile?.avatar} />
+            <AvatarFallback className="rounded-[20px]">^_^</AvatarFallback>
+          </Avatar>
+      </div>
       <div className="text-[#16181d] text-4xl font-bold leading-[50.40px] capitalize">
         {!pending && (ensProfile?.displayName || "")}
       </div>

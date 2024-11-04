@@ -19,18 +19,20 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
     chainId: PGF_CONTRACT_CHAIN_ID,
   };
   return (
-    <div className="w-[400px] flex-col justify-start items-start gap-6 flex shrink-0">
+    <div className="w-full flex-col justify-start items-start gap-6 flex shrink-0">
       <div className="w-full flex justify-between items-center">
         <MemeActions token={token} />
       </div>
       <div className="text-[#16181d] text-2xl font-bold font-['Inter'] capitalize leading-[33.60px]">
         {meme.name}(${meme.symbol})
       </div>
-      <div className="w-full h-[400px] rounded-[20px] flex-col justify-start items-start gap-2.5 flex">
-        <img
-          className="w-full h-full grow shrink basis-0 rounded-[20px] object-cover"
-          src={meme.image}
-        />
+      <div className="w-full pb-[100%] relative">
+        <div className="absolute inset-0">
+          <img
+            className="w-full h-full grow shrink basis-0 rounded-[20px] object-cover"
+            src={meme.image}
+          />
+        </div>
       </div>
       <div className="w-full justify-start items-center gap-10 inline-flex">
         <MemeShareButton meme={meme} />
