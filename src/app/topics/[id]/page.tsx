@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect } from "react";
 import {
   Tabs,
   TabsContent,
@@ -12,11 +12,17 @@ import { SortBy } from "@/services/meme/types";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import HomeTopics from "@/components/topic/HomeTopics";
+import { useParams } from "next/navigation";
+import TopicDetailsCard from "@/components/topic/TopicDetailsCard";
+import useLoadTopic from "@/hooks/topic/useLoadTopic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const capitalizeFirstLetter = (str: string) =>
   str[0].toUpperCase() + str.slice(1);
 
-export default function Home() {
+export default function TopicDetails() {
+  const params = useParams<{ id: string }>();
+  const id = Number(params.id);
   const tabs = [
     { name: capitalizeFirstLetter(SortBy.trending), value: SortBy.trending },
     { name: capitalizeFirstLetter(SortBy.owned), value: SortBy.owned },
@@ -25,10 +31,19 @@ export default function Home() {
     { name: capitalizeFirstLetter(SortBy.launching), value: SortBy.launching },
     { name: capitalizeFirstLetter(SortBy.marketCap), value: SortBy.marketCap },
   ];
+  const { topic, loadTopic, pending } = useLoadTopic({ id: id! });
+
+  useEffect(() => {
+    loadTopic();
+  }, []);
   return (
     <div className="w-full">
       <div className="w-full mb-6">
-        <HomeTopics />
+        {pending ? (
+          <Skeleton className="rounded-2xl w-full h-[508px]" />
+        ) : topic ? (
+          <TopicDetailsCard topic={topic} />
+        ) : null}
       </div>
       <Tabs defaultValue={SortBy.trending} className="w-full">
         <TabsList className="w-full mb-6">
@@ -55,7 +70,7 @@ export default function Home() {
 
         {tabs.map((tab) => (
           <TabsContent value={tab.value} key={tab.value}>
-            <MemeList sortBy={tab.value} />
+            <MemeList sortBy={tab.value} topicId={id} />
           </TabsContent>
         ))}
       </Tabs>

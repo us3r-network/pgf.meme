@@ -7,29 +7,33 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
-import MemeList from "@/components/memes/MemeList";
 import { SortBy } from "@/services/meme/types";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import HomeTopics from "@/components/topic/HomeTopics";
+import { TopicSortBy } from "@/services/topic/types";
+import TopicList from "@/components/topic/TopicList";
 
 const capitalizeFirstLetter = (str: string) =>
   str[0].toUpperCase() + str.slice(1);
 
-export default function Home() {
+export default function Topics() {
   const tabs = [
-    { name: capitalizeFirstLetter(SortBy.trending), value: SortBy.trending },
-    { name: capitalizeFirstLetter(SortBy.owned), value: SortBy.owned },
-    { name: capitalizeFirstLetter(SortBy.created), value: SortBy.created },
-    { name: capitalizeFirstLetter(SortBy.newest), value: SortBy.newest },
-    { name: capitalizeFirstLetter(SortBy.launching), value: SortBy.launching },
-    { name: capitalizeFirstLetter(SortBy.marketCap), value: SortBy.marketCap },
+    {
+      name: capitalizeFirstLetter(TopicSortBy.trending),
+      value: TopicSortBy.trending,
+    },
+    {
+      name: capitalizeFirstLetter(TopicSortBy.newest),
+      value: TopicSortBy.newest,
+    },
+    {
+      name: capitalizeFirstLetter(TopicSortBy.memes),
+      value: TopicSortBy.memes,
+    },
   ];
   return (
     <div className="w-full">
-      <div className="w-full mb-6">
-        <HomeTopics />
-      </div>
       <Tabs defaultValue={SortBy.trending} className="w-full">
         <TabsList className="w-full mb-6">
           {tabs.map((tab) => (
@@ -55,7 +59,7 @@ export default function Home() {
 
         {tabs.map((tab) => (
           <TabsContent value={tab.value} key={tab.value}>
-            <MemeList sortBy={tab.value} />
+            <TopicList sortBy={tab.value} />
           </TabsContent>
         ))}
       </Tabs>
