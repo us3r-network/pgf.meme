@@ -24,7 +24,7 @@ import { Button } from "../ui/button";
 import { ChevronLeft } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { CreateMemeButton } from "../memes/create/CreateMemeButton";
-import { initData } from "@telegram-apps/sdk-react";
+import { initData, useSignal } from "@telegram-apps/sdk-react";
 import TelegramUser from "../telegram/TelegramUser";
 // const navItems = [
 //   { title: "Explore", url: "/" },
@@ -38,6 +38,8 @@ export default function DefaultLayout({
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const router = useRouter();
+
+  const initDataState = useSignal(initData.state);
 
   return (
     <SidebarProvider defaultOpen={false}>
@@ -103,7 +105,7 @@ export default function DefaultLayout({
             <div className="flex items-center gap-4 z-20">
               <AboutDialogButton />
               <CreateMemeButton />
-              {initData?.user ? (
+              {initDataState?.user && initDataState?.user.id > 0 ? (
                 <TelegramUser user={initData.user} />
               ) : (
                 <ConnectButton />

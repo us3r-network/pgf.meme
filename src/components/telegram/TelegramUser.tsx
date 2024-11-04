@@ -5,6 +5,7 @@ import { type User } from "@telegram-apps/sdk-react";
 
 export default function TelegramUser({ user }: { user: any }) {
   if (!user) return null;
+  console.log("telegram user", user);
   return (
     <div className="flex-row items-center gap-2">
       <Avatar className="w-6 h-6 rounded-full">
