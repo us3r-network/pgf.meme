@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { type User } from "@telegram-apps/sdk-react";
 
-export default function TelegramUser({ user }: { user: any }) {
+export default function TelegramUser({ user }: { user: User }) {
   if (!user) return null;
   console.log("telegram user", user);
   return (

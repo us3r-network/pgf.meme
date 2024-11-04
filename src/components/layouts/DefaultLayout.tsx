@@ -106,8 +106,8 @@ export default function DefaultLayout({
             <div className="flex items-center gap-4 z-20">
               <AboutDialogButton />
               <CreateMemeButton />
-              {initDataState?.user && initDataState?.user.id > 0 ? (
-                <TelegramUser user={initData.user} />
+              {initDataState?.user && initDataState?.user.id >= 0 ? (
+                <TelegramUser user={initDataState.user} />
               ) : (
                 <ConnectButton />
               )}
