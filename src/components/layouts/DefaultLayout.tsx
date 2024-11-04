@@ -40,6 +40,7 @@ export default function DefaultLayout({
   const router = useRouter();
 
   const initDataState = useSignal(initData.state);
+  console.log("telegram initDataState", initDataState);
 
   return (
     <SidebarProvider defaultOpen={false}>
