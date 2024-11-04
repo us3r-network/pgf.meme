@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { type PropsWithChildren, useEffect } from 'react';
+import { type PropsWithChildren, useEffect } from "react";
 import {
   initData,
   miniApp,
   useLaunchParams,
   useSignal,
-} from '@telegram-apps/sdk-react';
-import { AppRoot } from '@telegram-apps/telegram-ui';
+} from "@telegram-apps/sdk-react";
+import { AppRoot } from "@telegram-apps/telegram-ui";
 
-import { ErrorBoundary } from './ErrorBoundary';
-import { ErrorPage } from './ErrorPage';
-import { useTelegramMock } from '@/hooks/telegram/useTelegramMock';
-import { useDidMount } from '@/hooks/telegram/useDidMount';
-import { useClientOnce } from '@/hooks/telegram/useClientOnce';
-import { init } from './init';
+import { ErrorBoundary } from "./ErrorBoundary";
+import { ErrorPage } from "./ErrorPage";
+import { useTelegramMock } from "@/hooks/telegram/useTelegramMock";
+import { useDidMount } from "@/hooks/telegram/useDidMount";
+import { useClientOnce } from "@/hooks/telegram/useClientOnce";
+import { init } from "./init";
 
-import './styles.css';
+import "./styles.css";
 
 function RootInner({ children }: PropsWithChildren) {
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = process.env.NODE_ENV === "development";
 
   // Mock Telegram environment in development mode if needed.
   if (isDev) {
@@ -28,7 +28,7 @@ function RootInner({ children }: PropsWithChildren) {
   }
 
   const lp = useLaunchParams();
-  const debug = isDev || lp.startParam === 'debug';
+  const debug = isDev || lp.startParam === "debug";
 
   // Initialize the library.
   useClientOnce(() => {
@@ -40,16 +40,16 @@ function RootInner({ children }: PropsWithChildren) {
 
   // Enable debug mode to see all the methods sent and events received.
   useEffect(() => {
-    debug && import('eruda').then((lib) => lib.default.init());
+    debug && import("eruda").then((lib) => lib.default.init());
   }, [debug]);
 
   return (
-      <AppRoot
-        appearance={isDark ? 'dark' : 'light'}
-        platform={['macos', 'ios'].includes(lp.platform) ? 'ios' : 'base'}
-      >
-        {children}
-      </AppRoot>
+    <AppRoot
+      appearance={isDark ? "dark" : "light"}
+      platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
+    >
+      {children}
+    </AppRoot>
   );
 }
 
@@ -61,7 +61,9 @@ export function Root(props: PropsWithChildren) {
 
   return didMount ? (
     <ErrorBoundary fallback={ErrorPage}>
-      <RootInner {...props}/>
+      <RootInner {...props} />
     </ErrorBoundary>
-  ) : <div className="root__loading">Loading</div>;
+  ) : (
+    <div className="root__loading">Loading</div>
+  );
 }

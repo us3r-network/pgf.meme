@@ -1,4 +1,4 @@
-import { useClientOnce } from '@/hooks/useClientOnce';
+import { useClientOnce } from '@/hooks/telegram/useClientOnce';
 import {
   isTMA,
   type LaunchParams,

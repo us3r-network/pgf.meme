@@ -6,6 +6,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import { Root } from "@/components/telegram/Root";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -32,9 +33,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${fontSans.variable}  antialiased`}>
         <Providers>
-          <DefaultLayout>{children}</DefaultLayout>
+          <Root>
+            <DefaultLayout>{children}</DefaultLayout>
+          </Root>
         </Providers>
-        <Toaster />
       </body>
     </html>
   );
