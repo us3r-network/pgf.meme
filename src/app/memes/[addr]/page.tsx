@@ -36,11 +36,13 @@ export default function MemeDetails() {
   else
     return (
       <div className="flex justify-center items-start gap-6">
-        <div className="flex-1 flex-col justify-start items-start gap-6 flex">
+        <div className="flex-[4] flex-col justify-start items-start gap-6">
           <MemeTradeChart meme={meme} />
           <MemeTabs meme={meme} />
         </div>
-        <MemeBaseInfo meme={meme} />
+        <div className="flex-1 max-w-[400px]">
+          <MemeBaseInfo meme={meme} />
+        </div>
       </div>
     );
 }
