@@ -14,10 +14,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { usePGFFactoryContractLaunch } from "@/hooks/contract/usePGFFactoryContract";
+import useLoadTopics from "@/hooks/topic/useLoadTopics";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { postMeme } from "@/services/meme/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
@@ -36,6 +44,7 @@ const FormSchema = z.object({
   description: z.string().min(20, {
     message: "Meme coin description must be at least 20 characters.",
   }),
+  topic: z.string().optional(),
 });
 
 export function CreateMemeForm() {
@@ -46,6 +55,7 @@ export function CreateMemeForm() {
       symbol: "",
       image: "",
       description: "",
+      topic: "",
     },
   });
 
@@ -69,6 +79,7 @@ export function CreateMemeForm() {
       symbol: data.symbol,
       image: data.image,
       description: data.description,
+      topic: data.topic,
     };
     launch(data.name, data.symbol);
   };
@@ -191,6 +202,19 @@ export function CreateMemeForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="topic"
+          render={({ field }) => (
+            <FormItem className="flex-col gap-4">
+              <FormLabel className="text-[#16181d] text-2xl">Topic</FormLabel>
+              <FormControl>
+                <SelectMemeTopic onValueChange={field.onChange} defaultValue={field.value}/>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="self-stretch h-[68px] flex-col justify-start items-start gap-2 flex">
           <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
             *Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).
@@ -214,5 +238,31 @@ export function CreateMemeForm() {
         </FormDescription>
       </form>
     </Form>
+  );
+}
+
+function SelectMemeTopic({
+  defaultValue,
+  onValueChange,
+}: {
+  defaultValue?: string;
+  onValueChange: (value: string) => void;
+}) {
+  const { loading, items: topics, loadItems } = useLoadTopics();
+  useEffect(() => {
+    loadItems();
+  }, []);
+  // console.log("topics", topics);
+  return (
+    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
+      <SelectTrigger>
+        <SelectValue placeholder="Topic">{defaultValue}</SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {topics.map((topic) => (
+          <SelectItem value={topic.name}>{topic.name}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
