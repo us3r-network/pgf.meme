@@ -26,10 +26,11 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
+import { TopicData } from "@/services/topic/types";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -44,7 +45,7 @@ const FormSchema = z.object({
   description: z.string().min(20, {
     message: "Meme coin description must be at least 20 characters.",
   }),
-  topic: z.string().optional(),
+  topicId: z.number().optional(),
 });
 
 export function CreateMemeForm() {
@@ -55,7 +56,7 @@ export function CreateMemeForm() {
       symbol: "",
       image: "",
       description: "",
-      topic: "",
+      topicId: undefined,
     },
   });
 
@@ -79,12 +80,13 @@ export function CreateMemeForm() {
       symbol: data.symbol,
       image: data.image,
       description: data.description,
-      topic: data.topic,
+      topicId: data.topicId,
     };
     launch(data.name, data.symbol);
   };
 
   useEffect(() => {
+    // console.log("isSuccess", isSuccess, transactionReceipt, newToken.current);
     if (isSuccess && transactionReceipt && newToken.current) {
       newToken.current.contractAddress = transactionReceipt.logs[0]
         .address as Address;
@@ -204,12 +206,15 @@ export function CreateMemeForm() {
         />
         <FormField
           control={form.control}
-          name="topic"
+          name="topicId"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
               <FormLabel className="text-[#16181d] text-2xl">Topic</FormLabel>
               <FormControl>
-                <SelectMemeTopic onValueChange={field.onChange} defaultValue={field.value}/>
+                <SelectMemeTopic
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -245,22 +250,37 @@ function SelectMemeTopic({
   defaultValue,
   onValueChange,
 }: {
-  defaultValue?: string;
-  onValueChange: (value: string) => void;
+  defaultValue?: number;
+  onValueChange: (value: number) => void;
 }) {
   const { loading, items: topics, loadItems } = useLoadTopics();
   useEffect(() => {
     loadItems();
   }, []);
   // console.log("topics", topics);
+  const [selectedTopic, setSelectedTopic] = useState<TopicData>();
+  useEffect(() => {
+    // console.log("selectValue", selectedTopic, topics);
+    if (selectedTopic) {
+      onValueChange(selectedTopic.id);
+    }
+  }, [selectedTopic]);
   return (
-    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
+    <Select
+      onValueChange={(value) => {
+        const t = topics.find(
+          (topic) => topic.id.toString() === value
+        );
+        setSelectedTopic(t);
+      }}
+      value={selectedTopic?.name}
+    >
       <SelectTrigger>
-        <SelectValue placeholder="Topic">{defaultValue}</SelectValue>
+        <SelectValue placeholder="Select Topic" />
       </SelectTrigger>
       <SelectContent>
         {topics.map((topic) => (
-          <SelectItem value={topic.name}>{topic.name}</SelectItem>
+          <SelectItem value={topic.id.toString()}>{topic.name}</SelectItem>
         ))}
       </SelectContent>
     </Select>
