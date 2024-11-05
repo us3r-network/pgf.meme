@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@telegram-apps/sdk-react": "^2.0.9",
+    "@telegram-apps/telegram-ui": "^2.1.8",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -49,7 +51,8 @@
     "use-debounce": "^10.0.4",
     "viem": "2.x",
     "wagmi": "^2.12.24",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "eruda": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
