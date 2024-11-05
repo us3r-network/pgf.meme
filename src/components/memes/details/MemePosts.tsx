@@ -1,4 +1,3 @@
-
 "use client";
 import {
   TelegramCommentsWidget,
@@ -10,12 +9,9 @@ import {
 import { MemeData } from "@/services/meme/types";
 
 export default function MemePosts({ meme }: { meme: MemeData }) {
-  return (
-    <div className="flex-col gap-10">
-      {/* <TelegramLoginWidget /> */}
-      <TelegramPostWidget post="us3rnetwork/25" />
-      <TelegramCommentsWidget discussion="us3rnetwork/25" />
-      {/* <TelegramShareWidget url="https://degencast.wtf" /> */}
-    </div>
-  );
+  console.log("meme commentss", meme);
+  if (!meme.tgGroupLink) {
+    return null;
+  }
+  return <TelegramCommentsWidget discussion={meme.tgGroupLink} />;
 }

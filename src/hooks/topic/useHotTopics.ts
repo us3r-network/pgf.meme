@@ -1,18 +1,12 @@
-import { getMemes } from "@/services/meme/api";
-import { MemeData, SortBy } from "@/services/meme/types";
+import { getTrendingTopics, TrendingTopicData } from "@/services/topic/api";
 import { ApiRespCode, AsyncRequestStatus } from "@/services/types";
 import { useRef, useState } from "react";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 6;
 
-export default function useLoadMemes(props?: {
-  sortBy?: SortBy;
-  topicId?: number;
-}) {
-  const [items, setItems] = useState<MemeData[]>([]);
+export default function useHotTopics() {
+  const [items, setItems] = useState<TrendingTopicData[]>([]);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
-  const sortByRef = useRef(props?.sortBy);
-  const topicIdRef = useRef(props?.topicId);
   const pageInfoRef = useRef({
     hasNextPage: true,
     nextPageNumber: 1,
@@ -21,8 +15,6 @@ export default function useLoadMemes(props?: {
   const loading = status === AsyncRequestStatus.PENDING;
 
   const loadItems = async () => {
-    const sortBy = sortByRef.current;
-    const topicId = topicIdRef.current;
     const { hasNextPage, nextPageNumber } = pageInfoRef.current;
 
     if (hasNextPage === false) {
@@ -33,10 +25,8 @@ export default function useLoadMemes(props?: {
       const params = {
         pageSize: PAGE_SIZE,
         pageNumber: nextPageNumber,
-        ...(sortBy ? { sortBy } : {}),
-        ...(topicId ? { topicId } : {}),
       };
-      const resp = await getMemes(params);
+      const resp = await getTrendingTopics(params);
       const { code, data, msg } = resp.data || {};
       if (code !== ApiRespCode.SUCCESS) {
         throw new Error(msg);

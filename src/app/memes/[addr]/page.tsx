@@ -6,6 +6,7 @@ import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import { isMobile } from "react-device-detect";
 
 export default function MemeDetails() {
   const params = useParams<{ addr: string }>();
@@ -24,13 +25,24 @@ export default function MemeDetails() {
   if (!meme) {
     return null;
   }
-  return (
-    <div className="flex justify-center items-start gap-6">
+  if (isMobile)
+    return (
       <div className="flex-1 flex-col justify-start items-start gap-6 flex">
         <MemeTradeChart meme={meme} />
+        <MemeBaseInfo meme={meme} />
         <MemeTabs meme={meme} />
       </div>
-      <MemeBaseInfo meme={meme} />
-    </div>
-  );
+    );
+  else
+    return (
+      <div className="flex justify-center items-start gap-6">
+        <div className="flex-[4] flex-col justify-start items-start gap-6">
+          <MemeTradeChart meme={meme} />
+          <MemeTabs meme={meme} />
+        </div>
+        <div className="flex-1 max-w-[400px]">
+          <MemeBaseInfo meme={meme} />
+        </div>
+      </div>
+    );
 }

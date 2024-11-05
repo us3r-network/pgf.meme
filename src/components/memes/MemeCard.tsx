@@ -14,30 +14,27 @@ export default function MemeCard({
   return (
     <Link
       className={cn(
-        " bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex-col justify-start items-center inline-flex overflow-hidden",
-        "max-sm:flex-row max-sm:gap-2 max-sm:h-[170px]",
+        "bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex flex-col max-sm:flex-row max-sm:gap-2 max-sm:h-[170px]",
         className
       )}
       href={`/memes/${meme.address}`}
     >
-      <div className="self-stretch h-[325px] flex-col justify-start items-start gap-2.5 flex max-sm:h-full max-sm:flex-1">
+      <div className="max-sm:size-40">
         <img
-          className="w-full h-full self-stretch grow shrink basis-0"
+          className="w-full rounded-t-[20px] max-sm:rounded-tr-none max-sm:rounded-l-[20px]"
           src={meme.image}
         />
       </div>
-      <div className="self-stretch h-[158px] px-[30px] py-5 flex-col justify-start items-start gap-2 flex max-sm:h-full max-sm:flex-1 max-sm:p-2 max-sm:pl-0">
-        <div className="self-stretch flex-col justify-start items-start gap-2 flex">
-          <div className="self-stretch text-[#16181d] text-4xl font-bold max-sm:text-2xl">
-            {meme.name}
-          </div>
+      <div className="p-6 max-sm:p-4 h-full flex flex-col justify-between gap-2 flex-1">
+        <div className="text-[#16181d] text-4xl max-sm:text-2xl font-bold">
+          {meme.name}
         </div>
-        <div className="self-stretch justify-center items-end inline-flex mt-auto">
-          <div className="grow shrink basis-0 pr-[21px] flex-col justify-start items-start gap-2 inline-flex">
-            <div className="self-stretch text-[#626976] text-base max-sm:text-xs">
+        <div className="w-full flex justify-between items-end">
+          <div className="flex flex-col gap-1">
+            <div className="text-[#626976] text-base max-sm:text-xs">
               Market Cap
             </div>
-            <div className="self-stretch text-[#16181d] text-2xl max-sm:text-base max-sm:font-bold">
+            <div className="text-[#16181d] text-2xl max-sm:text-base max-sm:font-bold">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -47,8 +44,8 @@ export default function MemeCard({
               }).format(meme.stats.marketCap)}
             </div>
           </div>
-          <div className="justify-start items-center gap-1 flex">
-            <UserRound className="max-sm:size-5" />
+          <div className="flex items-center gap-1">
+            <UserRound />
             <span className="text-[#16181d] text-base">
               {new Intl.NumberFormat("en-US", {
                 notation: "compact",

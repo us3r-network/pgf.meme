@@ -26,7 +26,6 @@ export default function MemeActions({ token }: { token: PGFToken }) {
         {tabs.map((tab) => (
           <TabsTrigger
             value={tab.value}
-            className="text-[24px] h-[38px]"
             key={tab.value}
           >
             {tab.name}

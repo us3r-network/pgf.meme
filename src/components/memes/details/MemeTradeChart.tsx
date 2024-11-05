@@ -11,6 +11,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
+import { isMobile } from "react-device-detect";
 
 const getDextoolsChainId = (chainId: number) => {
   // ether, base,
@@ -41,16 +42,16 @@ export default function MemeTradeChart({ meme }: { meme: MemeData }) {
   return (
     <div className="w-full flex flex-col justify-start items-start gap-6">
       <div className="justify-start items-center gap-6 inline-flex">
-        <div className="text-[#16181d] text-4xl font-bold font-['Inter'] capitalize leading-[50.40px]">
-          {meme.name}(${meme.symbol})
-        </div>
-        <div className="justify-start items-center gap-2 flex">
-          <div className="justify-start items-start gap-6 flex">
-            <div className="text-[#16181d] text-4xl font-bold font-['Inter']">
-              Market Cap:
-            </div>
+        {!isMobile && (
+          <div className="text-[#16181d] text-4xl font-bold capitalize">
+            {meme.name}(${meme.symbol})
           </div>
-          <div className="text-right text-[#16181d] text-4xl font-bold font-['Inter']">
+        )}
+        <div className="justify-start items-center gap-2 flex">
+          <div className="text-[#16181d] max-w-sm:text-4xl text-2xl font-bold">
+            Market Cap:
+          </div>
+          <div className="text-right text-[#16181d] text-4xl max-sm:text-2xl font-bold">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "USD",
@@ -84,8 +85,10 @@ function GraduationBeforeChart({ meme }: { meme: MemeData }) {
     );
   }
   return (
-    <div className="w-full h-[642px]">
-      <MemeChart data={ohlct as MemeChartData} />
+    <div className="w-full pb-[75%] relative">
+      <div className="absolute inset-0">
+        <MemeChart data={ohlct as MemeChartData} />
+      </div>
     </div>
   );
 }
@@ -124,14 +127,16 @@ function GraduationAfterChart({ meme }: { meme: MemeData }) {
         </div>
       </TabsContent>
       <TabsContent value={"before"}>
-        <div className="w-full h-[642px]">
-          {pending ? (
-            <div className="flex justify-center items-start gap-6">
-              Loading...
-            </div>
-          ) : (
-            <MemeChart data={ohlct as MemeChartData} />
-          )}
+        <div className="w-full pb-[75%] relative">
+          <div className="absolute inset-0">
+            {pending ? (
+              <div className="flex justify-center items-start gap-6">
+                Loading...
+              </div>
+            ) : (
+              <MemeChart data={ohlct as MemeChartData} />
+            )}
+          </div>
         </div>
       </TabsContent>
     </Tabs>

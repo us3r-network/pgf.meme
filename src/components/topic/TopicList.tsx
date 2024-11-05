@@ -2,21 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import useLoadMemes from "@/hooks/meme/useLoadMemes";
-import MemeCard from "@/components/memes/MemeCard";
-import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
+import useLoadTopics from "@/hooks/topic/useLoadTopics";
+import { TopicSortBy } from "@/services/topic/types";
+import TopicCard from "./TopicCard";
 
-export default function MemeList({
-  sortBy,
-  topicId,
-}: {
-  sortBy: SortBy;
-  topicId?: number;
-}) {
-  const { items, loading, loadItems } = useLoadMemes({
+export default function TopicList({ sortBy }: { sortBy: TopicSortBy }) {
+  const { items, loading, loadItems } = useLoadTopics({
     sortBy,
-    topicId,
   });
 
   const [mounted, setMounted] = useState(false);
@@ -42,24 +35,21 @@ export default function MemeList({
   });
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-sm:gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {items.map((item, idx) => {
           return (
             <div
-              key={`${item.address}_${idx}`}
+              key={`${item.id}`}
               ref={idx === items.length - 1 ? observe : null}
+              className="h-[680px]"
             >
-              <MemeCard
-                key={item.address}
-                meme={item}
-                className="w-full h-full"
-              />
+              <TopicCard topic={item} />
             </div>
           );
         })}
         {loading
-          ? Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-[486px] rounded-[20px]" />
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <Skeleton key={index} className="h-[680px] rounded-2xl " />
             ))
           : null}
       </div>
