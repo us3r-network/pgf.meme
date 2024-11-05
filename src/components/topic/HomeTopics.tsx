@@ -26,8 +26,13 @@ export default function HomeTopics() {
   return (
     <div className="w-full flex-col gap-2.5 flex">
       <div className="w-full justify-between items-end flex">
-        <div className=" text-black text-[32px] font-bold">🔥Hot Topic</div>
-        <Link className="text-black text-2xl font-bold" href={"/topics"}>
+        <div className=" text-black text-[32px] font-bold max-sm:text-base">
+          🔥Hot Topic
+        </div>
+        <Link
+          className="text-black text-2xl font-bold max-sm:text-xs"
+          href={"/topics"}
+        >
           View all
         </Link>
       </div>
@@ -95,7 +100,7 @@ export function HomeTopicSkeleton() {
     <div className="w-full">
       <div className="w-full grid grid-cols-2 gap-4">
         {/* Left box - 50% width */}
-        <div className="min-h-[680px]">
+        <div className="aspect-square">
           <Skeleton className="rounded-[20px] w-full h-full" />
         </div>
 
@@ -122,17 +127,22 @@ export function HomeTopicItem({
   const { topic, memes } = data;
   return (
     <div className="w-full">
-      <div className="w-full grid grid-cols-2 gap-4">
+      <div className="w-full grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         {/* Left box - 50% width */}
-        <div className="min-h-[680px]">
+        <div className="aspect-square">
           <TopicCard topic={topic} />
         </div>
 
         {/* Right section - 2x2 grid */}
-        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+        <div
+          className={cn(
+            "w-full grid grid-cols-2 gap-4",
+            memes.length <= 2 ? "max-sm:grid-rows-1" : ""
+          )}
+        >
           {memes.map((item, idx) => {
             return (
-              <div key={`${item.address}_${idx}`}>
+              <div key={`${item.address}_${idx}`} className="aspect-square">
                 <MemeCard meme={item} />
               </div>
             );
@@ -160,12 +170,14 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
       />
       <div className="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
         <div className="p-6 ">
-          <span className="text-2xl text-white">{meme.name}</span>
+          <span className="text-2xl text-white max-sm:text-base">
+            {meme.name}
+          </span>
         </div>
       </div>
       <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
         <div className="p-6 flex justify-between items-end">
-          <span className="text-2xl text-white">
+          <span className="text-2xl text-white max-sm:text-base">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "USD",
