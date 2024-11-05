@@ -14,7 +14,7 @@ export default function MemeCard({
   return (
     <Link
       className={cn(
-        "bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex flex-col max-sm:flex-row",
+        "bg-[#fefaf6] rounded-[20px] border border-[#16181d] flex flex-col max-sm:flex-row max-sm:gap-2 max-sm:h-[170px]",
         className
       )}
       href={`/memes/${meme.address}`}
@@ -31,10 +31,10 @@ export default function MemeCard({
         </div>
         <div className="w-full flex justify-between items-end">
           <div className="flex flex-col gap-1">
-            <div className="text-[#626976] text-base">
+            <div className="text-[#626976] text-base max-sm:text-xs">
               Market Cap
             </div>
-            <div className="text-[#16181d] text-2xl">
+            <div className="text-[#16181d] text-2xl max-sm:text-base max-sm:font-bold">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -46,11 +46,11 @@ export default function MemeCard({
           </div>
           <div className="flex items-center gap-1">
             <UserRound />
-            <div className="text-[#16181d] text-base">
+            <span className="text-[#16181d] text-base">
               {new Intl.NumberFormat("en-US", {
                 notation: "compact",
               }).format(meme.stats.buyersNumber)}
-            </div>
+            </span>
           </div>
         </div>
       </div>

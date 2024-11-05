@@ -11,6 +11,7 @@ import MemeList from "@/components/memes/MemeList";
 import { SortBy } from "@/services/meme/types";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { CreateMemeButton } from "@/components/memes/create/CreateMemeButton";
 import HomeTopics from "@/components/topic/HomeTopics";
 
 const capitalizeFirstLetter = (str: string) =>
@@ -27,11 +28,14 @@ export default function Home() {
   ];
   return (
     <div className="w-full">
+      <div className="w-full hidden mb-3 max-sm:block">
+        <CreateMemeButton variant={"mobile"} />
+      </div>
       <div className="w-full mb-6">
         <HomeTopics />
       </div>
       <Tabs defaultValue={SortBy.trending} className="w-full">
-        <TabsList className="w-full mb-6">
+        <TabsList className="w-full mb-6 max-sm:mb-3">
           {tabs.map((tab) => (
             <TabsTrigger
               value={tab.value}
@@ -41,7 +45,7 @@ export default function Home() {
               {tab.name}
             </TabsTrigger>
           ))}
-          <div className="w-[460px] h-[60px] ml-auto">
+          <div className="w-[460px] h-[60px] ml-auto max-sm:hidden">
             <div className="w-full h-full relative">
               <Input
                 className="w-full h-full box-border py-3 pr-10 rounded-[20px] border border-[#16181d] grow shrink basis-0 text-[#626976] text-base font-normal leading-snug"

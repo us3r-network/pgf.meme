@@ -41,7 +41,7 @@ export default function TopicList({ sortBy }: { sortBy: TopicSortBy }) {
             <div
               key={`${item.id}`}
               ref={idx === items.length - 1 ? observe : null}
-              className="h-[680px]"
+              className="aspect-square"
             >
               <TopicCard topic={item} />
             </div>
@@ -49,7 +49,7 @@ export default function TopicList({ sortBy }: { sortBy: TopicSortBy }) {
         })}
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton key={index} className="h-[680px] rounded-2xl " />
+              <Skeleton key={index} className="aspect-square rounded-2xl " />
             ))
           : null}
       </div>

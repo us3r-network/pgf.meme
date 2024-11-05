@@ -17,7 +17,7 @@ export default function AboutDialogButton() {
         <DialogHeader>
           <DialogTitle>How pgf.meme works?</DialogTitle>
         </DialogHeader>
-        <div className="flex-col justify-start items-start gap-8 inline-flex">
+        <div className="flex-col justify-start items-start gap-8 inline-flex max-sm:flex-1 max-sm:overflow-y-auto">
           <div className="self-stretch flex-col justify-start items-start gap-4 flex">
             <div className="text-[#16181d] text-2xl font-normal">
               {" "}
@@ -28,7 +28,7 @@ export default function AboutDialogButton() {
               blockchains, with each transaction donating a portion to charity.
             </div>
           </div>
-          <div className="self-stretch h-[152px] flex-col justify-start items-start gap-4 flex">
+          <div className="self-stretch flex-col justify-start items-start gap-4 flex">
             <div className="text-[#16181d] text-2xl font-normal">
               2. Trade with Impact
             </div>

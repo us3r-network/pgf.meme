@@ -33,7 +33,9 @@ export default function JoinTelegramButton({
           fill="white"
         />
       </svg>
-      <span className="text-white text-xl font-bold">Join Telegram Topic</span>
+      <span className="text-white text-xl font-bold max-sm:text-base">
+        Join Telegram Topic
+      </span>
     </Link>
   );
 }
