@@ -87,7 +87,7 @@ export default function DefaultLayout({
             ) : (
               <Button
                 size="icon"
-                className="size-12"
+                className="size-12 max-sm:rounded-xl"
                 onClick={() => {
                   router.back();
                 }}
