@@ -14,14 +14,23 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { usePGFFactoryContractLaunch } from "@/hooks/contract/usePGFFactoryContract";
+import useLoadTopics from "@/hooks/topic/useLoadTopics";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { postMeme } from "@/services/meme/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
+import { TopicData } from "@/services/topic/types";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -36,6 +45,7 @@ const FormSchema = z.object({
   description: z.string().min(20, {
     message: "Meme coin description must be at least 20 characters.",
   }),
+  topicId: z.number().optional(),
 });
 
 export function CreateMemeForm() {
@@ -46,6 +56,7 @@ export function CreateMemeForm() {
       symbol: "",
       image: "",
       description: "",
+      topicId: undefined,
     },
   });
 
@@ -69,11 +80,13 @@ export function CreateMemeForm() {
       symbol: data.symbol,
       image: data.image,
       description: data.description,
+      topicId: data.topicId,
     };
     launch(data.name, data.symbol);
   };
 
   useEffect(() => {
+    // console.log("isSuccess", isSuccess, transactionReceipt, newToken.current);
     if (isSuccess && transactionReceipt && newToken.current) {
       newToken.current.contractAddress = transactionReceipt.logs[0]
         .address as Address;
@@ -191,6 +204,22 @@ export function CreateMemeForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="topicId"
+          render={({ field }) => (
+            <FormItem className="flex-col gap-4">
+              <FormLabel className="text-[#16181d] text-2xl">Topic</FormLabel>
+              <FormControl>
+                <SelectMemeTopic
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="self-stretch h-[68px] flex-col justify-start items-start gap-2 flex">
           <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
             *Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).
@@ -214,5 +243,46 @@ export function CreateMemeForm() {
         </FormDescription>
       </form>
     </Form>
+  );
+}
+
+function SelectMemeTopic({
+  defaultValue,
+  onValueChange,
+}: {
+  defaultValue?: number;
+  onValueChange: (value: number) => void;
+}) {
+  const { loading, items: topics, loadItems } = useLoadTopics();
+  useEffect(() => {
+    loadItems();
+  }, []);
+  // console.log("topics", topics);
+  const [selectedTopic, setSelectedTopic] = useState<TopicData>();
+  useEffect(() => {
+    // console.log("selectValue", selectedTopic, topics);
+    if (selectedTopic) {
+      onValueChange(selectedTopic.id);
+    }
+  }, [selectedTopic]);
+  return (
+    <Select
+      onValueChange={(value) => {
+        const t = topics.find(
+          (topic) => topic.id.toString() === value
+        );
+        setSelectedTopic(t);
+      }}
+      value={selectedTopic?.name}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder="Select Topic" />
+      </SelectTrigger>
+      <SelectContent>
+        {topics.map((topic) => (
+          <SelectItem value={topic.id.toString()}>{topic.name}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

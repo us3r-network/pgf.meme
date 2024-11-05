@@ -1,5 +1,5 @@
 export type TopicData = {
-  id: string;
+  id: number;
   name: string;
   image: string;
   description: string;

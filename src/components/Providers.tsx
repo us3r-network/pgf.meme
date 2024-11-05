@@ -21,7 +21,7 @@ import {
   polygon,
   sepolia,
 } from "viem/chains";
-import { WagmiProvider } from "wagmi";
+import { http, WagmiProvider } from "wagmi";
 import { Toaster } from "./ui/toaster";
 import AsyncData from "./AsyncData";
 
@@ -31,6 +31,9 @@ export const config = getDefaultConfig({
   appName: "pgf.meme",
   projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [mainnet, polygon, optimism, arbitrum, sepolia, base, baseSepolia],
+  transports: {
+    [sepolia.id]: http("https://ethereum-sepolia-rpc.publicnode.com"),
+  }
   // ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

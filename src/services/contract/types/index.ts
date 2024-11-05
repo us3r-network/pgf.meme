@@ -10,4 +10,5 @@ export type PGFToken = {
   rawBalance?: bigint;
   image?: string;
   description?: string;
+  topicId?: number;
 };

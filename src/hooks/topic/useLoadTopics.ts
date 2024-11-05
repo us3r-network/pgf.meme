@@ -1,6 +1,7 @@
 import { getTopics } from "@/services/topic/api";
 import { TopicData, TopicSortBy } from "@/services/topic/types";
 import { ApiRespCode, AsyncRequestStatus } from "@/services/types";
+import { uniqBy } from "lodash";
 import { useRef, useState } from "react";
 
 const PAGE_SIZE = 20;
@@ -35,7 +36,7 @@ export default function useLoadTopics(props?: { sortBy?: TopicSortBy }) {
       if (code !== ApiRespCode.SUCCESS) {
         throw new Error(msg);
       }
-      setItems((pre) => [...pre, ...data]);
+      setItems((pre) => uniqBy([...pre, ...data], "id"));
       pageInfoRef.current = {
         hasNextPage: data.length === PAGE_SIZE,
         nextPageNumber: nextPageNumber + 1,
