@@ -25,8 +25,10 @@ export default function TopicCard({
       />
       <div className="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
         <div className="flex justify-between items-center p-6 text-white">
-          <h1 className="text-4xl font-bold">#{topic.name}</h1>
-          <span className="text-2xl">{topic.stats.memesAmount} memes</span>
+          <h1 className="text-4xl font-bold max-sm:text-2xl">#{topic.name}</h1>
+          <span className="text-2xl max-sm:text-base">
+            {topic.stats.memesAmount} memes
+          </span>
         </div>
       </div>
       <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">

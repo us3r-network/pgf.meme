@@ -56,7 +56,7 @@ export default function TopicDetails() {
               {tab.name}
             </TabsTrigger>
           ))}
-          <div className="w-[460px] h-[60px] ml-auto">
+          <div className="w-[460px] h-[60px] ml-auto max-sm:hidden">
             <div className="w-full h-full relative">
               <Input
                 className="w-full h-full box-border py-3 pr-10 rounded-[20px] border border-[#16181d] grow shrink basis-0 text-[#626976] text-base font-normal leading-snug"
