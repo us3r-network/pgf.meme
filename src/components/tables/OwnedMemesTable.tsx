@@ -1,79 +1,56 @@
 import { shortPubKey } from "@/lib/shortAddress";
 import { OwnedMemeData } from "@/services/user/types";
 import Link from "next/link";
-import { formatUnits } from "viem";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
 
 export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
   return (
-    <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
-      <div className="self-stretch px-5 justify-between items-center inline-flex">
-        <div className="grow shrink basis-0 h-[22px] justify-start items-center gap-5 flex">
-          <div className="text-[#858584] text-base font-normal">Token</div>
-        </div>
-        <div className="justify-end items-center gap-5 flex">
-          <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
-            <div className="self-stretch text-[#858584] text-base font-normal">
-              Amount
-            </div>
-          </div>
-          <div className="w-40 flex-col justify-start items-center gap-2.5 inline-flex">
-            <div className="text-[#858584] text-base font-normal">Value</div>
-          </div>
-        </div>
-      </div>
-      {data.map((item, index) => {
-        return (
-          <div
+    <Table className=" border-separate border-spacing-y-6">
+      <TableHeader>
+        <TableRow className="text-[#858584]">
+          <TableHead className="">Token</TableHead>
+          <TableHead className="">Amount</TableHead>
+          <TableHead className="">Value</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="text-[#fefaf6] max-sm:text-xs">
+        {data.map((item, index) => (
+          <TableRow
             key={`${item.user.walletAddress}_${index}`}
-            className="self-stretch h-16 py-3 bg-[#3b3b3b] rounded-[20px] flex-col justify-start items-center gap-2.5 flex"
+            className="w-full h-16 py-3 px-5 bg-[#3b3b3b]"
           >
-            <div className="self-stretch px-5 justify-between items-center inline-flex">
-              {/* <div className="grow shrink basis-0 h-10 rounded-[20px] justify-center items-center gap-2 flex">
-                <div className="flex-col justify-start items-end inline-flex">
-                  <div className="w-10 h-10 justify-start items-start gap-2.5 inline-flex">
-                    <div className="w-10 h-10 justify-center items-center flex">
-                      <img
-                        className="w-10 h-10 rounded-[100px]"
-                        src="https://via.placeholder.com/40x40"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex">
-                  <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize">
-                    Jaydon Ekstrom Bothman
-                  </div>
-                </div>
-              </div> */}
-              <Link
-                className="grow shrink basis-0 flex-col justify-center items-start gap-[5px] inline-flex"
-                href={`/memes/${item.meme.address}`}
-              >
-                <div className="self-stretch text-[#fefaf6] text-base font-bold capitalize">
+            <TableCell className="rounded-l-2xl">
+              <Link href={`/memes/${item.meme.address}`}>
+                <span className=" font-bold">
                   {shortPubKey(item.meme.address)}
-                </div>
+                </span>
               </Link>
-              <div className="justify-end items-center gap-5 flex">
-                <div className="w-40 flex-col justify-start items-start gap-2.5 inline-flex">
-                  <div className="self-stretch text-[#fefaf6] text-base font-normal">
-                    {new Intl.NumberFormat("en-US", {
-                      notation: "compact",
-                    }).format(Number(item.memeAmount))}{" "}
-                  </div>
-                </div>
-                <div className="w-40 flex-col justify-start items-center gap-2.5 inline-flex">
-                  <div className="self-stretch text-center text-[#fefaf6] text-base font-normal">
-                    ～ $
-                    {Intl.NumberFormat("en-US", {
-                      maximumFractionDigits: 6,
-                    }).format(Number(item.usdAmount || 0))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+            </TableCell>
+            <TableCell>
+              <span className="">
+                {new Intl.NumberFormat("en-US", {
+                  notation: "compact",
+                }).format(Number(item.memeAmount))}{" "}
+              </span>
+            </TableCell>
+            <TableCell className="rounded-r-2xl">
+              <span className="text-center ">
+                ～ $
+                {Intl.NumberFormat("en-US", {
+                  maximumFractionDigits: 6,
+                }).format(Number(item.usdAmount || 0))}
+              </span>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

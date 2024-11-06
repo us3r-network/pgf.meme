@@ -26,10 +26,10 @@ export default function UserBaseInfo({ address }: { address: string }) {
   return (
     <div className="w-full flex-col justify-start items-start gap-6 inline-flex">
       <div className="w-full pb-[100%] relative">
-          <Avatar className="w-full h-full absolute inset-0 rounded-[20px]">
-            <AvatarImage src={ensProfile?.avatar} />
-            <AvatarFallback className="rounded-[20px]">^_^</AvatarFallback>
-          </Avatar>
+        <Avatar className="w-full h-full absolute inset-0 rounded-[20px]">
+          <AvatarImage src={ensProfile?.avatar} />
+          <AvatarFallback className="rounded-[20px]">^_^</AvatarFallback>
+        </Avatar>
       </div>
       <div className="text-[#16181d] text-4xl font-bold leading-[50.40px] capitalize">
         {!pending && (ensProfile?.displayName || "")}
@@ -54,7 +54,7 @@ export default function UserBaseInfo({ address }: { address: string }) {
         />
       </div>
 
-      <div className="self-stretch justify-start items-center gap-10 inline-flex">
+      {/* <div className="self-stretch justify-start items-center gap-10 inline-flex">
         <Button
           className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
           onClick={() => {
@@ -71,7 +71,7 @@ export default function UserBaseInfo({ address }: { address: string }) {
             Earn by Sharing
           </div>
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -24,7 +24,7 @@ export function CreateMemeButton({
           <Button>Create</Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8">
+      <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
           <DialogTitle>Create Meme</DialogTitle>
         </DialogHeader>

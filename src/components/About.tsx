@@ -13,7 +13,7 @@ export default function AboutDialogButton() {
       <DialogTrigger asChild>
         <CircleHelp className="fill-black stroke-white size-10 cursor-pointer" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8">
+      <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
           <DialogTitle>How pgf.meme works?</DialogTitle>
         </DialogHeader>
