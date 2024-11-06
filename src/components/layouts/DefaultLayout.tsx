@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import { ChevronLeft } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { CreateMemeButton } from "../memes/create/CreateMemeButton";
+import { useAccount } from "wagmi";
 
 // const navItems = [
 //   { title: "Explore", url: "/" },
@@ -37,7 +38,7 @@ export default function DefaultLayout({
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const router = useRouter();
-
+  const account = useAccount();
   return (
     <SidebarProvider defaultOpen={false}>
       {/* <Sidebar>
@@ -101,9 +102,11 @@ export default function DefaultLayout({
             </div>
             <div className="flex items-center gap-4 z-20 ml-auto">
               <AboutDialogButton />
-              <div className="max-sm:hidden">
-                <CreateMemeButton />
-              </div>
+              {account.isConnected && (
+                <div className="max-sm:hidden">
+                  <CreateMemeButton />
+                </div>
+              )}
               <ConnectButton showBalance={false} chainStatus={"none"} />
             </div>
           </div>
