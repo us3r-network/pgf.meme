@@ -3,6 +3,7 @@ import useTradesMessage from "@/hooks/message/useTradesMessage";
 import { shortPubKey } from "@/lib/shortAddress";
 import { cn } from "@/lib/utils";
 import { TradeData } from "@/services/trade/types";
+import Link from "next/link";
 export default function MessageMarquee() {
   const { trades } = useTradesMessage();
   const renderedLen = trades.length;
@@ -43,9 +44,12 @@ function MessageItem({ data }: { data: TradeData }) {
           {data.user.name}
         </div>
       </div> */}
-      <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+      <Link
+        href={`/u/${user.walletAddress}`}
+        className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug"
+      >
         {shortPubKey(user.walletAddress)}
-      </div>
+      </Link>
       <div className="text-black text-base font-normal font-['Inter'] leading-snug">
         {txType === "sell" ? "sell" : "bought"}
       </div>
@@ -55,7 +59,10 @@ function MessageItem({ data }: { data: TradeData }) {
         }).format(Number(ethAmount))}{" "}
         ETH
       </div>
-      <div className="justify-start items-start gap-2 flex flex-1 overflow-hidden">
+      <Link
+        href={`/memes/${meme.address}`}
+        className="justify-start items-start gap-2 flex flex-1 overflow-hidden"
+      >
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
             <img className="w-6 h-6 rounded-[120px]" src={meme.image} />
@@ -64,7 +71,7 @@ function MessageItem({ data }: { data: TradeData }) {
         <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug text-nowrap">
           {meme.name}
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
