@@ -14,6 +14,7 @@ import { shareToWarpcast } from "@/lib/sharing/warpcast";
 import { shareToWhatsApp } from "@/lib/sharing/whatsapp";
 import { MemeData } from "@/services/meme/types";
 import { Copy } from "lucide-react";
+import Link from "next/link";
 import { useAccount, useEnsAddress } from "wagmi";
 
 export default function MemeShareButton({
@@ -33,7 +34,7 @@ export default function MemeShareButton({
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8">
+      <DialogContent className="sm:max-w-[816px] gap-8 ">
         <DialogHeader>
           <DialogTitle>Share2Earn</DialogTitle>
         </DialogHeader>
@@ -57,74 +58,53 @@ function MemeShareContent({
     address || ""
   }`;
   return (
-    <div className=" flex-col justify-start items-center gap-8 inline-flex">
-      <div className="self-stretch h-[68px] flex-col justify-start items-start gap-4 flex">
-        <div className="self-stretch text-[#16181d] text-2xl leading-[33.60px]">
-          Share to earn 4% commission on every trade made through your referral.
-        </div>
+    <div className="flex flex-col justify-start items-center gap-8">
+      <div className=" flex-col justify-start items-start gap-4 flex text-[#16181d] text-2xl max-sm:xs">
+        Share the link with friends, and receive a 20% discount coupon on
+        transactions when they complete a successful trade!
       </div>
-      <div className="self-stretch justify-center items-start gap-12 inline-flex">
-        <div
-          className="w-20 flex-col justify-start items-center gap-2.5 inline-flex cursor-pointer"
+      <div className="shrink-0 justify-center items-start gap-12 flex max-sm:gap-3">
+        <ShareItem
+          icon="/images/warpcast.png"
+          name="Warpcast"
           onClick={() => {
             shareToWarpcast([shareLink], "");
           }}
-        >
-          <img src="/images/warpcast.png" alt="warpcast" />
-          <div className="self-stretch text-center text-[#16181d] text-[14.93px] tracking-wide">
-            Warpcast
-          </div>
-        </div>
-        <div
-          className="w-20 flex-col justify-start items-center gap-2.5 inline-flex cursor-pointer"
+        />
+        <ShareItem
+          icon="/images/telegram.png"
+          name="Telegram"
           onClick={() => {
             shareToTelegramWeb(shareLink);
           }}
-        >
-          <img src="/images/telegram.png" alt="telegram" />
-          <div className="self-stretch text-center text-[#16181d] text-[14.93px] tracking-wide">
-            Telegram
-          </div>
-        </div>
-        <div
-          className="w-20 flex-col justify-start items-center gap-2.5 inline-flex cursor-pointer"
+        />
+        <ShareItem
+          icon="/images/twitter.png"
+          name="Twitter"
           onClick={() => {
             shareToTwitter(shareLink);
           }}
-        >
-          <img src="/images/twitter.png" alt="twitter" />
-          <div className="self-stretch text-center text-[#16181d] text-[14.93px] tracking-wide">
-            Twitter
-          </div>
-        </div>
-        <div
-          className="w-20 flex-col justify-start items-center gap-2.5 inline-flex cursor-pointer"
+        />
+        <ShareItem
+          icon="/images/whatsapp.png"
+          name="WhatsApp"
           onClick={() => {
             shareToWhatsApp(shareLink);
           }}
-        >
-          <img src="/images/whatsapp.png" alt="whatsapp" />
-          <div className="text-center text-[#16181d] text-[14.93px] tracking-wide">
-            WhatsApp
-          </div>
-        </div>
-        <div
-          className="w-20 flex-col justify-start items-center gap-2.5 inline-flex cursor-pointer"
+        />
+        <ShareItem
+          icon="/images/facebook.png"
+          name="Facebook"
           onClick={() => {
             shareToFacebook(shareLink);
           }}
-        >
-          <img src="/images/facebook.png" alt="facebook" />
-          <div className="self-stretch text-center text-[#16181d] text-[14.93px] tracking-wide">
-            Facebook
-          </div>
-        </div>
+        />
       </div>
-      <div className="text-center text-[#16181d] text-2xl leading-[15px]">
+      <div className="text-center text-[#16181d] text-2xl leading-[15px] max-sm:text-xs">
         or share with link
       </div>
       <div
-        className="cursor-pointer self-stretch p-3 rounded-xl border border-[#16181d] justify-start items-center gap-6 flex"
+        className="box-border cursor-pointer  p-3 rounded-xl border border-[#16181d] justify-start items-center gap-6 flex max-sm:w-[calc(100vw-48px)]"
         onClick={() => {
           navigator.clipboard.writeText(shareLink);
           toast({
@@ -133,11 +113,35 @@ function MemeShareContent({
           });
         }}
       >
-        <div className="flex-1 line-clamp-1 grow shrink basis-0 text-[#626976] text-xl leading-[17.50px]">
+        <span className="flex-1 line-clamp-1 text-[#626976] text-xl">
           {shareLink}
-        </div>
+        </span>
         <Copy />
       </div>
+    </div>
+  );
+}
+
+function ShareItem({
+  icon,
+  name,
+  onClick,
+}: {
+  icon: string;
+  name: string;
+  onClick?: () => void;
+}) {
+  return (
+    <div
+      className="flex-col justify-start items-center gap-2.5 flex cursor-pointer"
+      onClick={onClick}
+    >
+      <img
+        src={icon}
+        alt="telegram"
+        className="w-[80px] h-[80px] max-sm:w-[48px] max-sm:h-[48px]"
+      />
+      <div className=" text-center text-[#16181d] max-sm:text-xs">{name}</div>
     </div>
   );
 }
