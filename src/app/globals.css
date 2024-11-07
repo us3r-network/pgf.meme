@@ -5,6 +5,7 @@
 body {
   font-family: 'Comic Sans MS', sans-serif;
   background: linear-gradient(180deg, #F475BC 0%, #92C7F5 50%, #F465AD 100%);
+  background-attachment: fixed;
 }
 
 *::-webkit-scrollbar {
