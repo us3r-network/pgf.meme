@@ -1,22 +1,9 @@
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
-import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
-
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable}  antialiased`}>
+      <body className={` antialiased`}>
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>
         </Providers>

@@ -30,8 +30,8 @@ const TabsTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "flex items-center justify-center whitespace-nowrap  transition-all focus-visible:outline-none  disabled:pointer-events-none disabled:opacity-50 ",
-      "text-[#626976] font-bold data-[state=active]:text-[#16181d] text-2xl h-10",
-      "data-[state=active]:border-b-4 data-[state=active]:border-[#16181d] box-border",
+      "text-secondary-foreground font-bold data-[state=active]:text-primary text-2xl h-10",
+      "data-[state=active]:border-b-4 data-[state=active]:border-primary box-border",
       "max-sm:text-base max-sm:h-8",
       className
     )}

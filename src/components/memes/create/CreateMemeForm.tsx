@@ -135,9 +135,7 @@ export function CreateMemeForm() {
           name="name"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className="text-[#16181d] text-2xl">
-                Meme coin
-              </FormLabel>
+              <FormLabel className=" text-2xl">Meme coin</FormLabel>
               <FormControl>
                 <Input
                   className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
@@ -154,9 +152,7 @@ export function CreateMemeForm() {
           name="symbol"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className="text-[#16181d] text-2xl">
-                Meme coin symbol
-              </FormLabel>
+              <FormLabel className=" text-2xl">Meme coin symbol</FormLabel>
               <FormControl>
                 <Input
                   className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
@@ -173,7 +169,7 @@ export function CreateMemeForm() {
           name="image"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className="text-[#16181d] text-2xl">Image</FormLabel>
+              <FormLabel className=" text-2xl">Image</FormLabel>
               <FormControl>
                 <Input
                   className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
@@ -190,9 +186,7 @@ export function CreateMemeForm() {
           name="description"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className="text-[#16181d] text-2xl">
-                Description
-              </FormLabel>
+              <FormLabel className=" text-2xl">Description</FormLabel>
               <FormControl>
                 <Textarea
                   className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
@@ -209,7 +203,7 @@ export function CreateMemeForm() {
           name="topicId"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className="text-[#16181d] text-2xl">Topic</FormLabel>
+              <FormLabel className=" text-2xl">Topic</FormLabel>
               <FormControl>
                 <SelectMemeTopic
                   onValueChange={field.onChange}
@@ -233,9 +227,9 @@ export function CreateMemeForm() {
         <Button
           type="submit"
           disabled={isPending}
-          className="w-full h-12 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
+          className="w-full h-12 rounded-[30px] justify-center items-center gap-2.5 flex"
         >
-          <div className="text-[#fefaf6] text-xl font-bold">Create & Share</div>
+          <div className="text-xl font-bold">Create & Share</div>
         </Button>
         <FormDescription className="self-stretch text-center text-[#626976] text-base font-normal">
           Share your meme coin link to earn 4% commission on every trade through
@@ -268,9 +262,7 @@ function SelectMemeTopic({
   return (
     <Select
       onValueChange={(value) => {
-        const t = topics.find(
-          (topic) => topic.id.toString() === value
-        );
+        const t = topics.find((topic) => topic.id.toString() === value);
         setSelectedTopic(t);
       }}
       value={selectedTopic?.name}

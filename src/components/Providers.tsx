@@ -33,7 +33,7 @@ export const config = getDefaultConfig({
   chains: [mainnet, polygon, optimism, arbitrum, sepolia, base, baseSepolia],
   transports: {
     [sepolia.id]: http("https://ethereum-sepolia-rpc.publicnode.com"),
-  }
+  },
   // ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
@@ -45,8 +45,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
             theme={lightTheme({
-              accentColor: "#16181d",
-              accentColorForeground: "#ffffff",
+              accentColor: "#ffffff",
+              accentColorForeground: "#FF1393",
             })}
           >
             <Provider store={store}>
