@@ -20,6 +20,7 @@ import { useAccount } from "wagmi";
 import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
 import { useDebounce } from "use-debounce";
 
+const MIN_IN_AMOUNT = "10000";
 export function SellMemeForm({ token }: { token: PGFToken }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
@@ -28,18 +29,20 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
   );
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   useEffect(() => {
-      getTokenInfo({
-        contractAddress: token.contractAddress,
-        chainId: token.chainId,
-        account: account?.address,
-      }).then((info) => {
-        // console.log("token info", info);
-        setTokenInfo(info);
-      });
+    getTokenInfo({
+      contractAddress: token.contractAddress,
+      chainId: token.chainId,
+      account: account?.address,
+    }).then((info) => {
+      // console.log("token info", info);
+      setTokenInfo(info);
+    });
   }, [account]);
 
   const [inAmount, setInAmount] = useState(
-    tokenInfo?.rawBalance ? tokenInfo.rawBalance : parseUnits("1000000", nativeTokenInfo?.decimals || 18)
+    tokenInfo?.rawBalance
+      ? tokenInfo.rawBalance
+      : parseUnits("1000000", nativeTokenInfo?.decimals || 18)
   );
 
   const [debouncedInAmount] = useDebounce(inAmount, 500);
@@ -112,6 +115,11 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
     }
   }, [writeError, transationError]);
 
+  const onInputChange = (v: string) => {
+    if (Number(v) >= 0) {
+      setInAmount(parseUnits(v, tokenInfo?.decimals || 18));
+    }
+  };
   const allowanceParams =
     account?.address && token?.contractAddress && inAmount
       ? {
@@ -125,32 +133,33 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <div className="self-stretch justify-start items-center gap-4 inline-flex">
-        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
-          {tokenInfo?.name}
-        </div>
         {tokenInfo?.decimals && (
           <Input
             value={formatUnits(inAmount, tokenInfo.decimals)}
-            onChange={(e) =>
-              setInAmount(parseUnits(e.target.value, tokenInfo.decimals!))
-            }
+            onChange={(e) => onInputChange(e.target.value)}
             className="grow shrink basis-0 h-12 px-[29px] rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
           />
-        )}
+        )}{" "}
+        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
+          {tokenInfo?.symbol}
+        </div>
       </div>
-      {tokenInfo && tokenInfo.rawBalance && tokenInfo.decimals && (
-        <Slider
-          value={[Number(formatUnits(inAmount, tokenInfo.decimals))]}
-          onValueChange={(v) =>
-            setInAmount(parseUnits(String(v[0]), tokenInfo.decimals!))
-          }
-          max={Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals))}
-          step={
-            Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals)) / 100
-          }
-          className="h-6"
-        />
-      )}
+      {tokenInfo &&
+        tokenInfo.rawBalance &&
+        tokenInfo.decimals &&
+        tokenInfo.rawBalance > parseUnits(MIN_IN_AMOUNT, tokenInfo.decimals || 18) && (
+          <Slider
+            value={[Number(formatUnits(inAmount, tokenInfo.decimals))]}
+            onValueChange={(v) => onInputChange(v[0].toString())}
+            min={Number(MIN_IN_AMOUNT)}
+            max={Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals))}
+            step={
+              Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals)) /
+              100
+            }
+            className="h-6"
+          />
+        )}
       <div className="self-stretch h-12 justify-start items-center gap-10 inline-flex">
         {tokenInfo?.decimals &&
           tokenInfo?.symbol &&
@@ -164,7 +173,9 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
                 <Button
                   className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
                   onClick={onSubmit}
-                  disabled={isPending || !inAmount || !outAmount || !account.address}
+                  disabled={
+                    isPending || !inAmount || !outAmount || !account.address
+                  }
                 >
                   {isPending ? (
                     <div className="text-[#fefaf6]">Confirming ...</div>
