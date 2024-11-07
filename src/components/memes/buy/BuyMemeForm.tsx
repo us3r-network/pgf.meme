@@ -10,7 +10,6 @@ import {
 } from "@/hooks/contract/usePGFFactoryContract";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
-import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { formatUnits, parseUnits } from "viem";

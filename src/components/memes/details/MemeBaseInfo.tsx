@@ -11,6 +11,7 @@ import { Address } from "viem";
 import MemeActions from "../MemeActions";
 import MemeShareButton from "./MemeShareButton";
 import JoinTelegramButton from "@/components/telegram/JoinTelegramButton";
+import MemeSwap from "./MemeSwap";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const { toast } = useToast();
@@ -21,7 +22,13 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   return (
     <div className="w-full flex-col justify-start items-start gap-6 flex shrink-0">
       <div className="w-full flex justify-between items-center">
-        <MemeActions token={token} />
+        {meme.graduation?.poolAddress ? (
+          <MemeSwap
+            token={token}
+          />
+        ) : (
+          <MemeActions token={token} />
+        )}
       </div>
       <div className="text-[#16181d] text-2xl font-bold font-['Inter'] capitalize leading-[33.60px]">
         {meme.name}(${meme.symbol})

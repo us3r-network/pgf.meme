@@ -1,4 +1,4 @@
-import { config } from "@/components/Providers";
+import { config } from "@/constants/wagmiConfig";
 
 /**
  * Gets the chain object for the given chain id.
