@@ -15,6 +15,8 @@ import { UserRound } from "lucide-react";
 import useHotTopics from "@/hooks/topic/useHotTopics";
 import TopicCard from "./TopicCard";
 import { Skeleton } from "../ui/skeleton";
+import Loading from "../Loading";
+import { Card, CardContent } from "../ui/card";
 
 export default function HomeTopics() {
   const { items, loadItems, loading } = useHotTopics();
@@ -24,34 +26,39 @@ export default function HomeTopics() {
   }, []);
 
   return (
-    <div className="w-full flex-col gap-2.5 flex">
-      <div className="w-full justify-between items-end flex">
-        <div className=" text-black text-[32px] font-bold max-sm:text-base">
-          🔥Hot Topic
+    <Card className="w-full">
+      <CardContent className="w-full flex-col gap-6 flex">
+        <div className="w-full justify-between items-end flex">
+          <div className="  flex items-center gap-6">
+            <span className="text-3xl font-bold text-primary max-sm:text-base">
+              🔥Hot Topic
+            </span>
+            <Loading className="w-52 h-14" />
+          </div>
+          <Link
+            className=" text-2xl font-bold text-primary max-sm:text-xs"
+            href={"/topics"}
+          >
+            View all
+          </Link>
         </div>
-        <Link
-          className="text-black text-2xl font-bold max-sm:text-xs"
-          href={"/topics"}
-        >
-          View all
-        </Link>
-      </div>
-      <div className="w-full flex flex-col items-center">
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {items.map((item, idx) => {
-              return (
-                <CarouselItem key={item.topic.id}>
-                  <HomeTopicItem data={item} />
-                </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-        </Carousel>
-        <CarouselPagination itemsLength={items.length} carouselApi={api} />
-      </div>
-      {loading && <HomeTopicSkeleton />}
-    </div>
+        <div className="w-full flex flex-col items-center">
+          <Carousel setApi={setApi} className="w-full">
+            <CarouselContent>
+              {items.map((item, idx) => {
+                return (
+                  <CarouselItem key={item.topic.id}>
+                    <HomeTopicItem data={item} />
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+          </Carousel>
+          <CarouselPagination itemsLength={items.length} carouselApi={api} />
+        </div>
+        {loading && <HomeTopicSkeleton />}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -162,40 +169,44 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
       )}
       href={`/memes/${meme?.address || ""}`}
     >
-      <img
-        src={meme.image}
-        className="w-full h-full object-cover"
-        loading="lazy"
-        alt={meme.name}
-      />
-      <div className="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
-        <div className="p-6 ">
-          <span className="text-2xl text-white max-sm:text-base">
-            {meme.name}
-          </span>
-        </div>
-      </div>
-      <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
-        <div className="p-6 flex justify-between items-end">
-          <span className="text-2xl text-white max-sm:text-base">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 0,
-              notation: "compact",
-            }).format(meme.stats?.marketCap || 0)}
-          </span>
-          <div className="justify-start items-center gap-1 flex">
-            <UserRound className="size-6 stroke-white" />
-            <div className="text-white text-base font-normal">
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(meme.stats?.buyersNumber || 0)}
+      <Card className="w-full h-full overflow-hidden border-secondary">
+        <CardContent className="w-full h-full relative p-0">
+          <img
+            src={meme.image}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            alt={meme.name}
+          />
+          <div className="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
+            <div className="p-6 ">
+              <span className="text-2xl text-primary max-sm:text-base">
+                {meme.name}
+              </span>
             </div>
           </div>
-        </div>
-      </div>
+          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
+            <div className="p-6 flex justify-between items-end">
+              <span className="text-2xl text-secondary max-sm:text-base">
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 0,
+                  notation: "compact",
+                }).format(meme.stats?.marketCap || 0)}
+              </span>
+              <div className="justify-start items-center gap-1 flex">
+                <UserRound className="size-6 stroke-secondary" />
+                <div className="text-secondary text-base font-normal">
+                  {new Intl.NumberFormat("en-US", {
+                    notation: "compact",
+                  }).format(meme.stats?.buyersNumber || 0)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

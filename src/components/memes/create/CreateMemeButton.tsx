@@ -17,11 +17,13 @@ export function CreateMemeButton({
     <Dialog>
       <DialogTrigger asChild>
         {variant === "mobile" ? (
-          <Button className="bg-[#FAD719] w-full h-12">
-            <span className="text-[#16181D] text-xl">Create a new meme</span>
+          <Button className="w-full h-12">
+            <span className="text-xl">Create a new meme</span>
           </Button>
         ) : (
-          <Button>Create</Button>
+          <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary">
+            Create
+          </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">

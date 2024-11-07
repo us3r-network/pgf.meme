@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // 字体大小
+      fontSize: {
+        "3xl": "2rem", // 32px
+        "4xl": "2.5rem", // 40px
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

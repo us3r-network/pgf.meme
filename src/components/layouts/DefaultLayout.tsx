@@ -67,7 +67,7 @@ export default function DefaultLayout({
         <SidebarRail />
       </Sidebar> */}
       <SidebarInset>
-        <header className="w-screen h-24  fixed top-0 left-0 bg-background z-10 max-sm:h-[72px]">
+        <header className="w-screen h-24  fixed top-0 left-0 bg-primary z-10 max-sm:h-[72px]">
           <div className="w-full max-w-screen-2xl mx-auto h-full flex shrink-0 items-center px-6 gap-2 box-border max-sm:px-3">
             {/* <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
@@ -78,22 +78,19 @@ export default function DefaultLayout({
                 className="h-12 justify-start items-center gap-2 inline-flex"
                 href="/"
               >
-                <div className="w-12 h-12 relative bg-[#16181d] rounded-xl" />
-                <div className="justify-start items-center flex max-sm:hidden">
-                  <div className="text-[#16181d] text-2xl font-bold font-['Inter']">
-                    pgf.meme
-                  </div>
-                </div>
+                <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
+                  Welcome to pgf.meme✨
+                </span>
               </Link>
             ) : (
               <Button
                 size="icon"
-                className="size-12 max-sm:rounded-xl"
+                className="size-12 max-sm:rounded-xl bg-primary-foreground hover:bg-primary-foreground"
                 onClick={() => {
                   router.back();
                 }}
               >
-                <ChevronLeft className="h-6 w-6" />
+                <ChevronLeft className="h-6 w-6 stroke-primary hover:stroke-primary" />
               </Button>
             )}
 

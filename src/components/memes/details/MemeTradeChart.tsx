@@ -12,6 +12,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
 import { isMobile } from "react-device-detect";
+import { Card, CardContent } from "@/components/ui/card";
 
 const getDextoolsChainId = (chainId: number) => {
   // ether, base,
@@ -40,34 +41,25 @@ const getDexWidgetChartUrl = ({
 
 export default function MemeTradeChart({ meme }: { meme: MemeData }) {
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-6">
-      <div className="justify-start items-center gap-6 inline-flex">
-        {!isMobile && (
-          <div className="text-[#16181d] text-4xl font-bold capitalize">
-            {meme.name}(${meme.symbol})
-          </div>
-        )}
-        <div className="justify-start items-center gap-2 flex">
-          <div className="text-[#16181d] max-w-sm:text-4xl text-2xl font-bold">
-            Market Cap:
-          </div>
-          <div className="text-right text-[#16181d] text-4xl max-sm:text-2xl font-bold">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 0,
-              notation: "compact",
-            }).format(meme.stats.marketCap)}
-          </div>
+    <Card className="w-full">
+      <CardContent className="w-full flex flex-col justify-start items-start gap-6">
+        <div className="text-primary max-w-sm:text-4xl text-2xl font-bold">
+          Market Cap:
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 0,
+            notation: "compact",
+          }).format(meme.stats.marketCap)}
         </div>
-      </div>
-      {meme?.graduation?.poolAddress ? (
-        <GraduationAfterChart meme={meme} />
-      ) : (
-        <GraduationBeforeChart meme={meme} />
-      )}
-    </div>
+        {meme?.graduation?.poolAddress ? (
+          <GraduationAfterChart meme={meme} />
+        ) : (
+          <GraduationBeforeChart meme={meme} />
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

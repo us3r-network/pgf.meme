@@ -14,7 +14,7 @@ export default function JoinTelegramButton({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "w-full h-12 px-4 py-3 bg-[#28a7e8] rounded-[30px] justify-center items-center gap-6 flex",
+        "w-full h-12 px-4 py-3 bg-primary rounded-[30px] justify-center items-center gap-6 flex",
         className
       )}
       onClick={(e) => e.stopPropagation()}
