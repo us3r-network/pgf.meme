@@ -7,8 +7,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
 import { PGFToken } from "@/services/contract/types";
-import { BuyMemeForm } from "./buy/BuyMemeForm";
-import { SellMemeForm } from "./buy/SellMemeForm";
+import { BuyMemeForm } from "./BuyMemeForm";
+import { SellMemeForm } from "./SellMemeForm";
 import useReferral from "@/hooks/app/useReferral";
 import { useAccount } from "wagmi";
 
