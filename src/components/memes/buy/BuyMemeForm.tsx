@@ -63,7 +63,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
       toast({
         title: "Buy Token",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>
               Buy{" "}
               {new Intl.NumberFormat("en-US", {
@@ -102,7 +102,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
         title: "Buy Token",
         variant: "destructive",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>Buy token failed!</p>
             <p>{writeError?.message || transationError?.message}</p>
           </pre>
@@ -123,12 +123,9 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
           <Input
             value={formatUnits(inAmount, nativeTokenInfo.decimals)}
             onChange={(e) => onInputChange(e.target.value)}
-            className="grow shrink basis-0 h-12 px-[29px] rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
           />
         )}
-        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
-          {nativeTokenInfo?.symbol}
-        </div>
+        <div className="text-2xl">{nativeTokenInfo?.symbol}</div>
       </div>
       {nativeTokenInfo &&
         nativeTokenInfo.value &&
@@ -147,34 +144,32 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
                 formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
               ) / 100
             }
-            className="h-6"
           />
         )}
-      <div className="self-stretch h-12 justify-start items-center gap-10 inline-flex">
-        {tokenInfo?.decimals && tokenInfo?.symbol && (
-          <Button
-            className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
-            onClick={onSubmit}
-            disabled={isPending || !inAmount || !outAmount || !account.address}
-          >
-            {isPending ? (
-              <div className="text-[#fefaf6]">Confirming ...</div>
-            ) : outAmount ? (
-              <div className="text-[#fefaf6] text-xl font-bold">
-                Buy{" "}
-                {new Intl.NumberFormat("en-US", {
-                  notation: "compact",
-                }).format(
-                  Number(formatUnits(outAmount, tokenInfo.decimals))
-                )}{" "}
-                {tokenInfo?.symbol}
-              </div>
-            ) : (
-              <div className="text-[#fefaf6]">Fetching Price ...</div>
-            )}
-          </Button>
-        )}
-      </div>
+      {tokenInfo?.decimals && tokenInfo?.symbol && (
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={onSubmit}
+          disabled={isPending || !inAmount || !outAmount || !account.address}
+        >
+          {isPending ? (
+            <div>Confirming ...</div>
+          ) : outAmount ? (
+            <div>
+              Buy{" "}
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(outAmount, tokenInfo.decimals))
+              )}{" "}
+              {tokenInfo?.symbol}
+            </div>
+          ) : (
+            <div>Fetching Price ...</div>
+          )}
+        </Button>
+      )}
     </div>
   );
 }

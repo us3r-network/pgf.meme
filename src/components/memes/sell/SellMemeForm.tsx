@@ -67,7 +67,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
       toast({
         title: "Sell Token",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>
               Sell{" "}
               {new Intl.NumberFormat("en-US", {
@@ -106,7 +106,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
         title: "Sell Token",
         variant: "destructive",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>Sell token failed!</p>
             <p>{writeError?.message || transationError?.message}</p>
           </pre>
@@ -137,17 +137,17 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
           <Input
             value={formatUnits(inAmount, tokenInfo.decimals)}
             onChange={(e) => onInputChange(e.target.value)}
-            className="grow shrink basis-0 h-12 px-[29px] rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
           />
         )}{" "}
-        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
+        <div className="text-2xl">
           {tokenInfo?.symbol}
         </div>
       </div>
       {tokenInfo &&
         tokenInfo.rawBalance &&
         tokenInfo.decimals &&
-        tokenInfo.rawBalance > parseUnits(MIN_IN_AMOUNT, tokenInfo.decimals || 18) && (
+        tokenInfo.rawBalance >
+          parseUnits(MIN_IN_AMOUNT, tokenInfo.decimals || 18) && (
           <Slider
             value={[Number(formatUnits(inAmount, tokenInfo.decimals))]}
             onValueChange={(v) => onInputChange(v[0].toString())}
@@ -157,54 +157,51 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
               Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals)) /
               100
             }
-            className="h-6"
           />
         )}
-      <div className="self-stretch h-12 justify-start items-center gap-10 inline-flex">
-        {tokenInfo?.decimals &&
-          tokenInfo?.symbol &&
-          nativeTokenInfo?.decimals &&
-          nativeTokenInfo?.symbol && (
-            <OnChainActionButtonWarper
-              className="w-full"
-              targetChainId={PGF_CONTRACT_CHAIN_ID}
-              allowanceParams={allowanceParams}
-              warpedButton={
-                <Button
-                  className="grow shrink basis-0 h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 flex"
-                  onClick={onSubmit}
-                  disabled={
-                    isPending || !inAmount || !outAmount || !account.address
-                  }
-                >
-                  {isPending ? (
-                    <div className="text-[#fefaf6]">Confirming ...</div>
-                  ) : outAmount ? (
-                    <div className="text-[#fefaf6] text-xl font-bold">
-                      Sell{" "}
-                      {new Intl.NumberFormat("en-US", {
-                        notation: "compact",
-                      }).format(
-                        Number(formatUnits(inAmount, tokenInfo.decimals!))
-                      )}{" "}
-                      {tokenInfo?.symbol} and get{" "}
-                      {new Intl.NumberFormat("en-US", {
-                        notation: "compact",
-                      }).format(
-                        Number(
-                          formatUnits(outAmount!, nativeTokenInfo.decimals)
-                        )
-                      )}{" "}
-                      {nativeTokenInfo.symbol}
-                    </div>
-                  ) : (
-                    <div className="text-[#fefaf6]">Fetching Price ...</div>
-                  )}
-                </Button>
-              }
-            />
-          )}
-      </div>
+      {tokenInfo?.decimals &&
+        tokenInfo?.symbol &&
+        nativeTokenInfo?.decimals &&
+        nativeTokenInfo?.symbol && (
+          <OnChainActionButtonWarper
+            className="w-full"
+            size="lg"
+            targetChainId={PGF_CONTRACT_CHAIN_ID}
+            allowanceParams={allowanceParams}
+            warpedButton={
+              <Button
+                size="lg"
+                className="w-full"
+                onClick={onSubmit}
+                disabled={
+                  isPending || !inAmount || !outAmount || !account.address
+                }
+              >
+                {isPending ? (
+                  <div>Confirming ...</div>
+                ) : outAmount ? (
+                  <div>
+                    Sell{" "}
+                    {new Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                    }).format(
+                      Number(formatUnits(inAmount, tokenInfo.decimals!))
+                    )}{" "}
+                    {tokenInfo?.symbol} and get{" "}
+                    {new Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                    }).format(
+                      Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
+                    )}{" "}
+                    {nativeTokenInfo.symbol}
+                  </div>
+                ) : (
+                  <div>Fetching Price ...</div>
+                )}
+              </Button>
+            }
+          />
+        )}
     </div>
   );
 }

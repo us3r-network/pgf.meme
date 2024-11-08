@@ -31,6 +31,7 @@ export default function MemeActions({ token }: { token: PGFToken }) {
           <TabsTrigger
             value={tab.value}
             key={tab.value}
+            className="w-1/2 text-black"
           >
             {tab.name}
           </TabsTrigger>

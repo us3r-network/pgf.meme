@@ -1,11 +1,14 @@
 "use client";
-import { NATIVE_TOKEN_METADATA, WRAP_NATIVE_TOKEN_METADATA } from "@/constants/chain";
+import {
+  NATIVE_TOKEN_METADATA,
+  WRAP_NATIVE_TOKEN_METADATA,
+} from "@/constants/chain";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { config } from "@/constants/wagmiConfig";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
 import { getEthersProvider } from "@/lib/onchain/ethers";
 import { PGFToken } from "@/services/contract/types";
-import { SwapWidget } from "@uniswap/widgets";
+import { SwapWidget, Theme } from "@uniswap/widgets";
 import "@uniswap/widgets/fonts.css";
 import { useEffect, useState } from "react";
 
@@ -35,13 +38,21 @@ export default function MemeSwap({ token }: { token: PGFToken }) {
         },
       ]
     : [];
-
+  const theme: Theme = {
+    container: "transparent",
+    outline: "transparent",
+    deepShadow: "transparent",
+  };
   // console.log("MY_TOKEN_LIST", tokenList, provider);
   if (!tokenInfo) return null;
   return (
-    <div className="Uniswap">
+    <div className="w-full">
       <SwapWidget
         // provider={provider as any} // Type assertion to fix provider type mismatch
+        theme={theme}
+        width="100%"
+        className="bg-transparent"
+        brandedFooter={false}
         tokenList={tokenList}
         defaultChainId={PGF_CONTRACT_CHAIN_ID}
         defaultInputTokenAddress={NATIVE_TOKEN_METADATA.address} // Use provided amount or default to 2n

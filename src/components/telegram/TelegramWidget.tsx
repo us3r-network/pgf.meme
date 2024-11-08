@@ -9,8 +9,8 @@ const getTelegramScript = () => {
   const script = document.createElement("script");
   script.src = TELEGRAM_WIDGET_ENDPOINT;
   script.async = true;
-  // script.setAttribute("data-color", "AA0000");
-  // script.setAttribute("data-dark-color", "0000AA");
+  script.setAttribute("data-color", "FD1E95");
+  // script.setAttribute("data-dark-color", "FD1E95");
   // script.setAttribute("data-dark", "1");
   return script;
 };

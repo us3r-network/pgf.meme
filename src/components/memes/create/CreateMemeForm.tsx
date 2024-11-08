@@ -96,7 +96,7 @@ export function CreateMemeForm() {
       toast({
         title: "Launch Token",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>Launch token successful!</p>
             {PGF_CONTRACT_CHAIN?.blockExplorers && (
               <p>
@@ -121,7 +121,7 @@ export function CreateMemeForm() {
         title: "Token launch",
         variant: "destructive",
         description: (
-          <pre className="mt-2 w-[340px] p-4">Launch token failed!</pre>
+          <pre className="m-2 w-80 p-4">Launch token failed!</pre>
         ),
       });
     }
@@ -129,16 +129,15 @@ export function CreateMemeForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Meme coin</FormLabel>
+              <FormLabel>Meme coin</FormLabel>
               <FormControl>
                 <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
                   placeholder="Enter your meme coin’s name"
                   {...field}
                 />
@@ -152,10 +151,9 @@ export function CreateMemeForm() {
           name="symbol"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Meme coin symbol</FormLabel>
+              <FormLabel>Meme coin symbol</FormLabel>
               <FormControl>
                 <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
                   placeholder="Enter your meme coin’s symbol"
                   {...field}
                 />
@@ -169,10 +167,9 @@ export function CreateMemeForm() {
           name="image"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Image</FormLabel>
+              <FormLabel>Image</FormLabel>
               <FormControl>
                 <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
                   placeholder="Enter the image uri"
                   {...field}
                 />
@@ -186,10 +183,9 @@ export function CreateMemeForm() {
           name="description"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
                   placeholder="Add a short description for your meme coin"
                   {...field}
                 />
@@ -203,7 +199,7 @@ export function CreateMemeForm() {
           name="topicId"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Topic</FormLabel>
+              <FormLabel>Topic</FormLabel>
               <FormControl>
                 <SelectMemeTopic
                   onValueChange={field.onChange}
@@ -214,27 +210,13 @@ export function CreateMemeForm() {
             </FormItem>
           )}
         />
-        <div className="self-stretch h-[68px] flex-col justify-start items-start gap-2 flex">
-          <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
-            *Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).
-          </div>
-          <div className="self-stretch h-[22px] flex-col justify-start items-start gap-4 flex">
-            <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
-              *Your meme coin can be purchased across multiple blockchains.
-            </div>
-          </div>
-        </div>
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full h-12 rounded-[30px] justify-center items-center gap-2.5 flex"
-        >
-          <div className="text-xl font-bold">Create & Share</div>
-        </Button>
-        <FormDescription className="self-stretch text-center text-[#626976] text-base font-normal">
-          Share your meme coin link to earn 4% commission on every trade through
-          your referral.
+        <FormDescription className="text-center text-base">
+          <p>* Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).</p>
+          <p>* Your meme coin can be purchased across multiple blockchains.</p>
         </FormDescription>
+        <Button type="submit" size="lg" disabled={isPending} className="w-full">
+          Create
+        </Button>
       </form>
     </Form>
   );
