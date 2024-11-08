@@ -7,8 +7,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs-underline";
 import { PGFToken } from "@/services/contract/types";
-import { BuyMemeForm } from "./buy/BuyMemeForm";
-import { SellMemeForm } from "./sell/SellMemeForm";
+import { BuyMemeForm } from "./BuyMemeForm";
+import { SellMemeForm } from "./SellMemeForm";
 import useReferral from "@/hooks/app/useReferral";
 import { useAccount } from "wagmi";
 
@@ -31,6 +31,7 @@ export default function MemeActions({ token }: { token: PGFToken }) {
           <TabsTrigger
             value={tab.value}
             key={tab.value}
+            className="w-1/2 text-black"
           >
             {tab.name}
           </TabsTrigger>

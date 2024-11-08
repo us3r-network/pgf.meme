@@ -8,7 +8,8 @@ export type PGFToken = {
   decimals?: number;
   balance?: number;
   rawBalance?: bigint;
-  image?: string;
+  logoURI?: string;
+  image?: File;
   description?: string;
   topicId?: number;
 };

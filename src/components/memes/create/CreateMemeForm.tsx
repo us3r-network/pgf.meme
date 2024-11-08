@@ -11,6 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { usePGFFactoryContractLaunch } from "@/hooks/contract/usePGFFactoryContract";
@@ -18,19 +25,12 @@ import useLoadTopics from "@/hooks/topic/useLoadTopics";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { postMeme } from "@/services/meme/api";
+import { TopicData } from "@/services/topic/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
-import { TopicData } from "@/services/topic/types";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -39,9 +39,9 @@ const FormSchema = z.object({
   symbol: z.string().min(2, {
     message: "Meme coin symbol must be at least 2 characters.",
   }),
-  image: z.string().url({
-    message: "Meme coin image must be a valid uri.",
-  }),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size !== 0, "Please upload an image"),
   description: z.string().min(20, {
     message: "Meme coin description must be at least 20 characters.",
   }),
@@ -54,7 +54,7 @@ export function CreateMemeForm() {
     defaultValues: {
       name: "",
       symbol: "",
-      image: "",
+      image: new File([""], "filename"),
       description: "",
       topicId: undefined,
     },
@@ -76,11 +76,7 @@ export function CreateMemeForm() {
     newToken.current = {
       contractAddress: "0x",
       chainId: PGF_CONTRACT_CHAIN_ID,
-      name: data.name,
-      symbol: data.symbol,
-      image: data.image,
-      description: data.description,
-      topicId: data.topicId,
+      ...data,
     };
     launch(data.name, data.symbol);
   };
@@ -90,13 +86,13 @@ export function CreateMemeForm() {
     if (isSuccess && transactionReceipt && newToken.current) {
       newToken.current.contractAddress = transactionReceipt.logs[0]
         .address as Address;
-      console.log(newToken);
+      // console.log(newToken);
       postMeme(newToken.current);
       console.log("Launch token successful!", transactionReceipt);
       toast({
         title: "Launch Token",
         description: (
-          <pre className="mt-2 w-[340px] p-4">
+          <pre className="m-2 w-80 p-4">
             <p>Launch token successful!</p>
             {PGF_CONTRACT_CHAIN?.blockExplorers && (
               <p>
@@ -120,28 +116,22 @@ export function CreateMemeForm() {
       toast({
         title: "Token launch",
         variant: "destructive",
-        description: (
-          <pre className="mt-2 w-[340px] p-4">Launch token failed!</pre>
-        ),
+        description: <pre className="m-2 w-80 p-4">Launch token failed!</pre>,
       });
     }
   }, [writeError, transationError]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Meme coin</FormLabel>
+              <FormLabel>Meme coin</FormLabel>
               <FormControl>
-                <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
-                  placeholder="Enter your meme coin’s name"
-                  {...field}
-                />
+                <Input placeholder="Enter your meme coin’s name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -152,13 +142,9 @@ export function CreateMemeForm() {
           name="symbol"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Meme coin symbol</FormLabel>
+              <FormLabel>Meme coin symbol</FormLabel>
               <FormControl>
-                <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
-                  placeholder="Enter your meme coin’s symbol"
-                  {...field}
-                />
+                <Input placeholder="Enter your meme coin’s symbol" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -169,14 +155,24 @@ export function CreateMemeForm() {
           name="image"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Image</FormLabel>
+              <FormLabel>Image</FormLabel>
               <FormControl>
-                <Input
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
-                  placeholder="Enter the image uri"
-                  {...field}
+                {/* <Input placeholder="Enter the image uri" {...field} /> */}
+                <UploadImage
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
                 />
               </FormControl>
+              <FormDescription>
+                <p>
+                  Accepted formats are PNG, JPG, or GIF, maximum file size is
+                  5MB.
+                </p>
+                <p>
+                  Recommended image dimensions are 800x800px for best display
+                  quality.
+                </p>
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -186,10 +182,9 @@ export function CreateMemeForm() {
           name="description"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  className="h-12 px-8 rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
                   placeholder="Add a short description for your meme coin"
                   {...field}
                 />
@@ -203,7 +198,7 @@ export function CreateMemeForm() {
           name="topicId"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
-              <FormLabel className=" text-2xl">Topic</FormLabel>
+              <FormLabel>Topic</FormLabel>
               <FormControl>
                 <SelectMemeTopic
                   onValueChange={field.onChange}
@@ -214,27 +209,13 @@ export function CreateMemeForm() {
             </FormItem>
           )}
         />
-        <div className="self-stretch h-[68px] flex-col justify-start items-start gap-2 flex">
-          <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
-            *Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).
-          </div>
-          <div className="self-stretch h-[22px] flex-col justify-start items-start gap-4 flex">
-            <div className="self-stretch text-center text-[#16181d] text-base font-normal leading-snug">
-              *Your meme coin can be purchased across multiple blockchains.
-            </div>
-          </div>
-        </div>
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full h-12 rounded-[30px] justify-center items-center gap-2.5 flex"
-        >
-          <div className="text-xl font-bold">Create & Share</div>
-        </Button>
-        <FormDescription className="self-stretch text-center text-[#626976] text-base font-normal">
-          Share your meme coin link to earn 4% commission on every trade through
-          your referral.
+        <FormDescription className="text-center text-base">
+          <p>* Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).</p>
+          <p>* Your meme coin can be purchased across multiple blockchains.</p>
         </FormDescription>
+        <Button type="submit" size="lg" disabled={isPending} className="w-full">
+          Create
+        </Button>
       </form>
     </Form>
   );
@@ -276,5 +257,48 @@ function SelectMemeTopic({
         ))}
       </SelectContent>
     </Select>
+  );
+}
+
+function UploadImage({
+  defaultValue,
+  onValueChange,
+}: {
+  defaultValue?: File;
+  onValueChange: (value: File) => void;
+}) {
+  const [selectedImage, setSelectedImage] = useState<string>();
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setSelectedImage(base64String);
+        onValueChange(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="flex flex-row gap-4">
+      <Input
+        id="meme-image"
+        type="file"
+        accept="image/*"
+        placeholder="Accepted formats are PNG, JPG, or GIF, maximum file size is 5MB"
+        onChange={handleImageChange}
+        className="cursor-pointer"
+      />
+      {selectedImage && (
+        <img
+          src={selectedImage}
+          alt="Selected meme"
+          className="size-12 rounded-md object-contain"
+        />
+      )}
+    </div>
   );
 }

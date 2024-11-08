@@ -8,7 +8,7 @@ import { MemeData } from "@/services/meme/types";
 import { Copy } from "lucide-react";
 import Link from "next/link";
 import { Address } from "viem";
-import MemeActions from "../MemeActions";
+import MemeActions from "../trade/MemeActions";
 import MemeShareButton from "./MemeShareButton";
 import JoinTelegramButton from "@/components/telegram/JoinTelegramButton";
 import MemeSwap from "./MemeSwap";
