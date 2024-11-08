@@ -11,6 +11,7 @@ import { Address } from "viem";
 import MemeActions from "../MemeActions";
 import MemeShareButton from "./MemeShareButton";
 import JoinTelegramButton from "@/components/telegram/JoinTelegramButton";
+import MemeSwap from "./MemeSwap";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
@@ -23,7 +24,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
     <div className="w-full flex-col justify-start items-start gap-6 flex shrink-0">
       <Card className="w-full border-secondary">
         <CardContent>
-          <MemeActions token={token} />
+          {meme.graduation?.poolAddress ? (
+            <MemeSwap token={token} />
+          ) : (
+            <MemeActions token={token} />
+          )}
         </CardContent>
       </Card>
 

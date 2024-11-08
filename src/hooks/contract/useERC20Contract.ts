@@ -6,7 +6,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { readContracts } from "@wagmi/core";
-import { config } from "@/components/Providers";
+import { config } from "@/constants/wagmiConfig";
 import { getChain } from "@/lib/onchain";
 
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);

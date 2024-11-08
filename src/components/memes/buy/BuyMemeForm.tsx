@@ -15,6 +15,7 @@ import { useDebounce } from "use-debounce";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
+const MIN_IN_AMOUNT = "0.001";
 export function BuyMemeForm({ token }: { token: PGFToken }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
@@ -110,39 +111,45 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
     }
   }, [writeError, transationError]);
 
+  const onInputChange = (v: string) => {
+    if (Number(v) >= 0) {
+      setInAmount(parseUnits(v, nativeTokenInfo?.decimals || 18));
+    }
+  };
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <div className="self-stretch justify-start items-center gap-4 inline-flex">
-        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
-          ETH
-        </div>
         {nativeTokenInfo?.decimals && (
           <Input
             value={formatUnits(inAmount, nativeTokenInfo.decimals)}
-            onChange={(e) =>
-              setInAmount(parseUnits(e.target.value, nativeTokenInfo.decimals))
-            }
+            onChange={(e) => onInputChange(e.target.value)}
             className="grow shrink basis-0 h-12 px-[29px] rounded-xl border border-[#16181d] text-[#626976] text-base font-normal leading-snug"
           />
         )}
+        <div className="text-[#16181d] text-2xl font-normal leading-[33.60px]">
+          {nativeTokenInfo?.symbol}
+        </div>
       </div>
-      {nativeTokenInfo && nativeTokenInfo.value && nativeTokenInfo.decimals && (
-        <Slider
-          value={[Number(formatUnits(inAmount, nativeTokenInfo.decimals))]}
-          onValueChange={(v) =>
-            setInAmount(parseUnits(String(v[0]), nativeTokenInfo.decimals))
-          }
-          max={Number(
-            formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
-          )}
-          step={
-            Number(
+      {nativeTokenInfo &&
+        nativeTokenInfo.value &&
+        nativeTokenInfo.decimals &&
+        nativeTokenInfo.value >
+          parseUnits(MIN_IN_AMOUNT, nativeTokenInfo.decimals || 18) && (
+          <Slider
+            value={[Number(formatUnits(inAmount, nativeTokenInfo.decimals))]}
+            onValueChange={(v) => onInputChange(v[0].toString())}
+            min={Number(MIN_IN_AMOUNT)}
+            max={Number(
               formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
-            ) / 100
-          }
-          className="h-6"
-        />
-      )}
+            )}
+            step={
+              Number(
+                formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
+              ) / 100
+            }
+            className="h-6"
+          />
+        )}
       <div className="self-stretch h-12 justify-start items-center gap-10 inline-flex">
         {tokenInfo?.decimals && tokenInfo?.symbol && (
           <Button

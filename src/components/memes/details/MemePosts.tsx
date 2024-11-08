@@ -9,9 +9,9 @@ import {
 import { MemeData } from "@/services/meme/types";
 
 export default function MemePosts({ meme }: { meme: MemeData }) {
-  console.log("meme commentss", meme);
-  if (!meme.tgGroupLink) {
+  // console.log("meme comments", meme.tgPostLink);
+  if (!meme.tgPostLink) {
     return null;
   }
-  return <TelegramCommentsWidget discussion={meme.tgGroupLink} />;
+  return <TelegramCommentsWidget discussion={meme.tgPostLink.replace("https://t.me/", "")} />;
 }
