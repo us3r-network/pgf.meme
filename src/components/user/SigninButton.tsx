@@ -27,9 +27,7 @@ export default function SigninButton() {
   if (!user)
     return (
       <div className="h-12 px-4 py-3 bg-[#16181d] rounded-[30px] justify-center items-center gap-2.5 inline-flex">
-        <div className="text-[#fefaf6] text-xl font-bold font-['Inter']">
-          Login
-        </div>
+        <div className="text-[#fefaf6] text-xl font-bold ">Login</div>
       </div>
     );
   return (

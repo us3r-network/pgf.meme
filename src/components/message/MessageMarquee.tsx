@@ -33,27 +33,27 @@ export default function MessageMarquee() {
 function MessageItem({ data }: { data: TradeData }) {
   const { user, meme, memeAmount, ethAmount, txType } = data;
   return (
-    <div className="w-[410px] h-12 p-4 box-border bg-[#fad719] rounded-[10px] justify-center items-center gap-2 inline-flex">
+    <div className="w-[410px] h-12 p-4 box-border bg-secondary rounded-[10px] justify-center items-center gap-2 inline-flex">
       {/* <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
             <img className="w-6 h-6 rounded-[120px]" src={data.user.avatar} />
           </div>
         </div>
-        <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug">
+        <div className="text-[#16181d]  ">
           {data.user.name}
         </div>
       </div> */}
       <Link
         href={`/u/${user.walletAddress}`}
-        className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug"
+        className=" text-secondary-foreground  "
       >
         {shortPubKey(user.walletAddress)}
       </Link>
-      <div className="text-black text-base font-normal font-['Inter'] leading-snug">
+      <div className=" text-secondary-foreground ">
         {txType === "sell" ? "sell" : "bought"}
       </div>
-      <div className="text-black text-base font-normal font-['Inter'] leading-snug text-nowrap">
+      <div className=" text-secondary-foreground  text-nowrap">
         {Intl.NumberFormat("en-US", {
           maximumFractionDigits: 6,
         }).format(Number(ethAmount))}{" "}
@@ -68,9 +68,9 @@ function MessageItem({ data }: { data: TradeData }) {
             <img className="w-6 h-6 rounded-[120px]" src={meme.image} />
           </div>
         </div>
-        <div className="text-[#16181d] text-base font-normal font-['Inter'] leading-snug text-nowrap">
+        <span className="text-secondary-foreground  text-nowrap">
           {meme.name}
-        </div>
+        </span>
       </Link>
     </div>
   );
