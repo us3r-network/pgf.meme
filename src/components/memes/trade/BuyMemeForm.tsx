@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
-import { useNativeToken } from "@/hooks/contract/useNativeToken";
+import {
+  useNativeToken
+} from "@/hooks/contract/useNativeToken";
 import {
   useOutTokenAmountAfterFee,
   usePGFFactoryContractBuy,
@@ -12,10 +12,11 @@ import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import { formatUnits, parseUnits } from "viem";
+import { formatUnits } from "viem";
 import { useAccount } from "wagmi";
+import { TokenAmountInput } from "./TokenAmountInput";
 
-const MIN_IN_AMOUNT = "0.001";
+const MIN_IN_AMOUNT = 0.001;
 export function BuyMemeForm({ token }: { token: PGFToken }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
@@ -35,11 +36,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
   }, [account]);
 
   // console.log("tokens in buy", nativeTokenInfo, tokenInfo);
-  const [inAmount, setInAmount] = useState(
-    nativeTokenInfo?.value
-      ? nativeTokenInfo.value / 10n
-      : parseUnits("0.01", nativeTokenInfo?.decimals || 18)
-  );
+  const [inAmount, setInAmount] = useState(0n);
 
   const [debouncedInAmount] = useDebounce(inAmount, 500);
   const { outAmount } = useOutTokenAmountAfterFee(token, debouncedInAmount);
@@ -59,7 +56,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
   };
 
   useEffect(() => {
-    if (isSuccess && transactionReceipt && tokenInfo && nativeTokenInfo) {
+    if (isSuccess && transactionReceipt && tokenInfo) {
       toast({
         title: "Buy Token",
         description: (
@@ -71,13 +68,7 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
               }).format(
                 Number(formatUnits(outAmount!, tokenInfo.decimals!))
               )}{" "}
-              {tokenInfo.symbol} with{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(inAmount!, nativeTokenInfo.decimals))
-              )}{" "}
-              {nativeTokenInfo.symbol}
+              {tokenInfo.symbol}
             </p>
             {PGF_CONTRACT_CHAIN?.blockExplorers && (
               <p>
@@ -111,65 +102,45 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
     }
   }, [writeError, transationError]);
 
-  const onInputChange = (v: string) => {
-    if (Number(v) >= 0) {
-      setInAmount(parseUnits(v, nativeTokenInfo?.decimals || 18));
-    }
-  };
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
-      <div className="self-stretch justify-start items-center gap-4 inline-flex">
-        {nativeTokenInfo?.decimals && (
-          <Input
-            value={formatUnits(inAmount, nativeTokenInfo.decimals)}
-            onChange={(e) => onInputChange(e.target.value)}
-          />
-        )}
-        <div className="text-2xl">{nativeTokenInfo?.symbol}</div>
-      </div>
-      {nativeTokenInfo &&
-        nativeTokenInfo.value &&
-        nativeTokenInfo.decimals &&
-        nativeTokenInfo.value >
-          parseUnits(MIN_IN_AMOUNT, nativeTokenInfo.decimals || 18) && (
-          <Slider
-            value={[Number(formatUnits(inAmount, nativeTokenInfo.decimals))]}
-            onValueChange={(v) => onInputChange(v[0].toString())}
-            min={Number(MIN_IN_AMOUNT)}
-            max={Number(
-              formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
-            )}
-            step={
-              Number(
-                formatUnits(nativeTokenInfo.value, nativeTokenInfo.decimals)
-              ) / 100
-            }
-          />
-        )}
-      {tokenInfo?.decimals && tokenInfo?.symbol && (
+      <TokenAmountInput
+        chainId={token.chainId}
+        onChange={(value) => setInAmount(value)}
+        minAmount={MIN_IN_AMOUNT}
+      />
+      <div className="w-full flex flex-col gap-2 justify-start items-start">
+        {nativeTokenInfo?.decimals &&
+          nativeTokenInfo?.symbol &&
+          tokenInfo?.decimals &&
+          tokenInfo?.symbol &&
+          inAmount &&
+          outAmount && (
+            <div>
+              Buy{" "}
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(inAmount, tokenInfo.decimals!))
+              )}{" "}
+              {tokenInfo?.symbol} with{" "}
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
+              )}{" "}
+              {nativeTokenInfo.symbol}
+            </div>
+          )}
         <Button
           size="lg"
           className="w-full"
           onClick={onSubmit}
           disabled={isPending || !inAmount || !outAmount || !account.address}
         >
-          {isPending ? (
-            <div>Confirming ...</div>
-          ) : outAmount ? (
-            <div>
-              Buy{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(outAmount, tokenInfo.decimals))
-              )}{" "}
-              {tokenInfo?.symbol}
-            </div>
-          ) : (
-            <div>Fetching Price ...</div>
-          )}
+          {isPending ? "Confirming ..." : "Buy"}
         </Button>
-      )}
+      </div>
     </div>
   );
 }
