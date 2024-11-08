@@ -27,8 +27,11 @@ export function getMeme({
   });
 }
 
-export function postMeme(token: PGFToken): RequestPromise<ApiResp<MemeData>> {
-  const data = { address: token.contractAddress, ...token };
+export async function postMeme(
+  token: PGFToken
+): RequestPromise<ApiResp<MemeData>> {
+  const imageUrl = await uploadImage(token.image!);
+  const data = { ...token, address: token.contractAddress, image: imageUrl };
   return request({
     url: `/memes/infos`,
     method: "post",
@@ -45,4 +48,17 @@ export function getMemeLeaderboard({
     url: `/memes/${address}/leaderboard`,
     method: "get",
   });
+}
+
+export async function uploadImage(file: File): RequestPromise<ApiResp<string>> {
+  // console.log("uploadImage", file);
+  const arweaveResp = await request({
+    url: `/arweave/upload/image`,
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: { file },
+  });
+  return arweaveResp.data.data.arseedUrl;
 }
