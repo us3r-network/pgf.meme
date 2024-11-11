@@ -50,16 +50,21 @@ export function TokenAmountInput({
     if (Number(v) >= 0) {
       const amount = parseUnits(v, tokenInfo?.decimals || 18);
       setAmount(amount);
-      onChange(amount);
     }
   };
+
+  useEffect(()=>{
+    if(amount){
+      onChange(amount);
+    }
+  },[amount])
 
   const onPercentButtonClick = (percent: number) => {
     if (tokenInfo?.balance) {
       onInputChange(String((tokenInfo.balance * percent) / 100));
     }
   };
-
+  if(!tokenInfo) return null;
   return (
     <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
       <div className="self-stretch justify-start items-center inline-flex">
