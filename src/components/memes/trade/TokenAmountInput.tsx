@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
@@ -15,8 +16,8 @@ export function TokenAmountInput({
 }: {
   contractAddress?: Address;
   chainId: number;
-  onChange:(value:bigint)=>void;
-  minAmount:number;
+  onChange: (value: bigint) => void;
+  minAmount: number;
 }) {
   const account = useAccount();
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
@@ -41,41 +42,82 @@ export function TokenAmountInput({
     }
   }, [account]);
 
-  const [amount, setAmount] = useState<bigint>(0n);
+  const [amount, setAmount] = useState<bigint>(
+    parseUnits(minAmount?.toString(), tokenInfo?.decimals || 18) || 0n
+  );
 
   const onInputChange = (v: string) => {
     if (Number(v) >= 0) {
-      const amount = parseUnits(v, tokenInfo?.decimals || 18)
+      const amount = parseUnits(v, tokenInfo?.decimals || 18);
       setAmount(amount);
-      onChange(amount);
     }
   };
 
+  useEffect(()=>{
+    if(amount){
+      onChange(amount);
+    }
+  },[amount])
+
+  const onPercentButtonClick = (percent: number) => {
+    if (tokenInfo?.balance) {
+      onInputChange(String((tokenInfo.balance * percent) / 100));
+    }
+  };
+  if(!tokenInfo) return null;
   return (
-    <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
-      <div className="self-stretch justify-start items-center gap-4 inline-flex">
+    <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
+      <div className="self-stretch justify-start items-center inline-flex">
+        <div className="h-12 text-2xl px-4 py-2 bg-secondary text-white rounded-l-lg">{tokenInfo?.symbol}</div>
         {tokenInfo?.decimals && (
           <Input
             value={formatUnits(amount, tokenInfo.decimals)}
             onChange={(e) => onInputChange(e.target.value)}
+            className="rounded-l-none"
           />
         )}
-        <div className="text-2xl">{tokenInfo?.symbol}</div>
       </div>
+
       {tokenInfo &&
-        tokenInfo.rawBalance && tokenInfo.balance &&
+        tokenInfo.rawBalance &&
+        tokenInfo.balance &&
         tokenInfo.decimals &&
         tokenInfo.balance > minAmount && (
-          <Slider
-            value={[Number(formatUnits(amount, tokenInfo.decimals))]}
-            onValueChange={(v) => onInputChange(v[0].toString())}
-            min={minAmount}
-            max={Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals))}
-            step={
-              Number(formatUnits(tokenInfo.rawBalance, tokenInfo.decimals)) /
-              100
-            }
-          />
+          <>
+            <div className="w-full flex flex-row justify-between">
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(25)}
+              >
+                25%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(50)}
+              >
+                50%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(75)}
+              >
+                75%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(100)}
+              >
+                100%
+              </Button>
+            </div>
+            <Slider
+              value={[Number(formatUnits(amount, tokenInfo.decimals))]}
+              onValueChange={(v) => onInputChange(v[0].toString())}
+              min={minAmount}
+              max={tokenInfo.balance}
+              step={tokenInfo.balance / 100}
+            />
+          </>
         )}
     </div>
   );

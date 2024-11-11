@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
-import {
-  useNativeToken
-} from "@/hooks/contract/useNativeToken";
+import { useNativeToken } from "@/hooks/contract/useNativeToken";
 import {
   useOutTokenAmountAfterFee,
   usePGFFactoryContractBuy,
@@ -110,28 +108,6 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
         minAmount={MIN_IN_AMOUNT}
       />
       <div className="w-full flex flex-col gap-2 justify-start items-start">
-        {nativeTokenInfo?.decimals &&
-          nativeTokenInfo?.symbol &&
-          tokenInfo?.decimals &&
-          tokenInfo?.symbol &&
-          inAmount &&
-          outAmount && (
-            <div>
-              Buy{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(inAmount, tokenInfo.decimals!))
-              )}{" "}
-              {tokenInfo?.symbol} with{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
-              )}{" "}
-              {nativeTokenInfo.symbol}
-            </div>
-          )}
         <Button
           size="lg"
           className="w-full"
@@ -140,6 +116,27 @@ export function BuyMemeForm({ token }: { token: PGFToken }) {
         >
           {isPending ? "Confirming ..." : "Buy"}
         </Button>
+        {nativeTokenInfo?.decimals &&
+          nativeTokenInfo?.symbol &&
+          tokenInfo?.decimals &&
+          tokenInfo?.symbol &&
+          inAmount && (
+            <div className="text-sm w-full text-center">
+              {outAmount
+                ? `Buy 
+              ${new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(Number(formatUnits(inAmount, tokenInfo.decimals!)))} 
+              ${tokenInfo?.symbol} with 
+              ${new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
+              )} 
+              ${nativeTokenInfo.symbol}`
+                : "Fetching Price..."}
+            </div>
+          )}
       </div>
     </div>
   );

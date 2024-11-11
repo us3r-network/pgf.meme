@@ -133,28 +133,6 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
         minAmount={MIN_IN_AMOUNT}
       />
       <div className="w-full flex flex-col gap-2 justify-start items-start">
-        {nativeTokenInfo?.decimals &&
-          nativeTokenInfo?.symbol &&
-          tokenInfo?.decimals &&
-          tokenInfo?.symbol &&
-          inAmount &&
-          outAmount && (
-            <div>
-              Sell{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(inAmount, tokenInfo.decimals!))
-              )}{" "}
-              {tokenInfo?.symbol} and get{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(
-                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
-              )}{" "}
-              {nativeTokenInfo.symbol}
-            </div>
-          )}
         <OnChainActionButtonWarper
           className="w-full"
           size="lg"
@@ -173,6 +151,29 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
             </Button>
           }
         />
+        {nativeTokenInfo?.decimals &&
+          nativeTokenInfo?.symbol &&
+          tokenInfo?.decimals &&
+          tokenInfo?.symbol &&
+          inAmount && (
+            <div className="text-sm w-full text-center">
+              {outAmount
+                ? `Sell 
+              ${new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(inAmount, tokenInfo.decimals!))
+              )} 
+              ${tokenInfo?.symbol} and get 
+              ${new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(
+                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
+              )} 
+              ${nativeTokenInfo.symbol}`
+                : "Fetching Price..."}
+            </div>
+          )}
       </div>
     </div>
   );
