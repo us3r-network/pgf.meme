@@ -1,3 +1,5 @@
+import { MemeData } from "../meme/types";
+
 export type TopicData = {
   id: number;
   name: string;
@@ -5,6 +7,7 @@ export type TopicData = {
   description: string;
   stats: TopicStats;
   tgLink: string;
+  memes?: MemeData[];
 };
 
 export type TopicStats = {
