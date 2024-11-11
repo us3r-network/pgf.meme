@@ -34,7 +34,7 @@ export default function MemeSwap({ token }: { token: PGFToken }) {
           decimals: tokenInfo.decimals || 0,
           chainId: tokenInfo.chainId || 0,
           address: tokenInfo.contractAddress,
-          logoURI: tokenInfo.image,
+          logoURI: tokenInfo.logoURI,
         },
       ]
     : [];

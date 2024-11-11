@@ -39,7 +39,7 @@ const FormSchema = z.object({
   symbol: z.string().min(2, {
     message: "Meme coin symbol must be at least 2 characters.",
   }),
-  image: z
+  imageFile: z
     .instanceof(File)
     .refine((file) => file.size !== 0, "Please upload an image"),
   description: z.string().min(20, {
@@ -54,7 +54,7 @@ export function CreateMemeForm() {
     defaultValues: {
       name: "",
       symbol: "",
-      image: new File([""], "filename"),
+      imageFile: new File([""], "filename"),
       description: "",
       topicId: undefined,
     },
@@ -152,7 +152,7 @@ export function CreateMemeForm() {
         />
         <FormField
           control={form.control}
-          name="image"
+          name="imageFile"
           render={({ field }) => (
             <FormItem className="flex-col gap-4">
               <FormLabel>Image</FormLabel>
