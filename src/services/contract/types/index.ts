@@ -9,7 +9,7 @@ export type PGFToken = {
   balance?: number;
   rawBalance?: bigint;
   logoURI?: string;
-  image?: File;
+  imageFile?: File;
   description?: string;
   topicId?: number;
 };

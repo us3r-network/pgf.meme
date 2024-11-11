@@ -30,7 +30,7 @@ export function getMeme({
 export async function postMeme(
   token: PGFToken
 ): RequestPromise<ApiResp<MemeData>> {
-  const imageUrl = await uploadImage(token.image!);
+  const imageUrl = await uploadImage(token.imageFile!);
   const data = { ...token, address: token.contractAddress, image: imageUrl };
   return request({
     url: `/memes/infos`,
