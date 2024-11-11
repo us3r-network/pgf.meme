@@ -42,7 +42,9 @@ export function TokenAmountInput({
     }
   }, [account]);
 
-  const [amount, setAmount] = useState<bigint>(0n);
+  const [amount, setAmount] = useState<bigint>(
+    parseUnits(minAmount?.toString(), tokenInfo?.decimals || 18) || 0n
+  );
 
   const onInputChange = (v: string) => {
     if (Number(v) >= 0) {
@@ -60,14 +62,15 @@ export function TokenAmountInput({
 
   return (
     <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
-      <div className="self-stretch justify-start items-center gap-4 inline-flex">
+      <div className="self-stretch justify-start items-center inline-flex">
+        <div className="h-12 text-2xl px-4 py-2 bg-secondary text-white rounded-l-lg">{tokenInfo?.symbol}</div>
         {tokenInfo?.decimals && (
           <Input
             value={formatUnits(amount, tokenInfo.decimals)}
             onChange={(e) => onInputChange(e.target.value)}
+            className="rounded-l-none"
           />
         )}
-        <div className="text-2xl">{tokenInfo?.symbol}</div>
       </div>
 
       {tokenInfo &&
@@ -77,10 +80,30 @@ export function TokenAmountInput({
         tokenInfo.balance > minAmount && (
           <>
             <div className="w-full flex flex-row justify-between">
-              <Button variant="outline" onClick={() => onPercentButtonClick(25)}>25%</Button>
-              <Button variant="outline" onClick={() => onPercentButtonClick(50)}>50%</Button>
-              <Button variant="outline" onClick={() => onPercentButtonClick(75)}>75%</Button>
-              <Button variant="outline" onClick={() => onPercentButtonClick(100)}>100%</Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(25)}
+              >
+                25%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(50)}
+              >
+                50%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(75)}
+              >
+                75%
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onPercentButtonClick(100)}
+              >
+                100%
+              </Button>
             </div>
             <Slider
               value={[Number(formatUnits(amount, tokenInfo.decimals))]}
