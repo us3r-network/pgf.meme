@@ -29,7 +29,7 @@ function MemeChart({ data }: { data: MemeChartData }) {
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        minBarSpacing: 0.05,
+        // minBarSpacing: 0.05,
         rightOffset: 12,
       },
       // rightPriceScale: {
@@ -51,17 +51,17 @@ function MemeChart({ data }: { data: MemeChartData }) {
 
     candlestickSeries.setData(data || []);
 
-    // 找到最高价
-    const highestPrice = Math.max(...data.map((d) => d.high));
+    // // 找到最高价
+    // const highestPrice = Math.max(...data.map((d) => d.high));
 
-    // 在价格轴显示最高价
-    const priceLine = candlestickSeries.createPriceLine({
-      price: highestPrice,
-      // lineWidth: 2,
-      // lineStyle: 1, // 实线
-      // axisLabelVisible: true,
-      // title: `${highestPrice}`,
-    });
+    // // 在价格轴显示最高价
+    // const priceLine = candlestickSeries.createPriceLine({
+    //   price: highestPrice,
+    //   // lineWidth: 2,
+    //   // lineStyle: 1, // 实线
+    //   // axisLabelVisible: true,
+    //   // title: `${highestPrice}`,
+    // });
 
     const handleResize = () => {
       chart.applyOptions({ width: container?.clientWidth });

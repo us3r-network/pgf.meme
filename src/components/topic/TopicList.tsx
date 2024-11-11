@@ -6,6 +6,8 @@ import { useInView } from "react-cool-inview";
 import useLoadTopics from "@/hooks/topic/useLoadTopics";
 import { TopicSortBy } from "@/services/topic/types";
 import TopicCard from "./TopicCard";
+import { Card, CardContent } from "../ui/card";
+import { TopicAndMemes, TopicAndMemesSkeleton } from "./TopicAndMemes";
 
 export default function TopicList({ sortBy }: { sortBy: TopicSortBy }) {
   const { items, loading, loadItems } = useLoadTopics({
@@ -34,25 +36,43 @@ export default function TopicList({ sortBy }: { sortBy: TopicSortBy }) {
     },
   });
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {items.map((item, idx) => {
-          return (
-            <div
-              key={`${item.id}`}
-              ref={idx === items.length - 1 ? observe : null}
-              className="aspect-square"
-            >
-              <TopicCard topic={item} />
+    <div className="">
+      {items.map((item, idx) => {
+        return (
+          <div
+            key={`${item.id}`}
+            ref={idx === items.length - 1 ? observe : null}
+            className="mt-4"
+          >
+            <Card className="w-full max-sm:hidden">
+              <CardContent className="w-full">
+                <TopicAndMemes
+                  data={{
+                    topic: item,
+                    memes: item?.memes || [],
+                  }}
+                />
+              </CardContent>
+            </Card>
+            <TopicCard
+              topic={item}
+              className="aspect-square hidden max-sm:block"
+            />
+          </div>
+        );
+      })}
+      {loading
+        ? Array.from({ length: 4 }).map((_, index) => (
+            <div className="w-full mt-4" key={index}>
+              <Card className="w-full max-sm:hidden">
+                <CardContent className="w-full">
+                  <TopicAndMemesSkeleton />
+                </CardContent>
+              </Card>
+              <Skeleton className="w-full aspect-square hidden max-sm:block" />
             </div>
-          );
-        })}
-        {loading
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton key={index} className="aspect-square rounded-2xl " />
-            ))
-          : null}
-      </div>
+          ))
+        : null}
     </div>
   );
 }

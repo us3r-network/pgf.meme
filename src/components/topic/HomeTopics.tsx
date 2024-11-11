@@ -100,8 +100,6 @@ function CarouselPagination({
     </div>
   );
 }
-<Skeleton className="rounded-[20px]" />;
-
 export function HomeTopicSkeleton() {
   return (
     <div className="w-full">
