@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import MemeCard from "@/components/memes/MemeCard";
 import { useInView } from "react-cool-inview";
-import useLoadCreatedMemes from "@/hooks/meme/useLoadCreatedMemes";
+import useLoadCreatedMemes from "@/hooks/user/useLoadCreatedMemes";
 
 export default function CreatedMemes({ address }: { address: string }) {
   const { items, loading, loadItems } = useLoadCreatedMemes({

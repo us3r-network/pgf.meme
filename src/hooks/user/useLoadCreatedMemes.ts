@@ -1,11 +1,12 @@
 import { getMemes } from "@/services/meme/api";
 import { MemeData } from "@/services/meme/types";
 import { ApiRespCode, AsyncRequestStatus } from "@/services/types";
+import { getCreatedMemes } from "@/services/user/api";
 import { useRef, useState } from "react";
 
 const PAGE_SIZE = 20;
 
-export default function useLoadCreatedMemes(props?: { address: string }) {
+export default function useLoadCreatedMemes(props: { address: string }) {
   const [items, setItems] = useState<MemeData[]>([]);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
   const addressRef = useRef(props?.address);
@@ -28,9 +29,9 @@ export default function useLoadCreatedMemes(props?: { address: string }) {
       const params = {
         pageSize: PAGE_SIZE,
         pageNumber: nextPageNumber,
-        ...(address ? { address } : {}),
+        address,
       };
-      const resp = await getMemes(params);
+      const resp = await getCreatedMemes(params);
       const { code, data, msg } = resp.data || {};
       if (code !== ApiRespCode.SUCCESS) {
         throw new Error(msg);
