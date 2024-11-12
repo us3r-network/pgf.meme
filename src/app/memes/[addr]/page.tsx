@@ -1,12 +1,12 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
 import MemeTabs from "@/components/memes/details/MemeTabs";
 import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 
 export default function MemeDetails() {
   const params = useParams<{ addr: string }>();
@@ -19,30 +19,26 @@ export default function MemeDetails() {
   }, []);
   if (pending) {
     return (
-      <div className="flex justify-center items-start gap-6">Loading...</div>
+      <div className="flex justify-center items-start mt-[20%]">
+        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+      </div>
     );
   }
   if (!meme) {
     return null;
   }
-  if (isMobile)
-    return (
-      <div className="flex-1 flex-col justify-start items-start gap-6 flex">
+  return (
+    <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
+      <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
         <MemeTradeChart meme={meme} />
-        <MemeBaseInfo meme={meme} />
-        <MemeTabs meme={meme} />
-      </div>
-    );
-  else
-    return (
-      <div className="flex justify-center items-start gap-6">
-        <div className="flex-1 flex flex-col justify-start items-start gap-6">
-          <MemeTradeChart meme={meme} />
-          <MemeTabs meme={meme} />
-        </div>
-        <div className="w-[400px]">
+        <div className="w-full hidden max-sm:block">
           <MemeBaseInfo meme={meme} />
         </div>
+        <MemeTabs meme={meme} />
       </div>
-    );
+      <div className="w-[400px] max-sm:hidden">
+        <MemeBaseInfo meme={meme} />
+      </div>
+    </div>
+  );
 }

@@ -29,7 +29,7 @@ export default function TopicDetails() {
   }, []);
   return (
     <div className="w-full">
-      <div className="w-full mb-6">
+      <div className="w-full mb-6 max-sm:mb-3">
         {pending ? (
           <Skeleton className="rounded-2xl w-full h-[508px]" />
         ) : topic ? (

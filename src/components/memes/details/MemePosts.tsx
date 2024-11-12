@@ -8,6 +8,8 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 
 import { MemeData } from "@/services/meme/types";
+import PostsInnerMemeInfo from "./PostsInnerMemeInfo";
+import { Separator } from "@/components/ui/separator";
 
 export default function MemePosts({ meme }: { meme: MemeData }) {
   // console.log("meme comments", meme.tgPostLink);
@@ -17,6 +19,10 @@ export default function MemePosts({ meme }: { meme: MemeData }) {
   return (
     <Card>
       <CardContent>
+        <div className="max-sm:hidden">
+          <PostsInnerMemeInfo meme={meme} />
+          <Separator className="my-6 h-1 bg-primary rounded-full" />
+        </div>
         <TelegramCommentsWidget
           discussion={meme.tgPostLink.replace("https://t.me/", "")}
         />

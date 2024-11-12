@@ -28,8 +28,8 @@ export default function MemeShareButton({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="grow shrink basis-0 h-12 px-4 py-3 rounded-[30px] justify-center items-center gap-2.5 flex">
-          <span className="text-xl font-bold">Earn by Sharing</span>
+        <Button size={"lg"} className="w-full max-sm:text-base">
+          Share2Earn
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 ">

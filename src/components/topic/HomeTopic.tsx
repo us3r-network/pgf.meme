@@ -22,7 +22,7 @@ export default function HomeTopic() {
             <span className="text-3xl font-bold text-primary max-sm:text-base">
               🔥Hot Topic
             </span>
-            <Loading className="w-52 h-14" />
+            <Loading />
           </div>
           <Link
             className=" text-2xl font-bold text-primary max-sm:text-xs"

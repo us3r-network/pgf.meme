@@ -10,7 +10,7 @@ export default function Loading({
     <img
       src="/images/loading.gif"
       alt="loading"
-      className={cn("object-cover", className)}
+      className={cn("object-cover w-52 h-14", className)}
       {...props}
     />
   );

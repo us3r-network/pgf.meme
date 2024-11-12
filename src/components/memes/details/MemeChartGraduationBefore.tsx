@@ -9,6 +9,7 @@ import {
   Time,
   CandlestickData,
 } from "lightweight-charts";
+import Loading from "@/components/Loading";
 
 export type MemeChartData = Array<CandlestickData<Time>>;
 function MemeChart({ data }: { data: MemeChartData }) {
@@ -84,11 +85,7 @@ function MemeChart({ data }: { data: MemeChartData }) {
       chart.remove();
     };
   }, [data]);
-  return (
-    <div className="w-full h-full p-2 border rounded-2xl box-border bg-[#16181D] overflow-hidden">
-      <div ref={chartContainerRef} className="w-full h-full" />
-    </div>
-  );
+  return <div ref={chartContainerRef} className="w-full h-full" />;
 }
 
 function MemeChartGraduationBefore({ meme }: { meme: MemeData }) {
@@ -101,7 +98,9 @@ function MemeChartGraduationBefore({ meme }: { meme: MemeData }) {
   }, []);
   if (pending) {
     return (
-      <div className="flex justify-center items-start gap-6">Loading...</div>
+      <div className="w-full h-full flex justify-center items-start mt-[20%]">
+        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+      </div>
     );
   }
 

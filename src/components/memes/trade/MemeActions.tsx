@@ -26,7 +26,7 @@ export default function MemeActions({ token }: { token: PGFToken }) {
   }
   return (
     <Tabs defaultValue="buy" className="w-full">
-      <TabsList className="w-full mb-6">
+      <TabsList className="w-full mb-6 max-sm:mb-3">
         {tabs.map((tab) => (
           <TabsTrigger
             value={tab.value}
