@@ -88,7 +88,7 @@ export default function DefaultLayout({
             ) : (
               <div className="flex flex-row items-center gap-4">
                 <Button
-                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground"
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
                   onClick={() => {
                     router.push("/");
                   }}
@@ -96,7 +96,7 @@ export default function DefaultLayout({
                   <Home className="stroke-primary hover:stroke-primary  size-10" />
                 </Button>
                 <Button
-                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground"
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
                   onClick={() => {
                     router.back();
                   }}
