@@ -3,6 +3,7 @@ import { TopicData } from "@/services/topic/types";
 import Link from "next/link";
 import JoinTelegramButton from "../telegram/JoinTelegramButton";
 import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
 
 export default function TopicDetailsCard({
   topic,
@@ -13,25 +14,28 @@ export default function TopicDetailsCard({
 }) {
   return (
     <Card className={cn("w-full h-full", className)}>
-      <CardContent className="w-full h-full flex gap-6  max-sm:flex-col">
+      <CardContent className="w-full h-full flex gap-3  max-sm:flex-col">
         <img
           src={topic.image}
-          className="w-[460px] aspect-square rounded-2xl object-cover max-sm:w-full"
+          className="aspect-square w-[30%] max-sm:w-full rounded-2xl object-cover"
           loading="lazy"
           alt={topic.name}
         />
-        <div className="flex-1 h-[460px] flex flex-col max-sm:w-full overflow-hidden">
+        <div className="flex-1 flex flex-col gap-6 max-sm:w-full max-sm:gap-3">
           <div className="flex justify-between items-center">
-            <div className="px-3 py-2 bg-primary rounded-full text-2xl font-bold text-primary-foreground flex items-center">
+            <span className="text-3xl font-bold text-foreground max-sm:text-xl">
               #{topic.name}
-            </div>
-            <div className="px-3 py-2 bg-secondary rounded-full text-2xl font-bold text-secondary-foreground flex items-center">
+            </span>
+            <Badge
+              variant={"secondary"}
+              className="text-2xl font-bold max-sm:text-base"
+            >
               {topic.stats?.memesAmount} memes
-            </div>
+            </Badge>
           </div>
-          <div className="mt-6">
-            <span className="text-2xl">{topic.description}</span>
-          </div>
+          <span className="text-2xl font-normal text-card-foreground max-sm:text-base">
+            {topic.description}
+          </span>
           <div className="mt-auto">
             <JoinTelegramButton link={topic.tgLink} />
           </div>

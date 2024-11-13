@@ -2,7 +2,7 @@ import OwnedMemesTable from "@/components/tables/OwnedMemesTable";
 import useLoadOwnedMemes from "@/hooks/user/useLoadOwnedMemes";
 import { useEffect, useState } from "react";
 
-export default function Owned({ address }: { address: string }) {
+export default function Held({ address }: { address: string }) {
   const { items, loadItems, loading } = useLoadOwnedMemes({
     address,
   });

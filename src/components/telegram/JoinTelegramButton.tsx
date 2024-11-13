@@ -17,7 +17,7 @@ export default function JoinTelegramButton({
       className={cn("w-full", className)}
       onClick={(e) => e.stopPropagation()}
     >
-      <Button size={"lg"} className="w-full">
+      <Button size={"lg"} className="w-full max-sm:text-base">
         Join Chat Room
       </Button>
     </Link>

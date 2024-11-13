@@ -23,7 +23,7 @@ export default function Home() {
       <div className="w-full hidden mb-3 max-sm:block">
         <CreateMemeButton variant={"mobile"} />
       </div>
-      <div className="w-full mb-6">
+      <div className="w-full mb-6 max-sm:mb-3">
         <HomeTopic />
       </div>
       <Tabs defaultValue={SortBy.trending} className="w-full">
