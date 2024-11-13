@@ -17,15 +17,15 @@ export default function HomeTopic() {
   return (
     <Card className="w-full">
       <CardContent className="w-full flex-col gap-6 flex">
-        <div className="w-full justify-between items-end flex">
-          <div className="  flex items-center gap-6">
-            <span className="text-3xl font-bold text-primary max-sm:text-base">
+        <div className="w-full justify-between items-center flex">
+          <div className="flex-1  flex items-center gap-6 max-sm:gap-3">
+            <span className="text-3xl font-bold text-primary max-sm:text-2xl">
               🔥Hot Topic
             </span>
-            <Loading />
+            <Loading className="max-sm:flex-1 max-sm:max-w-24 max-sm:h-8" />
           </div>
           <Link
-            className=" text-2xl font-bold text-primary max-sm:text-xs"
+            className=" text-2xl font-bold text-primary max-sm:text-base"
             href={"/topics"}
           >
             View all

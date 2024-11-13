@@ -32,7 +32,7 @@ export default function MemeShareButton({
           Share2Earn
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8 ">
+      <DialogContent className="gap-8">
         <DialogHeader>
           <DialogTitle>Share2Earn</DialogTitle>
         </DialogHeader>
@@ -56,12 +56,13 @@ function MemeShareContent({
     address || ""
   }`;
   return (
-    <div className="flex flex-col justify-start items-center gap-8">
-      <div className=" flex-col justify-start items-start gap-4 flex text-[#16181d] text-2xl max-sm:xs">
-        Share the link with friends, and receive a 20% discount coupon on
-        transactions when they complete a successful trade!
+    <div className="w-full flex flex-col justify-start items-center gap-6">
+      <div className="w-full flex-col justify-start items-start gap-4 flex text-foreground text-2xl font-normal max-sm:text-base">
+        Your share link has been generated! Share it with friends, and if they
+        complete a transaction through this link, both of you will receive 5% of
+        the transaction amount as a reward.
       </div>
-      <div className="shrink-0 justify-center items-start gap-12 flex max-sm:gap-3">
+      <div className="w-full shrink-0 justify-center items-start flex sm:gap-12 max-sm:justify-evenly">
         <ShareItem
           icon="/images/warpcast.png"
           name="Warpcast"
@@ -98,11 +99,8 @@ function MemeShareContent({
           }}
         />
       </div>
-      <div className="text-center text-[#16181d] text-2xl leading-[15px] max-sm:text-xs">
-        or share with link
-      </div>
       <div
-        className="box-border cursor-pointer  p-3 rounded-xl border border-[#16181d] justify-start items-center gap-6 flex max-sm:w-[calc(100vw-48px)]"
+        className="w-full box-border cursor-pointer py-3 px-6 rounded-xl border-4 border-secondary justify-start items-center gap-6 flex flex-row "
         onClick={() => {
           navigator.clipboard.writeText(shareLink);
           toast({
@@ -111,10 +109,20 @@ function MemeShareContent({
           });
         }}
       >
-        <span className="flex-1 line-clamp-1 text-[#626976] text-xl">
-          {shareLink}
-        </span>
-        <Copy />
+        <div className="w-0 flex-1 ">
+          <span className="line-clamp-1 text-foreground text-xl max-sm:text-xs">
+            {shareLink}
+          </span>
+        </div>
+        <Copy className=" stroke-secondary size-6" />
+      </div>
+      <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
+        The link reward only applies to the first transaction completed through
+        your link. Share more to generate new links and earn additional rewards.
+      </div>
+      <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
+        All rewards will be available for claim after token launch. Thank you
+        for your patience!
       </div>
     </div>
   );

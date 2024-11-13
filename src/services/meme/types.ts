@@ -1,3 +1,5 @@
+import type { TopicData } from "../topic/types";
+
 export type MemeData = {
   address: string;
   symbol: string;
@@ -13,6 +15,7 @@ export type MemeData = {
     tokenAddress: string;
     poolAddress: string;
   };
+  topic?: TopicData;
 };
 
 export type MemeCreatedBy = {
