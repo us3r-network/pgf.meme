@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import useSound from "use-sound";
 import { formatUnits } from "viem";
 import { useAccount } from "wagmi";
 import { TokenAmountInput } from "./TokenAmountInput";
@@ -20,7 +21,7 @@ export function BuyMemeForm({
   onSuccess,
 }: {
   token: PGFToken;
-  onSuccess?: (transactionReceipt:any) => void;
+  onSuccess?: (transactionReceipt: any) => void;
 }) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
@@ -55,13 +56,17 @@ export function BuyMemeForm({
     isSuccess,
   } = usePGFFactoryContractBuy(token);
 
+  const [play] = useSound("/audio/V.mp3");
   const onSubmit = () => {
-    if (inAmount && outAmount) buy(inAmount, outAmount);
+    if (inAmount && outAmount) {
+      buy(inAmount, outAmount);
+      play();
+    }
   };
 
   useEffect(() => {
     if (isSuccess && transactionReceipt && tokenInfo) {
-      onSuccess?.(transactionReceipt)
+      onSuccess?.(transactionReceipt);
       toast({
         title: "Buy Token",
         description: (

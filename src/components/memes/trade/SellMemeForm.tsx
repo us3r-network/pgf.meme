@@ -18,6 +18,7 @@ import { formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
 import { TokenAmountInput } from "./TokenAmountInput";
+import useSound from "use-sound";
 
 const MIN_IN_AMOUNT = 10000;
 export function SellMemeForm({
@@ -63,8 +64,12 @@ export function SellMemeForm({
     isSuccess,
   } = usePGFFactoryContractSell(token);
 
+  const [play] = useSound("/audio/V.mp3");
   const onSubmit = () => {
-    if (inAmount && outAmount) sell(inAmount, outAmount);
+    if (inAmount && outAmount) {
+      sell(inAmount, outAmount);
+      play();
+    }
   };
 
   useEffect(() => {
