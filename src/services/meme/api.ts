@@ -62,3 +62,16 @@ export async function uploadImage(file: File): RequestPromise<ApiResp<string>> {
   });
   return arweaveResp.data.data.arseedUrl;
 }
+
+export function validateBuyingMeme({
+  tokenAddress,
+  walletAddress,
+}: {
+  tokenAddress: string;
+  walletAddress: string;
+}): RequestPromise<ApiResp<boolean>> {
+  return request({
+    url: `/memes/${tokenAddress}/users/${walletAddress}/buying`,
+    method: "get",
+  });
+}

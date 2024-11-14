@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useValidateBuyingMeme from "@/hooks/meme/useValidateBuyingMeme";
 import { useToast } from "@/hooks/use-toast";
 import { shareToFacebook } from "@/lib/sharing/facebook";
 import { shareToTelegramWeb } from "@/lib/sharing/telegram";
@@ -14,8 +16,12 @@ import { shareToWarpcast } from "@/lib/sharing/warpcast";
 import { shareToWhatsApp } from "@/lib/sharing/whatsapp";
 import { MemeData } from "@/services/meme/types";
 import { Copy } from "lucide-react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useAccount, useEnsAddress } from "wagmi";
+import { BuyMemeForm } from "../trade/BuyMemeForm";
+import { Address } from "viem";
+import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function MemeShareButton({
   meme,
@@ -24,22 +30,84 @@ export default function MemeShareButton({
   meme: MemeData;
   className?: string;
 }) {
-  const { name, image } = meme;
+  const isGraduation = !!meme.graduation?.poolAddress;
+  const { openConnectModal } = useConnectModal();
+  const btnText = isGraduation ? "Share" : "Share2Earn";
+  if (!isGraduation && openConnectModal) {
+    return (
+      <>
+        <Button
+          size={"lg"}
+          className="w-full max-sm:text-base"
+          onClick={() => {
+            openConnectModal();
+          }}
+        >
+          {btnText}
+        </Button>
+      </>
+    );
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size={"lg"} className="w-full max-sm:text-base">
-          Share2Earn
+          {btnText}
         </Button>
       </DialogTrigger>
       <DialogContent className="gap-8">
         <DialogHeader>
-          <DialogTitle>Share2Earn</DialogTitle>
+          <DialogTitle>{btnText}</DialogTitle>
         </DialogHeader>
-        <MemeShareContent meme={meme} />
+        {isGraduation ? (
+          <MemeShareContent meme={meme} />
+        ) : (
+          <ValidateBuyingMeme meme={meme} />
+        )}
       </DialogContent>
     </Dialog>
   );
+}
+
+function ValidateBuyingMeme({ meme }: { meme: MemeData }) {
+  const { valid, idle, pending, validate } = useValidateBuyingMeme({
+    address: meme.address,
+  });
+  const [buying, setBuying] = useState(false);
+  useEffect(() => {
+    validate();
+  }, []);
+
+  if (idle || pending) {
+    return (
+      <div className="w-full flex flex-row items-center justify-center h-[400px]">
+        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+      </div>
+    );
+  }
+  if (!valid && !buying) {
+    return (
+      <>
+        {" "}
+        <BuyMemeForm
+          buyBtnText="Buy & Share2Earn"
+          token={{
+            contractAddress: meme.address as Address,
+            chainId: PGF_CONTRACT_CHAIN_ID,
+          }}
+          onSuccess={() => {
+            setBuying(true);
+          }}
+        />
+        <div className="text-center">
+          Buy tokens to get started and unlock Share2Earn feature! Share your
+          unique link, once your friend completes a transaction, both of you
+          will receive a 5% token reward!
+        </div>
+      </>
+    );
+  }
+  return <MemeShareContent meme={meme} />;
 }
 
 function MemeShareContent({
@@ -51,17 +119,20 @@ function MemeShareContent({
 }) {
   const { toast } = useToast();
   const { address } = useAccount();
-
-  const shareLink = `${window.location.origin}/memes/${meme.address}?referral=${
-    address || ""
+  const isGraduation = !!meme.graduation?.poolAddress;
+  const shareLink = `${window.location.origin}/memes/${meme.address}${
+    !isGraduation ? `?referral=${address || ""}` : ""
   }`;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
-      <div className="w-full flex-col justify-start items-start gap-4 flex text-foreground text-2xl font-normal max-sm:text-base">
-        Your share link has been generated! Share it with friends, and if they
-        complete a transaction through this link, both of you will receive 5% of
-        the transaction amount as a reward.
-      </div>
+      {!isGraduation && (
+        <div className="w-full flex-col justify-start items-start gap-4 flex text-foreground text-2xl font-normal max-sm:text-base">
+          Your share link has been generated! Share it with friends, and if they
+          complete a transaction through this link, both of you will receive 5%
+          of the transaction amount as a reward.
+        </div>
+      )}
+
       <div className="w-full shrink-0 justify-center items-start flex sm:gap-12 max-sm:justify-evenly">
         <ShareItem
           icon="/images/warpcast.png"
@@ -116,14 +187,20 @@ function MemeShareContent({
         </div>
         <Copy className=" stroke-secondary size-6" />
       </div>
-      <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
-        The link reward only applies to the first transaction completed through
-        your link. Share more to generate new links and earn additional rewards.
-      </div>
-      <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
-        All rewards will be available for claim after token launch. Thank you
-        for your patience!
-      </div>
+      {!isGraduation && (
+        <>
+          {" "}
+          <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
+            The link reward only applies to the first transaction completed
+            through your link. Share more to generate new links and earn
+            additional rewards.
+          </div>
+          <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
+            All rewards will be available for claim after token launch. Thank
+            you for your patience!
+          </div>
+        </>
+      )}
     </div>
   );
 }

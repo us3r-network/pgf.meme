@@ -18,9 +18,11 @@ import { TokenAmountInput } from "./TokenAmountInput";
 const MIN_IN_AMOUNT = 0.001;
 export function BuyMemeForm({
   token,
+  buyBtnText,
   onSuccess,
 }: {
   token: PGFToken;
+  buyBtnText?: string;
   onSuccess?: (transactionReceipt: any) => void;
 }) {
   const account = useAccount();
@@ -126,7 +128,7 @@ export function BuyMemeForm({
           onClick={onSubmit}
           disabled={isPending || !inAmount || !outAmount || !account.address}
         >
-          {isPending ? "Confirming ..." : "Buy"}
+          {isPending ? "Confirming ..." : buyBtnText || "Buy"}
         </Button>
         {nativeTokenInfo?.decimals &&
           nativeTokenInfo?.symbol &&
