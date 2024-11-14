@@ -68,11 +68,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             Purchases are made using a step-based price curve, and once the
             total reaches $69k, the meme coin is launched on Uniswap V3,
             enabling full buy/sell trading on the Ethereum mainnet. There are{" "}
-            <span className="text-primary text-base font-normal  leading-snug">
+            <span className="text-primary text-base font-bold ">
               {meme.stats.availableAmount.toLocaleString()}
             </span>{" "}
             tokens still available for sale in the curve and there is{" "}
-            <span className="text-primary text-base font-normal leading-snug">
+            <span className="text-primary text-base font-bold">
               {Intl.NumberFormat("en-US", {
                 maximumFractionDigits: 6,
                 minimumFractionDigits: 0,
@@ -117,7 +117,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           )}
 
           <MemeShareButton meme={meme} />
-          {!!meme?.tgPostLink && <JoinTelegramButton link={meme?.tgPostLink} />}
+          {!!meme?.tgPostLink && (
+            <div className="hidden max-sm:block">
+              <JoinTelegramButton link={meme?.tgPostLink} />
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Comic Sans MS', sans-serif;
-  background: linear-gradient(180deg, #F475BC 0%, #92C7F5 50%, #F465AD 100%);
+  /* font-family: 'Comic Sans MS', sans-serif; */
+  background: linear-gradient(180deg, #f475bc 0%, #92c7f5 50%, #f465ad 100%);
   background-attachment: fixed;
 }
 
@@ -14,8 +14,8 @@ body {
 
 @layer base {
   :root {
-    --background: 30, 80%, 98%;
-    --foreground: 223, 14%, 10%;
+    --background: 0, 0%, 100%;
+    --foreground: 0, 0%, 12%;
     --card: 54, 100%, 90%;
     --card-foreground: 0, 0%, 12%;
     --popover: 0 0% 100%;

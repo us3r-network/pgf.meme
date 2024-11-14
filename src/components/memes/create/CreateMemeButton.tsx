@@ -22,16 +22,16 @@ export function CreateMemeButton({
       <>
         {variant === "mobile" ? (
           <Button
-            className="w-full h-12"
+            className="w-full h-12 font-bold text-xl"
             onClick={() => {
               openConnectModal();
             }}
           >
-            <span className="text-xl">Create a new meme</span>
+            Create a new meme
           </Button>
         ) : (
           <Button
-            className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold"
             onClick={() => {
               openConnectModal();
             }}
@@ -46,11 +46,11 @@ export function CreateMemeButton({
     <Dialog>
       <DialogTrigger asChild>
         {variant === "mobile" ? (
-          <Button className="w-full h-12">
-            <span className="text-xl">Create a new meme</span>
+          <Button className="w-full h-12 text-xl font-bold">
+            Create a new meme
           </Button>
         ) : (
-          <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary">
+          <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
             Create
           </Button>
         )}

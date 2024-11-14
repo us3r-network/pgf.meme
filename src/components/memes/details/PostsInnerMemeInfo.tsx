@@ -10,10 +10,10 @@ export default function PostsInnerMemeInfo({ meme }: { meme: MemeData }) {
           src={meme.image}
         />
         <div className="flex-1 flex flex-col gap-2">
-          <span className="text-primary text-lg">
+          <span className="text-primary text-lg font-bold">
             {meme.name}(${meme.symbol})
           </span>
-          <span className="font-normal text-xs">{meme.description}</span>
+          <span className="font-normal text-base">{meme.description}</span>
           {!!meme?.tgPostLink && (
             <div className="mt-auto w-full">
               <JoinTelegramButton link={meme.tgPostLink} />
