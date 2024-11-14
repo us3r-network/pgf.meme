@@ -106,7 +106,7 @@ export default function DefaultLayout({
               </div>
             )}
 
-            <div className="flex items-center gap-4 z-20 ml-auto">
+            <div className="flex items-center gap-4 z-20 ml-auto max-sm:gap-2">
               <AboutDialogButton />
               <div className="max-sm:hidden">
                 <Share2EarnDialogButton />
@@ -115,7 +115,16 @@ export default function DefaultLayout({
               <div className="max-sm:hidden">
                 <CreateMemeButton />
               </div>
-              <ConnectButton showBalance={false} chainStatus={"none"} />
+              <div className="hidden max-sm:block">
+                <ConnectButton
+                  showBalance={false}
+                  chainStatus={"none"}
+                  label="Connect"
+                />
+              </div>
+              <div className="max-sm:hidden">
+                <ConnectButton chainStatus={"none"} />
+              </div>
             </div>
           </div>
         </header>
