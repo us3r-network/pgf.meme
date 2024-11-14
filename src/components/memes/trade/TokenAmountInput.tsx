@@ -7,6 +7,7 @@ import { PGFToken } from "@/services/contract/types";
 import { useEffect, useState } from "react";
 import { Address, formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
+import SwitchChains, { TokenInfo } from "./SwitchChains";
 
 export function TokenAmountInput({
   contractAddress,
@@ -53,22 +54,28 @@ export function TokenAmountInput({
     }
   };
 
-  useEffect(()=>{
-    if(amount){
+  useEffect(() => {
+    if (amount) {
       onChange(amount);
     }
-  },[amount])
+  }, [amount]);
 
   const onPercentButtonClick = (percent: number) => {
     if (tokenInfo?.balance) {
       onInputChange(String((tokenInfo.balance * percent) / 100));
     }
   };
-  if(!tokenInfo) return null;
+  if (!tokenInfo) return null;
   return (
     <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
       <div className="self-stretch justify-start items-center inline-flex">
-        <div className="h-12 text-2xl px-4 py-2 bg-secondary text-white rounded-l-lg">{tokenInfo?.symbol}</div>
+        {contractAddress ? (
+          <div className="h-12 px-4 py-2 bg-secondary rounded-l-lg text-white">
+            <TokenInfo token={tokenInfo} />
+          </div>
+        ) : (
+          <SwitchChains className="z-50 " />
+        )}
         {tokenInfo?.decimals && (
           <Input
             value={formatUnits(amount, tokenInfo.decimals)}
