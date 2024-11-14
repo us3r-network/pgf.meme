@@ -47,9 +47,9 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
               src={meme.image}
             />
             <div className="flex-1">
-              <span className="text-primary text-lg">{meme.name}</span>
+              <span className="text-primary text-xl">{meme.name}</span>
               <br />
-              <span className="font-normal text-xs">{meme.description}</span>
+              <span className="font-normal text-base">{meme.description}</span>
             </div>
           </div>
 
