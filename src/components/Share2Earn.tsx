@@ -12,7 +12,7 @@ export default function Share2EarnDialogButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary">
+        <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
           Share2Earn
         </Button>
       </DialogTrigger>

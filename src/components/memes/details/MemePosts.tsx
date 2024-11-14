@@ -18,7 +18,7 @@ export default function MemePosts({ meme }: { meme: MemeData }) {
   }
   return (
     <Card>
-      <CardContent>
+      <CardContent className="bg-background">
         <div className="max-sm:hidden">
           <PostsInnerMemeInfo meme={meme} />
           <Separator className="my-6 h-1 bg-primary rounded-full" />
