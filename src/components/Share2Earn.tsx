@@ -7,10 +7,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import GuideText from "./GuideText";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 
 export default function Share2EarnDialogButton() {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
           Share2Earn
@@ -41,7 +46,32 @@ export default function Share2EarnDialogButton() {
             ]}
           />
         </div>
+        <CheckMyRewards
+          onClose={() => {
+            setOpen(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
+  );
+}
+
+function CheckMyRewards({ onClose }: { onClose?: () => void }) {
+  const { address } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const router = useRouter();
+  return (
+    <Button
+      size={"lg"}
+      onClick={() => {
+        if (openConnectModal) {
+          openConnectModal();
+        } else {
+          router.push(`/u/${address}`);
+        }
+      }}
+    >
+      {!openConnectModal ? "Check My Rewards" : "Connect Wallet"}
+    </Button>
   );
 }

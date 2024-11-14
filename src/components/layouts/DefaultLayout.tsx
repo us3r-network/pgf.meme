@@ -88,20 +88,20 @@ export default function DefaultLayout({
             ) : (
               <div className="flex flex-row items-center gap-4">
                 <Button
-                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-11 p-0"
                   onClick={() => {
                     router.push("/");
                   }}
                 >
-                  <Home className="stroke-primary hover:stroke-primary  size-10" />
+                  <Home className="stroke-primary hover:stroke-primary  !size-8" />
                 </Button>
                 <Button
-                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-11 p-0"
                   onClick={() => {
                     router.back();
                   }}
                 >
-                  <ChevronLeft className="stroke-primary hover:stroke-primary  size-10" />
+                  <ChevronLeft className="stroke-primary hover:stroke-primary  !size-8" />
                 </Button>
               </div>
             )}
