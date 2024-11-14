@@ -40,8 +40,8 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
       </Card>
 
       <Card className="w-full border-secondary">
-        <CardContent className="w-full flex flex-col gap-6 max-sm:gap-3">
-          <div className="w-full flex flex-row gap-2 max-sm:hidden">
+        <CardContent className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-row gap-2">
             <img
               className="w-[160px] h-[160px] rounded-[20px] object-cover"
               src={meme.image}
@@ -49,26 +49,10 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             <div className="flex-1">
               <span className="text-primary text-lg">{meme.name}</span>
               <br />
-              <span className="font-normal">{meme.description}</span>
+              <span className="font-normal text-xs">{meme.description}</span>
             </div>
           </div>
-          <div className="w-full flex-col gap-2 hidden max-sm:flex">
-            <span className="text-primary text-base">
-              {meme.name}(${meme.symbol})
-            </span>
-            <img
-              className="w-full h-[400px] rounded-[20px] object-cover"
-              src={meme.image}
-            />
-          </div>
-          <div className="hidden max-sm:block">
-            <MemeShareButton meme={meme} />
-          </div>
-          {!!meme?.tgPostLink && (
-            <div className="hidden max-sm:block">
-              <JoinTelegramButton link={meme?.tgPostLink} />
-            </div>
-          )}
+
           <div className="flex flex-row items-center justify-between">
             <span className="text-secondary font-bold">Progress</span>
             <span className="text-secondary font-bold">
@@ -102,7 +86,14 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             href={`/u/${meme.createdBy.walletAddress}`}
             text={shortPubKey(meme.createdBy.walletAddress)}
           />
-          <LinkRow label="Topic" href={`/topics`} text={`#Topic`} />
+          {meme.topic && (
+            <LinkRow
+              label="Topic"
+              href={`/topics/${meme.topic.id}`}
+              text={`#${meme.topic.name}`}
+            />
+          )}
+
           <CopyAddress address={meme.address} label="Address" />
           <LinkRow
             label={DEFAULT_CHAIN.blockExplorers.default.name}
@@ -125,9 +116,8 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             />
           )}
 
-          <div className="max-sm:hidden">
-            <MemeShareButton meme={meme} />
-          </div>
+          <MemeShareButton meme={meme} />
+          {!!meme?.tgPostLink && <JoinTelegramButton link={meme?.tgPostLink} />}
         </CardContent>
       </Card>
     </div>
@@ -151,7 +141,7 @@ function LinkRow({
       <Link
         className="flex flex-row gap-1 items-center"
         href={href}
-        target="_blank"
+        target={href.startsWith("http") ? "_blank" : ""}
       >
         {iconUrl && (
           <Avatar className="w-6 h-6">

@@ -21,10 +21,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import MessageMarquee from "../message/MessageMarquee";
 import AboutDialogButton from "../About";
 import { Button } from "../ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Home } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { CreateMemeButton } from "../memes/create/CreateMemeButton";
 import { useAccount } from "wagmi";
+import { cn } from "@/lib/utils";
+import Share2EarnDialogButton from "../Share2Earn";
 
 // const navItems = [
 //   { title: "Explore", url: "/" },
@@ -39,6 +41,7 @@ export default function DefaultLayout({
   const isHomePage = pathname === "/";
   const router = useRouter();
   const account = useAccount();
+  const showMessageMarquee = isHomePage || pathname.startsWith("/memes");
   return (
     <SidebarProvider defaultOpen={false}>
       {/* <Sidebar>
@@ -67,7 +70,7 @@ export default function DefaultLayout({
         <SidebarRail />
       </Sidebar> */}
       <SidebarInset>
-        <header className="w-screen h-24  fixed top-0 left-0 bg-primary z-10 max-sm:h-[72px]">
+        <header className="w-screen h-[80px]  fixed top-0 left-0 bg-primary z-10 max-sm:h-[70px]">
           <div className="w-full max-w-screen-2xl mx-auto h-full flex shrink-0 items-center px-6 gap-2 box-border max-sm:px-3">
             {/* <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
@@ -79,37 +82,58 @@ export default function DefaultLayout({
                 href="/"
               >
                 <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
-                  Welcome to pgf.meme✨
+                  <span className="max-sm:hidden">Welcome to </span> pgf.meme✨
                 </span>
               </Link>
             ) : (
-              <Button
-                size="icon"
-                className="size-12 max-sm:rounded-xl bg-primary-foreground hover:bg-primary-foreground"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                <ChevronLeft className="h-6 w-6 stroke-primary hover:stroke-primary" />
-              </Button>
+              <div className="flex flex-row items-center gap-4">
+                <Button
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
+                  <Home className="stroke-primary hover:stroke-primary  size-10" />
+                </Button>
+                <Button
+                  className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-10"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  <ChevronLeft className="stroke-primary hover:stroke-primary  size-10" />
+                </Button>
+              </div>
             )}
 
-            <div className="flex-1 flex-shrink-0 z-10 overflow-hidden max-sm:hidden">
-              <MessageMarquee />
-            </div>
             <div className="flex items-center gap-4 z-20 ml-auto">
               <AboutDialogButton />
-              {account.isConnected && (
-                <div className="max-sm:hidden">
-                  <CreateMemeButton />
-                </div>
-              )}
+              <div className="max-sm:hidden">
+                <Share2EarnDialogButton />
+              </div>
+
+              <div className="max-sm:hidden">
+                <CreateMemeButton />
+              </div>
               <ConnectButton showBalance={false} chainStatus={"none"} />
             </div>
           </div>
         </header>
+        <div
+          className={cn(
+            "w-screen  fixed  left-0 bg-secondary z-10 h-[58px] top-[80px] max-sm:h-[40px] max-sm:top-[70px]",
+            !showMessageMarquee && "hidden"
+          )}
+        >
+          <MessageMarquee />
+        </div>
 
-        <main className="w-screen mt-24 p-6 max-w-screen-2xl mx-auto box-border overflow-hidden max-sm:p-3 max-sm:mt-[72px] max-sm:pt-0">
+        <main
+          className={cn(
+            "w-screen  max-w-screen-2xl mx-auto box-border overflow-hidden mt-[80px] max-sm:mt-[70px] p-6 max-sm:p-3",
+            showMessageMarquee && "mt-[138px] max-sm:mt-[110px]"
+          )}
+        >
           {children}
         </main>
       </SidebarInset>
