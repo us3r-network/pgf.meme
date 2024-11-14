@@ -20,7 +20,13 @@ import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
 import { TokenAmountInput } from "./TokenAmountInput";
 
 const MIN_IN_AMOUNT = 10000;
-export function SellMemeForm({ token }: { token: PGFToken }) {
+export function SellMemeForm({
+  token,
+  onSuccess,
+}: {
+  token: PGFToken;
+  onSuccess?: (transactionReceipt: any) => void;
+}) {
   const account = useAccount();
   const { data: nativeTokenInfo } = useNativeToken(
     account?.address,
@@ -63,6 +69,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
 
   useEffect(() => {
     if (isSuccess && transactionReceipt && tokenInfo && nativeTokenInfo) {
+      onSuccess?.(transactionReceipt);
       toast({
         title: "Sell Token",
         description: (
@@ -161,9 +168,7 @@ export function SellMemeForm({ token }: { token: PGFToken }) {
                 ? `Sell 
               ${new Intl.NumberFormat("en-US", {
                 notation: "compact",
-              }).format(
-                Number(formatUnits(inAmount, tokenInfo.decimals!))
-              )} 
+              }).format(Number(formatUnits(inAmount, tokenInfo.decimals!)))} 
               ${tokenInfo?.symbol} and get 
               ${new Intl.NumberFormat("en-US", {
                 notation: "compact",
