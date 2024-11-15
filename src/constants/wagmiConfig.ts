@@ -30,6 +30,7 @@ export const config = getDefaultConfig({
   ],
   transports: {
     [sepolia.id]: http("https://ethereum-sepolia-rpc.publicnode.com"),
+    [baseSepolia.id]: http("https://base-sepolia-rpc.publicnode.com"),
   },
   // ssr: true, // If your dApp uses server side rendering (SSR)
 });

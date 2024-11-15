@@ -13,3 +13,13 @@ export type PGFToken = {
   description?: string;
   topicId?: number;
 };
+
+export type AcrossRouteInfo = {
+    originChainId: number;
+    originToken: Address;
+    destinationChainId: number;
+    destinationToken: Address;
+    originTokenSymbol: string;
+    destinationTokenSymbol: string;
+    isNative: boolean;
+}

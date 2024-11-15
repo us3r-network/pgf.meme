@@ -1,17 +1,17 @@
+import { ZERO_ADDRESS } from "@/constants/chain";
 import {
   PGF_CONTRACT_CHAIN,
   PGF_CONTRACT_CHAIN_ID,
   PGF_FACTORY_CONTRACT_ADDRESS,
 } from "@/constants/pgf";
+import PGF_FACTORY_CONTRACT_ABI_JSON from "@/services/contract/abi/pgf-factory-abi.json";
 import { PGFToken } from "@/services/contract/types";
+import { Address } from "viem";
 import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import PGF_FACTORY_CONTRACT_ABI_JSON from "@/services/contract/abi/pgf-factory-abi.json";
-import { Address } from "viem";
-import { ZERO_ADDRESS } from "@/constants/chain";
 
 const contract = {
   abi: PGF_FACTORY_CONTRACT_ABI_JSON.abi,
