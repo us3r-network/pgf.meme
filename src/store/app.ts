@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import { Address,isAddress } from "viem";
 
 type AppState = {
-  referral: string;
+  referral: Address | undefined;
 };
 
 const appState: AppState = {
-  referral: "",
+  referral: undefined,
 };
 
 export const appSlice = createSlice({
@@ -14,6 +15,7 @@ export const appSlice = createSlice({
   initialState: appState,
   reducers: {
     setReferral: (state: AppState, action: PayloadAction<string>) => {
+      if (isAddress(action.payload))
       state.referral = action.payload;
     },
   },

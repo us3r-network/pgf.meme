@@ -10,6 +10,8 @@ import {
   useWriteContract,
 } from "wagmi";
 import PGF_FACTORY_CONTRACT_ABI_JSON from "@/services/contract/abi/pgf-factory-abi.json";
+import { Address } from "viem";
+import { ZERO_ADDRESS } from "@/constants/chain";
 
 const contract = {
   abi: PGF_FACTORY_CONTRACT_ABI_JSON.abi,
@@ -91,12 +93,16 @@ export function usePGFFactoryContractBuy(token: PGFToken) {
   } = useWaitForTransactionReceipt({
     hash,
   });
-  const buy = async (inAmount: bigint, outAmount: bigint) => {
-    console.log("buy token", token, inAmount, outAmount);
+  const buy = async (
+    inAmount: bigint,
+    outAmount: bigint,
+    referral: Address | undefined
+  ) => {
+    console.log("buy token", token, inAmount, outAmount, referral);
     writeContract({
       ...contract,
       functionName: "buy",
-      args: [token.contractAddress, outAmount],
+      args: [token.contractAddress, outAmount, referral || ZERO_ADDRESS],
       value: inAmount,
     });
   };

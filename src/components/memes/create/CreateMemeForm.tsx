@@ -31,6 +31,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
+import OnChainActionButtonWarper from "../trade/OnChainActionButtonWarper";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -213,9 +214,21 @@ export function CreateMemeForm() {
           <p>* Transaction fees:pgf (1%), Vitalik (15%), Charity Pool (5%).</p>
           <p>* Your meme coin can be purchased across multiple blockchains.</p>
         </FormDescription>
-        <Button type="submit" size="lg" disabled={isPending} className="w-full">
-          Create
-        </Button>
+        <OnChainActionButtonWarper
+          className="w-full"
+          size="lg"
+          targetChainId={PGF_CONTRACT_CHAIN_ID}
+          warpedButton={
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isPending}
+              className="w-full"
+            >
+              Create
+            </Button>
+          }
+        />
       </form>
     </Form>
   );
