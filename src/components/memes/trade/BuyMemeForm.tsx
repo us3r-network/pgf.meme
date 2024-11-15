@@ -54,7 +54,6 @@ export function BuyMemeForm({
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <TokenAmountInput
-        chainId={token.chainId}
         onChange={(value) => setInAmount(value)}
         minAmount={MIN_IN_AMOUNT}
       />

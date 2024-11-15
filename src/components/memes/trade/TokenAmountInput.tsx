@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Address, formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import SwitchChains, { TokenInfo } from "./SwitchChains";
+import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 
 export function TokenAmountInput({
   contractAddress,
@@ -16,7 +17,7 @@ export function TokenAmountInput({
   minAmount = 0,
 }: {
   contractAddress?: Address;
-  chainId: number;
+  chainId?: number;
   onChange: (value: bigint) => void;
   minAmount: number;
 }) {
@@ -26,15 +27,16 @@ export function TokenAmountInput({
     if (contractAddress) {
       getTokenInfo({
         contractAddress,
-        chainId,
+        chainId: chainId || account.chainId || PGF_CONTRACT_CHAIN_ID,
         account: account?.address,
       }).then((info) => {
         // console.log("token info", info);
         setTokenInfo(info);
       });
     } else {
+      console.log("getNativeTokenInfo", chainId, account.chainId);
       getNativeTokenInfo({
-        chainId,
+        chainId: chainId || account.chainId || PGF_CONTRACT_CHAIN_ID,
         account: account?.address,
       }).then((info) => {
         // console.log("native token info", info);
@@ -42,6 +44,14 @@ export function TokenAmountInput({
       });
     }
   }, [account]);
+
+  useEffect(() => {
+    if (!tokenInfo?.balance || tokenInfo.balance < minAmount) setAmount(0n);
+    else
+      setAmount(
+        parseUnits(minAmount?.toString(), tokenInfo?.decimals || 18) || 0n
+      );
+  }, [tokenInfo?.balance]);
 
   const [amount, setAmount] = useState<bigint>(
     parseUnits(minAmount?.toString(), tokenInfo?.decimals || 18) || 0n
@@ -55,7 +65,7 @@ export function TokenAmountInput({
   };
 
   useEffect(() => {
-    if (amount) {
+    if (amount >= 0n) {
       onChange(amount);
     }
   }, [amount]);
