@@ -16,6 +16,7 @@ import { useAccount } from "wagmi";
 import { TokenAmountInput } from "./TokenAmountInput";
 import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
 import useReferral from "@/hooks/app/useReferral";
+import { supportedChains } from "./SwitchChains";
 
 const MIN_IN_AMOUNT = 0.001;
 export function BuyMemeForm({
@@ -59,13 +60,22 @@ export function BuyMemeForm({
     isPending,
     isSuccess,
   } = usePGFFactoryContractBuy(token);
-  
+
   const { referral } = useReferral();
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = () => {
-    if (inAmount && outAmount) {
-      buy(inAmount, outAmount, referral);
-      play();
+    if (inAmount && outAmount && account) {
+      if (account.chainId === PGF_CONTRACT_CHAIN_ID) {
+        buy(inAmount, outAmount, referral);
+        play();
+      } else {
+        if (
+          account.chain &&
+          supportedChains?.find((chain) => chain.id === account.chain?.id)
+        )
+          console.log("use across to buy from ", account.chain.name);
+        else console.error(account.chain?.name, "is NOT supported yet!");
+      }
     }
   };
 
@@ -125,23 +135,21 @@ export function BuyMemeForm({
         minAmount={MIN_IN_AMOUNT}
       />
       <div className="w-full flex flex-col gap-2 justify-start items-start">
-        <OnChainActionButtonWarper
+        {/* <OnChainActionButtonWarper
           className="w-full"
           size="lg"
           targetChainId={PGF_CONTRACT_CHAIN_ID}
-          warpedButton={
-            <Button
-              size="lg"
-              className="w-full"
-              onClick={onSubmit}
-              disabled={
-                isPending || !inAmount || !outAmount || !account.address
-              }
-            >
-              {isPending ? "Confirming ..." : buyBtnText || "Buy"}
-            </Button>
-          }
-        />
+          warpedButton={ */}
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={onSubmit}
+          disabled={isPending || !inAmount || !outAmount || !account.address}
+        >
+          {isPending ? "Confirming ..." : buyBtnText || "Buy"}
+        </Button>
+        {/* }
+        /> */}
         {nativeTokenInfo?.decimals &&
           nativeTokenInfo?.symbol &&
           tokenInfo?.decimals &&

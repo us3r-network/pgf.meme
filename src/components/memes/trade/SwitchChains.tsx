@@ -24,23 +24,26 @@ import {
 } from "viem/chains";
 import { useAccount, useSwitchChain } from "wagmi";
 
-const chains = [mainnet, arbitrum, base, optimism];
+export const supportedChains = process.env.NEXT_PUBLIC_TESTNET
+  ? [sepolia, arbitrumSepolia, baseSepolia, optimismSepolia]
+  : [mainnet, arbitrum, base, optimism];
 
 const SwitchChains = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { chain: defaultChain } = useAccount();
-  const [selectedChain, setSelectedChain] = useState(defaultChain);
+  const { chain: selectedChain } = useAccount();
+
   const { switchChain, status: switchChainStatus } = useSwitchChain();
   if (!selectedChain) return null;
   return (
     <Select
-      onValueChange={async(value) => {
+      onValueChange={async (value) => {
+        console.log("select chain", value);
         await switchChain({ chainId: Number(value) });
-        setSelectedChain(getChain(Number(value)));
       }}
       value={selectedChain?.id.toString()}
+      disabled={switchChainStatus === "pending"}
     >
       <SelectTrigger className="bg-secondary rounded-r-none text-white px-2">
         <TokenInfo token={selectedChain.nativeCurrency} chain={selectedChain} />
@@ -57,7 +60,7 @@ const SwitchChains = React.forwardRef<
           <div>Swap across networks</div>
         </div>
         <div className="flex flex-row items-center justify-between gap-4">
-          {chains
+          {supportedChains
             .filter((chain) => chain !== selectedChain)
             .map((chain) => (
               <SelectItem
@@ -75,7 +78,7 @@ const SwitchChains = React.forwardRef<
 export default SwitchChains;
 
 export function TokenInfo({ token, chain }: { token: any; chain?: Chain }) {
-  console.log("token", token, chain);
+  // console.log("token", token, chain);
   return (
     <div className="flex flex-row items-center gap-2">
       <img
