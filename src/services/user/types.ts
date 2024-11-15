@@ -1,3 +1,5 @@
+import { MemeGraduation } from "../meme/types";
+
 export type UserData = {
   id: string;
   name: string;
@@ -29,6 +31,11 @@ export type OwnedMemeData = {
   memeAmount: number;
   ethAmount: number;
   usdAmount: number;
+  graduation?: MemeGraduation;
+  referralReward?: {
+    amount: number;
+    isClaimed: boolean;
+  };
 };
 
 export type EnsProfile = {
