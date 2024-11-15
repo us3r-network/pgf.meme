@@ -22,7 +22,7 @@ export default function LeaderboardTable({
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
-              <TableHead>ETH</TableHead>
+              <TableHead>Amount</TableHead>
               <TableHead>Proportion</TableHead>
             </TableRow>
           </TableHeader>
@@ -41,9 +41,9 @@ export default function LeaderboardTable({
                 </TableCell>
                 <TableCell>
                   <span className="">
-                    {Intl.NumberFormat("en-US", {
-                      maximumFractionDigits: 6,
-                    }).format(Number(item.ethAmount))}
+                    {new Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                    }).format(Number(item.memeAmount))}{" "}
                   </span>
                 </TableCell>
                 <TableCell className="rounded-r-2xl">

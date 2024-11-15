@@ -24,9 +24,9 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
-              <TableHead>TXN</TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>ETH</TableHead>
-              <TableHead>$MEME</TableHead>
+              <TableHead>Catify</TableHead>
               {/* <TableHead className="">Date</TableHead> */}
               <TableHead>Action</TableHead>
             </TableRow>
@@ -84,7 +84,8 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <SquareArrowOutUpRight className=" stroke-[#1E1E1E] size-6 max-sm:size-4" />
+                    <span className="font-bold text-foreground p-4">🔗</span>
+                    {/* <SquareArrowOutUpRight className=" stroke-[#1E1E1E] size-6 max-sm:size-4" /> */}
                   </Link>
                 </TableCell>
               </TableRow>

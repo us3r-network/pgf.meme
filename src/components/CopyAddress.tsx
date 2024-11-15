@@ -14,7 +14,7 @@ export default function CopyAddress({
     <div className="flex flex-row items-center gap-2 line-clamp-1">
       <span className="font-normal">{shortPubKey(address)}</span>
       <Copy
-        className=" cursor-pointer"
+        className=" cursor-pointer size-6"
         onClick={() => {
           navigator.clipboard.writeText(address);
           toast({

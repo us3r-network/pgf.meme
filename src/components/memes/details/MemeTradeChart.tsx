@@ -33,7 +33,7 @@ export default function MemeTradeChart({ meme }: { meme: MemeData }) {
           </span>
         </div>
 
-        <div className="max-sm:hidden">
+        <div className="w-full max-sm:hidden">
           <CopyAddress address={meme.address} label="Address" />
         </div>
 

@@ -9,13 +9,30 @@ import { Button } from "./ui/button";
 import GuideText from "./GuideText";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 export default function Share2EarnDialogButton() {
   const [open, setOpen] = useState(false);
+  const { connectModalOpen } = useConnectModal();
+
+  // rainbowkit 弹窗在@radix-ui/react-dialog 的弹窗中打开后无法点击问题，需要手动解除
+  useEffect(() => {
+    if (connectModalOpen) {
+      const body = document.querySelector("body");
+      if (body) {
+        body.style.pointerEvents = "auto";
+      }
+    }
+  }, [connectModalOpen]);
   return (
-    <Dialog onOpenChange={setOpen} open={open}>
+    <Dialog
+      onOpenChange={(o) => {
+        if (connectModalOpen) return;
+        setOpen(o);
+      }}
+      open={open}
+    >
       <DialogTrigger asChild>
         <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
           Share2Earn
@@ -68,6 +85,7 @@ function CheckMyRewards({ onClose }: { onClose?: () => void }) {
           openConnectModal();
         } else {
           router.push(`/u/${address}`);
+          onClose?.();
         }
       }}
     >
