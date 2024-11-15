@@ -20,7 +20,8 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
             <TableRow>
               <TableHead>Token</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead>Value</TableHead>
+              <TableHead>Rewards</TableHead>
+              <TableHead>Claim</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="text-card-foreground max-sm:text-xs">
@@ -43,13 +44,11 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
                     }).format(Number(item.memeAmount))}{" "}
                   </span>
                 </TableCell>
+                <TableCell>
+                  <span className="">——</span>
+                </TableCell>
                 <TableCell className="rounded-r-2xl">
-                  <span className="text-center ">
-                    ～ $
-                    {Intl.NumberFormat("en-US", {
-                      maximumFractionDigits: 6,
-                    }).format(Number(item.usdAmount || 0))}
-                  </span>
+                  <span className="text-center ">——</span>
                 </TableCell>
               </TableRow>
             ))}

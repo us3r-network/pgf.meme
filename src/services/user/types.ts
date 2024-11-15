@@ -11,6 +11,7 @@ export type UserLeaderboardData = {
     avatar?: string;
   };
   ethAmount: number;
+  memeAmount: number;
   proportion: number | string;
 };
 
