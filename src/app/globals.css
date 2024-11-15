@@ -16,10 +16,12 @@ body {
   display: none;
 }
 
-/* https://github.com/rainbow-me/rainbowkit/discussions/1114 */
-[data-rk] [aria-labelledby="rk_connect_title"] {
-  z-index: 2147483645 !important;
+/* rainbowkit styles */
+
+[data-rk] [data-testid="rk-connect-button"] {
+  height: 36px !important;
 }
+
 
 @layer base {
   :root {

@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { WagmiProvider } from "wagmi";
 import AsyncData from "./AsyncData";
 import { Toaster } from "./ui/toaster";
+import { merge } from "lodash";
 
 dayjs.extend(relativeTime);
 
@@ -22,9 +23,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
             locale="en"
-            theme={lightTheme({
-              accentColor: "#ffffff",
-              accentColorForeground: "#FF1393",
+            theme={merge(lightTheme(), {
+              colors: {
+                accentColor: "#ffffff",
+                accentColorForeground: "#FF1393",
+              },
+              fonts: {
+                body: "unset",
+              },
+              radii: {
+                connectButton: "9999px",
+              },
             })}
           >
             <Provider store={store}>
