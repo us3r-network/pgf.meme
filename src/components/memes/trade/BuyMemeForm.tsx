@@ -15,6 +15,7 @@ import { formatUnits } from "viem";
 import { useAccount } from "wagmi";
 import { TokenAmountInput } from "./TokenAmountInput";
 import OnChainActionButtonWarper from "./OnChainActionButtonWarper";
+import useReferral from "@/hooks/app/useReferral";
 
 const MIN_IN_AMOUNT = 0.001;
 export function BuyMemeForm({
@@ -58,11 +59,12 @@ export function BuyMemeForm({
     isPending,
     isSuccess,
   } = usePGFFactoryContractBuy(token);
-
+  
+  const { referral } = useReferral();
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = () => {
     if (inAmount && outAmount) {
-      buy(inAmount, outAmount);
+      buy(inAmount, outAmount, referral);
       play();
     }
   };
@@ -150,12 +152,12 @@ export function BuyMemeForm({
                 ? `Buy 
               ${new Intl.NumberFormat("en-US", {
                 notation: "compact",
-              }).format(Number(formatUnits(inAmount, tokenInfo.decimals!)))} 
+              }).format(Number(formatUnits(outAmount, tokenInfo.decimals!)))} 
               ${tokenInfo?.symbol} with 
               ${new Intl.NumberFormat("en-US", {
                 notation: "compact",
               }).format(
-                Number(formatUnits(outAmount!, nativeTokenInfo.decimals))
+                Number(formatUnits(inAmount, nativeTokenInfo.decimals))
               )} 
               ${nativeTokenInfo.symbol}`
                 : "Fetching Price..."}
