@@ -27,6 +27,7 @@ import { CreateMemeButton } from "../memes/create/CreateMemeButton";
 import { useAccount } from "wagmi";
 import { cn } from "@/lib/utils";
 import Share2EarnDialogButton from "../Share2Earn";
+import { CustomConnectButton } from "../CustomConnectButton";
 
 // const navItems = [
 //   { title: "Explore", url: "/" },
@@ -78,7 +79,7 @@ export default function DefaultLayout({
           </div> */}
             {isHomePage ? (
               <Link
-                className="h-12 justify-start items-center gap-2 inline-flex"
+                className="h-12 justify-start items-center gap-2 inline-flex hover:no-underline"
                 href="/"
               >
                 <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
@@ -116,14 +117,14 @@ export default function DefaultLayout({
                 <CreateMemeButton />
               </div>
               <div className="hidden max-sm:block">
-                <ConnectButton
+                <CustomConnectButton
                   showBalance={false}
                   chainStatus={"none"}
                   label="Connect"
                 />
               </div>
               <div className="max-sm:hidden">
-                <ConnectButton chainStatus={"none"} />
+                <CustomConnectButton chainStatus={"none"} />
               </div>
             </div>
           </div>

@@ -27,7 +27,7 @@ export default function MemeCard({
                 variant={"secondary"}
                 className="max-sm:p-1 max-sm:text-xs"
               >
-                {shortPubKey(meme.createdBy.walletAddress)}
+                <span>{shortPubKey(meme.createdBy.walletAddress)}</span>
               </Badge>
             </Link>
           )}

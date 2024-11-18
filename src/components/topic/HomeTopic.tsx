@@ -28,7 +28,7 @@ export default function HomeTopic() {
             className=" text-2xl font-bold text-primary max-sm:text-base"
             href={"/topics"}
           >
-            View all
+            <span>View all</span>
           </Link>
         </div>
 
