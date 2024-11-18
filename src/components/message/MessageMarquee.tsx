@@ -37,7 +37,7 @@ export default function MessageMarquee() {
 
   return (
     <div className="flex overflow-hidden items-center h-full space-x-2">
-      <Marquee direction="right" loop={1}>
+      <Marquee direction="right" loop={1} pauseOnHover>
         {trades.map((trade, index) => {
           return <MessageItem key={index} data={trade} />;
         })}
@@ -64,7 +64,7 @@ function MessageItem({ data }: { data: TradeData }) {
         href={`/u/${user.walletAddress}`}
         className=" text-secondary-foreground  "
       >
-        {shortPubKey(user.walletAddress)}
+        <span>{shortPubKey(user.walletAddress)}</span>
       </Link>
       <div className=" text-secondary-foreground ">
         {txType === "sell" ? "sell" : "bought"}

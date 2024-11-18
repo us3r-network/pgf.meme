@@ -12,6 +12,11 @@ body {
   background-attachment: fixed;
 }
 
+/* 所有a标签下的span标签鼠标移动上去后加下划线 */
+a span:hover {
+  text-decoration: underline;
+}
+
 *::-webkit-scrollbar {
   display: none;
 }
