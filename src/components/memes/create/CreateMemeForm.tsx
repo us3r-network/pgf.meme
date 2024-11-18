@@ -32,6 +32,7 @@ import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
 import OnChainActionButtonWarper from "../trade/OnChainActionButtonWarper";
+import { useSound } from "use-sound";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -49,7 +50,7 @@ const FormSchema = z.object({
   topicId: z.number().optional(),
 });
 
-export function CreateMemeForm() {
+export function CreateMemeForm({onSuccess}:{onSuccess?: (transactionReceipt: any) => void;}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -70,7 +71,7 @@ export function CreateMemeForm() {
     isPending,
     isSuccess,
   } = usePGFFactoryContractLaunch();
-
+  const [play] = useSound("/audio/V.mp3");
   let newToken = useRef<PGFToken>();
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log("create token submit", data);
@@ -79,6 +80,7 @@ export function CreateMemeForm() {
       chainId: PGF_CONTRACT_CHAIN_ID,
       ...data,
     };
+    play();
     launch(data.name, data.symbol);
   };
 
@@ -90,6 +92,7 @@ export function CreateMemeForm() {
       // console.log(newToken);
       postMeme(newToken.current);
       console.log("Launch token successful!", transactionReceipt);
+      onSuccess?.(transactionReceipt);
       toast({
         title: "Launch Token",
         description: (
@@ -108,6 +111,7 @@ export function CreateMemeForm() {
           </pre>
         ),
       });
+
     }
   }, [isSuccess]);
 
@@ -225,7 +229,7 @@ export function CreateMemeForm() {
               disabled={isPending}
               className="w-full"
             >
-              Create
+              {isPending ? "Creating..." : "Create"}
             </Button>
           }
         />
