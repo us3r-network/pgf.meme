@@ -11,13 +11,14 @@ export type MemeData = {
   stats: MemeStats;
   tgGroupLink?: string; // tg群链接
   tgPostLink?: string; // tg channel post link
-  graduation?: {
-    tokenAddress: string;
-    poolAddress: string;
-  };
+  graduation?: MemeGraduation;
   topic?: TopicData;
 };
 
+export type MemeGraduation = {
+  tokenAddress: string;
+  poolAddress: string;
+};
 export type MemeCreatedBy = {
   walletAddress: string;
   name?: string;
