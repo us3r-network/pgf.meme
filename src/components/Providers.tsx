@@ -12,6 +12,7 @@ import { WagmiProvider } from "wagmi";
 import AsyncData from "./AsyncData";
 import { Toaster } from "./ui/toaster";
 import { merge } from "lodash";
+import { PGF_CONTRACT_CHAIN } from "@/constants/pgf";
 
 dayjs.extend(relativeTime);
 
@@ -22,6 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
+            initialChain={PGF_CONTRACT_CHAIN}
             locale="en"
             theme={merge(lightTheme(), {
               colors: {
