@@ -138,10 +138,12 @@ export function useERC20Transfer({
 export async function getTokenInfo({
   contractAddress,
   chainId,
+  logoURI,
   account,
 }: {
   contractAddress: Address;
   chainId: number;
+  logoURI?: string;
   account?: Address;
 }) {
   if (!contractAddress || !chainId) return undefined;
@@ -188,6 +190,7 @@ export async function getTokenInfo({
   return {
     contractAddress,
     chainId,
+    logoURI,
     name: data[0].result as string,
     symbol: data[1].result as string,
     decimals: data[2].result as number,

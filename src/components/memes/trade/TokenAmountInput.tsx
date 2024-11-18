@@ -13,11 +13,13 @@ import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 export function TokenAmountInput({
   contractAddress,
   chainId,
+  logoURI,
   onChange,
   minAmount = 0,
 }: {
   contractAddress?: Address;
   chainId?: number;
+  logoURI?: string;
   onChange: (value: bigint) => void;
   minAmount: number;
 }) {
@@ -29,6 +31,7 @@ export function TokenAmountInput({
         contractAddress,
         chainId: chainId || account.chainId || PGF_CONTRACT_CHAIN_ID,
         account: account?.address,
+        logoURI,
       }).then((info) => {
         // console.log("token info", info);
         setTokenInfo(info);
