@@ -55,7 +55,11 @@ export function TopicAndMemes({
         </div>
 
         {/* Right section - 2x2 grid */}
-        <div className={cn("flex-1 w-full grid grid-cols-3 gap-4")}>
+        <div
+          className={cn(
+            "flex-1 w-full grid grid-cols-3 gap-4 max-sm:grid-cols-2"
+          )}
+        >
           {showMems.map((item, idx) => {
             return (
               <div

@@ -105,7 +105,7 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                   </Button> */}
                     <DropdownMenuTrigger>
                       <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
-                        {account.ensAvatar && (
+                        {/* {account.ensAvatar && (
                           <div
                             style={{
                               background: account.ensAvatar,
@@ -122,7 +122,7 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                               style={{ width: 24, height: 24 }}
                             />
                           </div>
-                        )}
+                        )} */}
                         {account.displayName}
 
                         {account.displayBalance ? (

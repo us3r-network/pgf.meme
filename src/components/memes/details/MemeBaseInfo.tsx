@@ -27,6 +27,10 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
     chainId: PGF_CONTRACT_CHAIN_ID,
   };
 
+  const progress = Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  }).format(meme?.progress || 0);
   return (
     <div className="w-full flex flex-col gap-6">
       <Card className="w-full border-secondary">
@@ -56,11 +60,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           <div className="flex flex-row items-center justify-between">
             <span className="text-secondary font-bold">Progress</span>
             <span className="text-secondary font-bold">
-              {Number(meme.progress)}%
+              {Number(progress)}%
             </span>
           </div>
           <Progress
-            value={Number(meme.progress)}
+            value={Number(progress)}
             className="w-full bg-primary/20 h-6"
             indicatorClassName="bg-primary rounded-full"
           />

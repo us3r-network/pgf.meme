@@ -36,11 +36,11 @@ export default function Topics() {
               </TabsTrigger>
             ))}
           </div>
-          <SearchInput
+          {/* <SearchInput
             placeholder="Search topic..."
             disabled
             className="w-[260px] max-sm:hidden"
-          />
+          /> */}
         </TabsList>
 
         {tabs.map((tab) => (

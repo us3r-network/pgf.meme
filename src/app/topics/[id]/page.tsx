@@ -45,11 +45,11 @@ export default function TopicDetails() {
               </TabsTrigger>
             ))}
           </div>
-          <SearchInput
+          {/* <SearchInput
             placeholder="Search meme..."
             disabled
             className="w-[260px] max-sm:hidden"
-          />
+          /> */}
         </TabsList>
 
         {tabs.map((tab) => (
