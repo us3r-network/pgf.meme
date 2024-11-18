@@ -55,11 +55,11 @@ export function CreateMemeButton({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">
+      <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen max-sm:max-h-full max-h-[90%] flex flex-col">
         <DialogHeader>
           <DialogTitle>Create Meme</DialogTitle>
         </DialogHeader>
-        <div className="max-sm:flex-1 max-sm:overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           <CreateMemeForm />
         </div>
       </DialogContent>
