@@ -50,7 +50,11 @@ const FormSchema = z.object({
   topicId: z.number().optional(),
 });
 
-export function CreateMemeForm({onSuccess}:{onSuccess?: (transactionReceipt: any) => void;}) {
+export function CreateMemeForm({
+  onSuccess,
+}: {
+  onSuccess?: (transactionReceipt: any) => void;
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -87,12 +91,7 @@ export function CreateMemeForm({onSuccess}:{onSuccess?: (transactionReceipt: any
   useEffect(() => {
     // console.log("isSuccess", isSuccess, transactionReceipt, newToken.current);
     if (isSuccess && transactionReceipt && newToken.current) {
-      newToken.current.contractAddress = transactionReceipt.logs[0]
-        .address as Address;
-      // console.log(newToken);
-      postMeme(newToken.current);
       console.log("Launch token successful!", transactionReceipt);
-      onSuccess?.(transactionReceipt);
       toast({
         title: "Launch Token",
         description: (
@@ -111,7 +110,13 @@ export function CreateMemeForm({onSuccess}:{onSuccess?: (transactionReceipt: any
           </pre>
         ),
       });
-
+      newToken.current.contractAddress = transactionReceipt.logs[0]
+        .address as Address;
+      // console.log(newToken);
+      postMeme(newToken.current).then((resp) => {
+        console.log("post meme", resp);
+        onSuccess?.(transactionReceipt);
+      });
     }
   }, [isSuccess]);
 

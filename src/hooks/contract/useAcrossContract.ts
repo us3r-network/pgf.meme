@@ -11,7 +11,7 @@ import {
 } from "@/services/contract/across";
 import { PGFToken } from "@/services/contract/types";
 import { useState } from "react";
-import { Address, encodeAbiParameters } from "viem";
+import { Address, encodeAbiParameters, formatUnits } from "viem";
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -56,6 +56,12 @@ export function useAcrossContractBuy(token: PGFToken) {
     if (!acrossRouteInfo) return;
     // console.log("across route info", acrossRouteInfo);
     const [fee, timestamp] = await getFee(acrossRouteInfo, inAmount);
+    console.log(
+      "across fee",
+      `${Number(
+        formatUnits(fee, account.chain?.nativeCurrency.decimals || 18)
+      )} ${account.chain?.nativeCurrency.symbol}`
+    );
     setAcrossInfoPending(false);
     const acrossContract = {
       abi: SPOKE_ABI,
@@ -84,7 +90,12 @@ export function useAcrossContractBuy(token: PGFToken) {
             { name: "min", type: "uint256" },
             { name: "referral", type: "address" },
           ],
-          [account.address, token.contractAddress, BigInt(0), referral || ZERO_ADDRESS]
+          [
+            account.address,
+            token.contractAddress,
+            BigInt(0),
+            referral || ZERO_ADDRESS,
+          ]
         ),
       ],
       account: account.address,

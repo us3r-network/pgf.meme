@@ -11,7 +11,7 @@ import {
 import { CreateMemeForm } from "./CreateMemeForm";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 export function CreateMemeButton({
   variant = "pc",
 }: {
@@ -43,7 +43,9 @@ export function CreateMemeButton({
       </>
     );
   }
+  const router = useRouter()
   const [open, setOpen] = useState(false);
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -66,7 +68,8 @@ export function CreateMemeButton({
             onSuccess={(transactionReceipt) => {
               setOpen(false);
               const tokenAddress = transactionReceipt.logs[0].address;
-              redirect(`/memes/${tokenAddress}`);
+              console.log("token route", `/memes/${tokenAddress}`);
+              router.push(`/memes/${tokenAddress}`);
             }}
           />
         </div>
