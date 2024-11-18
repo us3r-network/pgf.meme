@@ -79,11 +79,15 @@ export default function DefaultLayout({
           </div> */}
             {isHomePage ? (
               <Link
-                className="h-12 justify-start items-center gap-2 inline-flex hover:no-underline"
+                className="h-12 justify-start items-center gap-4 inline-flex hover:no-underline"
                 href="/"
               >
+                <img
+                  src="/images/logo.png"
+                  className="size-12 max-sm:size-10"
+                />
                 <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
-                  <span className="max-sm:hidden">Welcome to </span> pgf.meme✨
+                  <span className="max-sm:hidden">Welcome to </span> eths.fun✨
                 </span>
               </Link>
             ) : (
