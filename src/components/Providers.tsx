@@ -12,6 +12,7 @@ import { WagmiProvider } from "wagmi";
 import AsyncData from "./AsyncData";
 import { Toaster } from "./ui/toaster";
 import { merge } from "lodash";
+import { base } from "viem/chains";
 
 dayjs.extend(relativeTime);
 
@@ -22,6 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
+            initialChain={base}
             locale="en"
             theme={merge(lightTheme(), {
               colors: {

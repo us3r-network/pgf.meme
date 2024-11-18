@@ -19,14 +19,14 @@ export const config = getDefaultConfig({
   appName: "pgf.meme",
   projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [
-    arbitrum,
-    arbitrumSepolia,
     base,
-    baseSepolia,
     mainnet,
     optimism,
-    optimismSepolia,
+    arbitrum,
+    baseSepolia,
     sepolia,
+    optimismSepolia,
+    arbitrumSepolia,
   ],
   transports: {
     [sepolia.id]: http("https://ethereum-sepolia-rpc.publicnode.com"),
