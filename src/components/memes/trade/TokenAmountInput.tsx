@@ -4,7 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
 import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
 import { PGFToken } from "@/services/contract/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Address, formatUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import SwitchChains, { TokenInfo } from "./SwitchChains";
@@ -13,11 +13,13 @@ import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 export function TokenAmountInput({
   contractAddress,
   chainId,
+  logoURI,
   onChange,
   minAmount = 0,
 }: {
   contractAddress?: Address;
   chainId?: number;
+  logoURI?: string;
   onChange: (value: bigint) => void;
   minAmount: number;
 }) {
@@ -29,6 +31,7 @@ export function TokenAmountInput({
         contractAddress,
         chainId: chainId || account.chainId || PGF_CONTRACT_CHAIN_ID,
         account: account?.address,
+        logoURI,
       }).then((info) => {
         // console.log("token info", info);
         setTokenInfo(info);
@@ -57,10 +60,15 @@ export function TokenAmountInput({
     parseUnits(minAmount?.toString(), tokenInfo?.decimals || 18) || 0n
   );
 
-  const onInputChange = (v: string) => {
+  const onInputChange = (v: string,updateInputText = false) => {
     if (Number(v) >= 0) {
       const amount = parseUnits(v, tokenInfo?.decimals || 18);
       setAmount(amount);
+      if (updateInputText) {
+        if (inputRef.current) {
+          inputRef.current.value = formatUnits(amount, tokenInfo?.decimals || 18);
+        }
+      }
     }
   };
 
@@ -70,11 +78,14 @@ export function TokenAmountInput({
     }
   }, [amount]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const onPercentButtonClick = (percent: number) => {
     if (tokenInfo?.balance) {
-      onInputChange(String((tokenInfo.balance * percent) / 100));
+      onInputChange(String((tokenInfo.balance * percent) / 100), true);
     }
   };
+
   if (!tokenInfo) return null;
   return (
     <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
@@ -88,8 +99,8 @@ export function TokenAmountInput({
         )}
         {tokenInfo?.decimals && (
           <Input
-            value={formatUnits(amount, tokenInfo.decimals)}
-            onChange={(e) => onInputChange(e.target.value)}
+            ref={inputRef}
+            onChange={(e) => onInputChange(e.target.value,false)}
             className="rounded-l-none"
           />
         )}
@@ -129,7 +140,7 @@ export function TokenAmountInput({
             </div>
             <Slider
               value={[Number(formatUnits(amount, tokenInfo.decimals))]}
-              onValueChange={(v) => onInputChange(v[0].toString())}
+              onValueChange={(v) => onInputChange(v[0].toString(), true)}
               min={minAmount}
               max={tokenInfo.balance}
               step={tokenInfo.balance / 100}

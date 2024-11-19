@@ -32,6 +32,7 @@ import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
 import OnChainActionButtonWarper from "../trade/OnChainActionButtonWarper";
+import { useSound } from "use-sound";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -49,7 +50,11 @@ const FormSchema = z.object({
   topicId: z.number().optional(),
 });
 
-export function CreateMemeForm() {
+export function CreateMemeForm({
+  onSuccess,
+}: {
+  onSuccess?: (transactionReceipt: any) => void;
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -70,7 +75,7 @@ export function CreateMemeForm() {
     isPending,
     isSuccess,
   } = usePGFFactoryContractLaunch();
-
+  const [play] = useSound("/audio/V.mp3");
   let newToken = useRef<PGFToken>();
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log("create token submit", data);
@@ -79,16 +84,13 @@ export function CreateMemeForm() {
       chainId: PGF_CONTRACT_CHAIN_ID,
       ...data,
     };
+    play();
     launch(data.name, data.symbol);
   };
 
   useEffect(() => {
     // console.log("isSuccess", isSuccess, transactionReceipt, newToken.current);
     if (isSuccess && transactionReceipt && newToken.current) {
-      newToken.current.contractAddress = transactionReceipt.logs[0]
-        .address as Address;
-      // console.log(newToken);
-      postMeme(newToken.current);
       console.log("Launch token successful!", transactionReceipt);
       toast({
         title: "Launch Token",
@@ -107,6 +109,13 @@ export function CreateMemeForm() {
             )}
           </pre>
         ),
+      });
+      newToken.current.contractAddress = transactionReceipt.logs[0]
+        .address as Address;
+      // console.log(newToken);
+      postMeme(newToken.current).then((resp) => {
+        console.log("post meme", resp);
+        onSuccess?.(transactionReceipt);
       });
     }
   }, [isSuccess]);
@@ -225,7 +234,7 @@ export function CreateMemeForm() {
               disabled={isPending}
               className="w-full"
             >
-              Create
+              {isPending ? "Creating..." : "Create"}
             </Button>
           }
         />

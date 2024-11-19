@@ -10,7 +10,8 @@ import {
   getSpokeContractAddress,
 } from "@/services/contract/across";
 import { PGFToken } from "@/services/contract/types";
-import { Address, encodeAbiParameters } from "viem";
+import { useState } from "react";
+import { Address, encodeAbiParameters, formatUnits } from "viem";
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -34,6 +35,7 @@ export function useAcrossContractBuy(token: PGFToken) {
     hash,
   });
   const account = useAccount();
+  const [acrossInfoPending, setAcrossInfoPending] = useState(false);
   const buy = async (
     chainId: number,
     inAmount: bigint,
@@ -49,11 +51,18 @@ export function useAcrossContractBuy(token: PGFToken) {
     //   chainId
     // );
     if (!account || !account.address) return;
+    setAcrossInfoPending(true);
     const acrossRouteInfo = await getAcrossRoute(chainId);
     if (!acrossRouteInfo) return;
     // console.log("across route info", acrossRouteInfo);
     const [fee, timestamp] = await getFee(acrossRouteInfo, inAmount);
-
+    console.log(
+      "across fee",
+      `${Number(
+        formatUnits(fee, account.chain?.nativeCurrency.decimals || 18)
+      )} ${account.chain?.nativeCurrency.symbol}`
+    );
+    setAcrossInfoPending(false);
     const acrossContract = {
       abi: SPOKE_ABI,
       address: getSpokeContractAddress(chainId),
@@ -81,7 +90,12 @@ export function useAcrossContractBuy(token: PGFToken) {
             { name: "min", type: "uint256" },
             { name: "referral", type: "address" },
           ],
-          [account.address, token.contractAddress, BigInt(0), referral || ZERO_ADDRESS]
+          [
+            account.address,
+            token.contractAddress,
+            BigInt(0),
+            referral || ZERO_ADDRESS,
+          ]
         ),
       ],
       account: account.address,
@@ -95,7 +109,7 @@ export function useAcrossContractBuy(token: PGFToken) {
     status,
     writeError,
     transationError,
-    isPending: writePending || transactionPending,
+    isPending: writePending || transactionPending || acrossInfoPending,
     isSuccess,
   };
 }

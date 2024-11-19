@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { CreateMemeForm } from "./CreateMemeForm";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-
+import { useState } from "react";
+import { useRouter } from 'next/navigation'
 export function CreateMemeButton({
   variant = "pc",
 }: {
@@ -42,8 +43,11 @@ export function CreateMemeButton({
       </>
     );
   }
+  const router = useRouter()
+  const [open, setOpen] = useState(false);
+  
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {variant === "mobile" ? (
           <Button className="w-full h-12 text-xl font-bold">
@@ -60,7 +64,14 @@ export function CreateMemeButton({
           <DialogTitle>Create Meme</DialogTitle>
         </DialogHeader>
         <div className="flex-1 overflow-y-auto">
-          <CreateMemeForm />
+          <CreateMemeForm
+            onSuccess={(transactionReceipt) => {
+              setOpen(false);
+              const tokenAddress = transactionReceipt.logs[0].address;
+              console.log("token route", `/memes/${tokenAddress}`);
+              router.push(`/memes/${tokenAddress}`);
+            }}
+          />
         </div>
       </DialogContent>
     </Dialog>

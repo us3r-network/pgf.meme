@@ -40,7 +40,7 @@ export function SellMemeForm({
       chainId: token.chainId,
       account: account?.address,
     }).then((info) => {
-      // console.log("token info", info);
+      console.log("token info", info);
       setTokenInfo(info);
     });
   }, [account]);
@@ -141,6 +141,7 @@ export function SellMemeForm({
       <TokenAmountInput
         contractAddress={token.contractAddress}
         chainId={token.chainId}
+        logoURI={token.logoURI}
         onChange={(value) => setInAmount(value)}
         minAmount={MIN_IN_AMOUNT}
       />

@@ -25,6 +25,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const token = {
     contractAddress: meme.address as Address,
     chainId: PGF_CONTRACT_CHAIN_ID,
+    logoURI: meme.image,
   };
 
   const progress = Intl.NumberFormat("en-US", {
