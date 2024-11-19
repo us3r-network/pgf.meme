@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { TradeData } from "@/services/trade/types";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
+import DefaultUserAvatar from "../user/DefaultUserAvatar";
 // export default function MessageMarquee() {
 //   const { trades } = useTradesMessage();
 //   const renderedLen = trades.length;
@@ -49,7 +50,7 @@ export default function MessageMarquee() {
 function MessageItem({ data }: { data: TradeData }) {
   const { user, meme, memeAmount, ethAmount, txType } = data;
   return (
-    <div className="h-12 p-4 box-border bg-secondary rounded-[10px] justify-center items-center gap-2 inline-flex">
+    <div className="h-12 p-4 box-border bg-secondary rounded-[10px] justify-center items-center gap-2 inline-flex mr-4">
       {/* <div className="justify-start items-start gap-2 flex">
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
@@ -62,8 +63,12 @@ function MessageItem({ data }: { data: TradeData }) {
       </div> */}
       <Link
         href={`/u/${user.walletAddress}`}
-        className=" text-secondary-foreground  "
+        className=" text-secondary-foreground flex flex-row gap-2 items-center"
       >
+        <DefaultUserAvatar
+          address={user.walletAddress}
+          className="w-6 h-6 rounded-full"
+        />
         <span>{shortPubKey(user.walletAddress)}</span>
       </Link>
       <div className=" text-secondary-foreground ">
@@ -79,14 +84,14 @@ function MessageItem({ data }: { data: TradeData }) {
         href={`/memes/${meme.address}`}
         className="justify-start items-start gap-2 flex flex-1 overflow-hidden"
       >
+        <span className="text-secondary-foreground  text-nowrap">
+          {meme.name}
+        </span>
         <div className="justify-start items-start gap-2.5 flex">
           <div className="w-6 h-6 justify-center items-center flex">
             <img className="w-6 h-6 rounded-[120px]" src={meme.image} />
           </div>
         </div>
-        <span className="text-secondary-foreground  text-nowrap">
-          {meme.name}
-        </span>
       </Link>
     </div>
   );

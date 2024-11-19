@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Card, CardContent } from "../ui/card";
+import DefaultUserAvatar from "../user/DefaultUserAvatar";
 
 export default function TradesTable({ data }: { data: TradeData[] }) {
   return (
@@ -38,7 +39,14 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
                 className="w-full h-16 bg-primary-foreground"
               >
                 <TableCell className="rounded-l-2xl">
-                  <Link href={`/u/${item.user.walletAddress}`}>
+                  <Link
+                    href={`/u/${item.user.walletAddress}`}
+                    className="flex flex-row items-center gap-2"
+                  >
+                    <DefaultUserAvatar
+                      address={item.user.walletAddress}
+                      className="w-6 h-6 rounded-full"
+                    />
                     <span className="font-bold">
                       {shortPubKey(item.user.walletAddress)}
                     </span>
