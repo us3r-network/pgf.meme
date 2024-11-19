@@ -19,7 +19,7 @@ export default function AboutDialogButton() {
           <DialogTitle>How eths.fun works?</DialogTitle>
         </DialogHeader>
         <div className="flex-col justify-start items-start gap-8 inline-flex max-sm:flex-1 max-sm:overflow-y-auto">
-          <div className="hidden max-sm:block">
+          {/* <div className="hidden max-sm:block">
             <GuideText
               guides={[
                 {
@@ -50,26 +50,30 @@ export default function AboutDialogButton() {
                 },
               ]}
             />
-          </div>
-          <div className="max-sm:hidden">
-            <GuideText
-              guides={[
-                {
-                  title: `Create & Share Meme Coins`,
-                  description: `Meme coins can be bought across multiple blockchains. After create, 20% tokens will be allocated to Vitalik(15%) and charity pool(5%) for charity.`,
-                },
-                {
-                  title: `Trade with Impact`,
-                  description: `Purchases are made using a step-based price curve, and once the total reaches $69k, the meme coin is launched on Uniswap V3, enabling full buy/sell trading on the Ethereum mainnet.`,
-                },
-                {
-                  title: `Earn by Sharing`,
-                  description: `Hold and share memes to earn an additional 5% reward from transactions made through your referral.`,
-                },
-              ]}
-            />
-          </div>
+          </div> */}
+          {/* <div className="max-sm:hidden"> */}
+          <GuideText
+            guides={[
+              {
+                title: `Create & Share Meme Coins`,
+                description: `Meme coins can be bought across multiple blockchains. After create, 20% tokens will be allocated to Vitalik(15%) and charity pool(5%) for charity.`,
+              },
+              {
+                title: `Trade with Impact`,
+                description: `Purchases are made using a step-based price curve, and once the total reaches $69k, the meme coin is launched on Uniswap V3, enabling full buy/sell trading on the Ethereum mainnet.`,
+              },
+              {
+                title: `Buy from L2s, trade on Ethereum Mainnet`,
+                description: `Supports purchasing memes from Layer 2 networks (OP, Base, Arbitrum) and transacting to mainnet.`,
+              },
+              {
+                title: `Earn by Sharing`,
+                description: `Hold and share memes to earn an additional 5% reward from transactions made through your referral.`,
+              },
+            ]}
+          />
         </div>
+        {/* </div> */}
       </DialogContent>
     </Dialog>
   );

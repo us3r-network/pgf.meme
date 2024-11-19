@@ -12,6 +12,8 @@ import {
 import Link from "next/link";
 import { useAccount, useDisconnect } from "wagmi";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import DefaultUserAvatar from "./user/DefaultUserAvatar";
 
 type ConnectButtonProps = React.ComponentProps<typeof ConnectButton>;
 
@@ -105,7 +107,7 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                   </Button> */}
                     <DropdownMenuTrigger>
                       <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
-                        {/* {account.ensAvatar && (
+                        {account.ensAvatar ? (
                           <div
                             style={{
                               background: account.ensAvatar,
@@ -122,7 +124,12 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                               style={{ width: 24, height: 24 }}
                             />
                           </div>
-                        )} */}
+                        ) : (
+                          <DefaultUserAvatar
+                            address={address!}
+                            className="size-6 rounded-full"
+                          />
+                        )}
                         {account.displayName}
 
                         {account.displayBalance ? (
@@ -132,6 +139,8 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                         ) : (
                           ""
                         )}
+
+                        <ChevronDown />
                       </Button>
                     </DropdownMenuTrigger>
                   </div>
