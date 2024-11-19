@@ -1,4 +1,4 @@
-import { MemeGraduation } from "../meme/types";
+import { MemeData, MemeGraduation } from "../meme/types";
 
 export type UserData = {
   id: string;
@@ -23,11 +23,7 @@ export type OwnedMemeData = {
     name?: string;
     avatar?: string;
   };
-  meme: {
-    address: string;
-    name: string;
-    image: string;
-  };
+  meme: MemeData;
   memeAmount: number;
   ethAmount: number;
   usdAmount: number;

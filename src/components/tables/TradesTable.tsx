@@ -27,7 +27,7 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
               <TableHead>User</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>ETH</TableHead>
-              <TableHead>Catify</TableHead>
+              <TableHead>Amount</TableHead>
               {/* <TableHead className="">Date</TableHead> */}
               <TableHead>Action</TableHead>
             </TableRow>
