@@ -20,6 +20,7 @@ import {
   getDexscreenerTokenUrl,
 } from "@/lib/onchain";
 import { DEFAULT_CHAIN } from "@/constants/chain";
+import DefaultUserAvatar from "@/components/user/DefaultUserAvatar";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const token = {
@@ -89,6 +90,12 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
           <LinkRow
             label="Created By"
             href={`/u/${meme.createdBy.walletAddress}`}
+            icon={
+              <DefaultUserAvatar
+                address={meme.createdBy.walletAddress}
+                className="w-6 h-6 rounded-full"
+              />
+            }
             text={shortPubKey(meme.createdBy.walletAddress)}
           />
           {meme.topic && (
@@ -137,11 +144,13 @@ function LinkRow({
   label,
   href,
   iconUrl,
+  icon,
   text,
 }: {
   label: string;
   href: string;
   iconUrl?: string;
+  icon?: React.ReactNode;
   text: string;
 }) {
   return (
@@ -152,12 +161,14 @@ function LinkRow({
         href={href}
         target={href.startsWith("http") ? "_blank" : ""}
       >
-        {iconUrl && (
+        {icon ? (
+          icon
+        ) : iconUrl ? (
           <Avatar className="w-6 h-6">
             <AvatarImage src={iconUrl} className="w-full h-full" />
             <AvatarFallback className="w-full h-full"></AvatarFallback>
           </Avatar>
-        )}
+        ) : null}
         <span className="font-normal line-clamp-1">{text}</span>
       </Link>
     </div>

@@ -4,8 +4,8 @@ import CopyAddress from "@/components/CopyAddress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import useLoadEnsProfile from "@/hooks/user/useLoadEnsProfile";
-import { hashToHSL } from "@/lib/color";
 import { useEffect, useState } from "react";
+import DefaultUserAvatar from "../DefaultUserAvatar";
 
 export default function UserBaseInfo({ address }: { address: string }) {
   const { ensProfile, loadEnsProfile, pending } = useLoadEnsProfile({
@@ -27,13 +27,8 @@ export default function UserBaseInfo({ address }: { address: string }) {
         <div className="w-full aspect-square">
           <Avatar className="w-full h-full aspect-square rounded-[20px]">
             <AvatarImage src={ensProfile?.avatar} className="object-cover " />
-            <AvatarFallback
-              className="rounded-[20px]"
-              style={{
-                backgroundColor: hashToHSL(address),
-              }}
-            >
-              <img src="/images/dog.png" />
+            <AvatarFallback className="rounded-[20px]">
+              <DefaultUserAvatar address={address} />
             </AvatarFallback>
           </Avatar>
         </div>

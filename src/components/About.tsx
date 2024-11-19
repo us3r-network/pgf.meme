@@ -16,7 +16,7 @@ export default function AboutDialogButton() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
-          <DialogTitle>How pgf.meme works?</DialogTitle>
+          <DialogTitle>How eths.fun works?</DialogTitle>
         </DialogHeader>
         <div className="flex-col justify-start items-start gap-8 inline-flex max-sm:flex-1 max-sm:overflow-y-auto">
           <div className="hidden max-sm:block">
@@ -64,7 +64,7 @@ export default function AboutDialogButton() {
                 },
                 {
                   title: `Earn by Sharing`,
-                  description: `Share your meme coin link and earn 4% commission on every transaction made through your referral.`,
+                  description: `Hold and share memes to earn an additional 5% reward from transactions made through your referral.`,
                 },
               ]}
             />

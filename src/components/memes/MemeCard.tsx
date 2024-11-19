@@ -5,6 +5,7 @@ import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { shortPubKey } from "@/lib/shortAddress";
+import DefaultUserAvatar from "../user/DefaultUserAvatar";
 
 export default function MemeCard({
   meme,
@@ -25,8 +26,12 @@ export default function MemeCard({
             >
               <Badge
                 variant={"secondary"}
-                className="max-sm:p-1 max-sm:text-xs"
+                className="max-sm:p-1 max-sm:text-xs gap-2"
               >
+                <DefaultUserAvatar
+                  address={meme.createdBy.walletAddress}
+                  className="w-6 h-6 rounded-full"
+                />
                 <span>{shortPubKey(meme.createdBy.walletAddress)}</span>
               </Badge>
             </Link>
