@@ -37,7 +37,7 @@ export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
                   <TableCell className="rounded-l-2xl">
                     <Link href={`/memes/${item.meme.address}`}>
                       <span className=" font-bold">
-                        {shortPubKey(item.meme.address)}
+                        {shortPubKey(item.meme.address)} (${item.meme.symbol})
                       </span>
                     </Link>
                   </TableCell>

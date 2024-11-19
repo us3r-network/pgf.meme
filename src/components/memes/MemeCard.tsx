@@ -39,7 +39,10 @@ export default function MemeCard({
 
           <div className="w-full aspect-square ">
             <Avatar className="w-full h-full object-cover rounded-lg">
-              <AvatarImage src={meme.image} />
+              <AvatarImage
+                src={meme.image}
+                className="hover:scale-105 transition-all"
+              />
               <AvatarFallback className="w-full h-full object-cover rounded-lg">
                 Image failed
               </AvatarFallback>
