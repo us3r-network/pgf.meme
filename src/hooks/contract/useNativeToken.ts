@@ -19,9 +19,10 @@ export async function getNativeTokenInfo({
   chainId,
   account,
 }: {
-  chainId: number;
+  chainId: number | undefined;
   account?: Address;
 }) {
+  if (!chainId) return undefined;
   const chain = getChain(chainId);
   const publicClient = createPublicClient({
     chain,

@@ -2,22 +2,22 @@ import { Button } from "@/components/ui/button";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import useReferral from "@/hooks/app/useReferral";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
-import { useNativeToken } from "@/hooks/contract/useNativeToken";
 import {
   useOutTokenAmountAfterFee,
   usePGFFactoryContractBuy,
 } from "@/hooks/contract/usePGFFactoryContract";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import useSound from "use-sound";
-import { formatUnits } from "viem";
+import { Address, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 import { supportedChains } from "./SwitchChains";
 import { TokenAmountInput } from "./TokenAmountInput";
 import { useAcrossContractBuy } from "@/hooks/contract/useAcrossContract";
 import { isSupported } from "@/services/contract/across";
+import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
 
 const MIN_IN_AMOUNT = 0.001;
 export function BuyMemeForm({
@@ -30,10 +30,7 @@ export function BuyMemeForm({
   onSuccess?: (transactionReceipt: any) => void;
 }) {
   const account = useAccount();
-  const { data: nativeTokenInfo } = useNativeToken(
-    account?.address,
-    PGF_CONTRACT_CHAIN_ID
-  );
+
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   useEffect(() => {
     getTokenInfo({
@@ -45,7 +42,17 @@ export function BuyMemeForm({
       setTokenInfo(info);
     });
   }, [account]);
+  const { referral } = useReferral();
 
+  const [nativeTokenInfo, setNativeTokenInfo] = useState<PGFToken>();
+  useEffect(() => {
+    getNativeTokenInfo({
+      chainId: account?.chainId,
+      account: account?.address,
+    }).then((info) => {
+      setNativeTokenInfo(info);
+    });
+  }, [account?.chainId, account?.address]);
   // console.log("tokens in buy", nativeTokenInfo, tokenInfo);
   const [inAmount, setInAmount] = useState(0n);
   const [debouncedInAmount] = useDebounce(inAmount, 500);
@@ -58,14 +65,23 @@ export function BuyMemeForm({
         minAmount={MIN_IN_AMOUNT}
       />
       <div className="w-full flex flex-col gap-2 justify-start items-start">
+        {referral && (
+          <div className="w-full text-primary text-center">
+            <p>Buy now to receive a 5% reward in tokens!</p>
+            <p>Don’t miss out!!!</p>
+          </div>
+        )}
         {tokenInfo &&
-          (account.chainId === PGF_CONTRACT_CHAIN_ID ? (
+        nativeTokenInfo?.balance &&
+        Number(nativeTokenInfo.balance) > MIN_IN_AMOUNT ? (
+          account.chainId === PGF_CONTRACT_CHAIN_ID ? (
             <BuyButton
               token={tokenInfo}
               inAmount={inAmount}
               outAmount={outAmount}
               onSuccess={onSuccess}
               buyBtnText={buyBtnText}
+              referral={referral}
             />
           ) : (
             <AcrossBuyButton
@@ -74,8 +90,22 @@ export function BuyMemeForm({
               outAmount={outAmount}
               onSuccess={onSuccess}
               buyBtnText={buyBtnText}
+              referral={referral}
             />
-          ))}
+          )
+        ) : (
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() =>
+              showNoticeToast(
+                "Insufficient balance, click to switch transaction network"
+              )
+            }
+          >
+            {buyBtnText || "Buy"}
+          </Button>
+        )}
         {nativeTokenInfo?.decimals &&
           nativeTokenInfo?.symbol &&
           tokenInfo?.decimals &&
@@ -97,6 +127,13 @@ export function BuyMemeForm({
                 : "Fetching Price..."}
             </div>
           )}
+        <div className="text-center">
+          <p>
+            Supports purchasing memes from Layer 2 networks (OP, Base, Arbitrum)
+            and transacting to{" "}
+            <span className="font-bold text-primary">mainnet</span>.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -108,12 +145,14 @@ const BuyButton = ({
   outAmount,
   onSuccess,
   buyBtnText,
+  referral,
 }: {
   token: PGFToken;
   inAmount: bigint;
   outAmount: bigint | undefined;
   onSuccess?: (transactionReceipt: any) => void;
   buyBtnText?: string;
+  referral?: Address;
 }) => {
   const account = useAccount();
   const {
@@ -126,7 +165,6 @@ const BuyButton = ({
     isSuccess,
   } = usePGFFactoryContractBuy(token);
 
-  const { referral } = useReferral();
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = () => {
     if (inAmount && outAmount && account) {
@@ -208,12 +246,14 @@ const AcrossBuyButton = ({
   outAmount,
   onSuccess,
   buyBtnText,
+  referral,
 }: {
   token: PGFToken;
   inAmount: bigint;
   outAmount: bigint | undefined;
   onSuccess?: (transactionReceipt: any) => void;
   buyBtnText?: string;
+  referral?: Address;
 }) => {
   const account = useAccount();
   const {
@@ -226,22 +266,19 @@ const AcrossBuyButton = ({
     isSuccess,
   } = useAcrossContractBuy(token);
 
-  const { referral } = useReferral();
   const [play] = useSound("/audio/V.mp3");
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     if (inAmount && outAmount && account) {
-        if (
-          account.chainId &&
-          await isSupported(account.chainId)
-        ) 
-          {
-            console.log("use across to buy from ", account.chain?.name);
-            buy(account.chainId, inAmount, outAmount, referral);
-            play();
-          
-        } else console.error(account.chain?.name, "is NOT supported yet!");
-      }
+      if (account.chainId && (await isSupported(account.chainId))) {
+        console.log("use across to buy from ", account.chain?.name);
+        buy(account.chainId, inAmount, outAmount, referral);
+        play();
+      } else
+        showNoticeToast(
+          `${account.chain?.name} is not supported, click to switch transaction network`
+        );
     }
+  };
 
   useEffect(() => {
     if (isSuccess && transactionReceipt && token) {
@@ -299,4 +336,17 @@ const AcrossBuyButton = ({
       {isPending ? "Confirming ..." : buyBtnText || "Buy"}
     </Button>
   );
+};
+
+const showNoticeToast = (description: string) => {
+  toast({
+    title: "Notice",
+    variant: "notice",
+    description: (
+      <div className="m-2 w-80 p-4 flex flex-col gap-6">
+        <p className="w-full text-base">{description}</p>
+        <img src="/images/switchChainGuide.png" alt="Switch Chain Guide" />
+      </div>
+    ),
+  });
 };
