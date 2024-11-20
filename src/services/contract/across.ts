@@ -3,6 +3,10 @@ import acrossContract from "./across-contract.json";
 import { AcrossRouteInfo } from "./types";
 import { Address } from "viem";
 
+const ACROSS_API_ROOT = process.env.NEXT_PUBLIC_TESTNET
+  ? "https://testnet.across.to/api/"
+  : "https://app.to/api/";
+
 export const getSpokeContractAddress = (chainId: number) => {
   try {
     return (acrossContract as any)[chainId.toString()]["SpokePool"]["address"];
@@ -11,9 +15,7 @@ export const getSpokeContractAddress = (chainId: number) => {
   }
 };
 
-const ACROSS_ROUTE_URL = process.env.NEXT_PUBLIC_TESTNET
-  ? "https://testnet.across.to/api/available-routes"
-  : "https://app.to/api/available-routes";
+const ACROSS_ROUTE_URL = ACROSS_API_ROOT + "available-routes";
 export const getAcrossRoute = async (chainId: number) => {
   try {
     const resp = await fetch(ACROSS_ROUTE_URL);
@@ -36,7 +38,7 @@ export const isSupported = async (chainId: number) => {
   else return false;
 };
 
-const ACROSS_ROUTE_FEE_URL = "https://testnet.across.to/api/suggested-fees";
+const ACROSS_ROUTE_FEE_URL = ACROSS_API_ROOT + "suggested-fees";
 export const getFee = async (route: AcrossRouteInfo, amount: bigint) => {
   const resp = await fetch(
     `${ACROSS_ROUTE_FEE_URL}?inputToken=${route.originToken}&outputToken=${
@@ -50,4 +52,16 @@ export const getFee = async (route: AcrossRouteInfo, amount: bigint) => {
   const fee = data.lpFee.total;
   const timestamp = Number(data.timestamp);
   return [fee, timestamp];
+};
+
+const ACROSS_DEPOSIT_STATUS_URL = ACROSS_API_ROOT + "deposit/status";
+export const getDepositStatus = async (
+  originChainId: number,
+  depositId: number
+) => {
+  const resp = await fetch(
+    `${ACROSS_ROUTE_FEE_URL}?originChainId=${originChainId}&depositId=${depositId}`
+  );
+  const data = await resp.json();
+  return data;
 };
