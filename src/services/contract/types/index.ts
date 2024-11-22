@@ -23,3 +23,8 @@ export type AcrossRouteInfo = {
     destinationTokenSymbol: string;
     isNative: boolean;
 }
+
+export type AcrossDepositStatus = {
+  fillStatus: string;
+  fillTxHash: string;
+};

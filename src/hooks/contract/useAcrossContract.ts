@@ -6,17 +6,43 @@ import {
 import { SPOKE_ABI } from "@/services/contract/abi/spoke-abi";
 import {
   getAcrossRoute,
+  getDepositStatus,
   getFee,
   getSpokeContractAddress,
+  isAcrossSupported,
 } from "@/services/contract/across";
-import { PGFToken } from "@/services/contract/types";
-import { useState } from "react";
+import {
+  AcrossDepositStatus,
+  AcrossRouteInfo,
+  PGFToken,
+} from "@/services/contract/types";
+import { useEffect, useState } from "react";
 import { Address, encodeAbiParameters, formatUnits } from "viem";
 import {
   useAccount,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
+
+export function useAcrossRouteInfo(chainId: number | undefined) {
+  const [isSupported, setIsSupported] = useState(false);
+  const [routeInfo, setRouteInfo] = useState<AcrossRouteInfo | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    const getRouteInfo = async () => {
+      const routeInfo = await getAcrossRoute(chainId!);
+      setRouteInfo(routeInfo);
+      console.log("routeInfo", routeInfo);
+      const supported = await isAcrossSupported(chainId!);
+      setIsSupported(supported);
+      console.log("supported", supported);
+    };
+    if (chainId) getRouteInfo();
+  }, [chainId]);
+
+  return { routeInfo, isSupported };
+}
 
 export function useAcrossContractBuy(token: PGFToken) {
   const {
@@ -37,9 +63,8 @@ export function useAcrossContractBuy(token: PGFToken) {
   const account = useAccount();
   const [acrossInfoPending, setAcrossInfoPending] = useState(false);
   const buy = async (
-    chainId: number,
+    routeInfo: AcrossRouteInfo,
     inAmount: bigint,
-    outAmount: bigint,
     referral: Address | undefined
   ) => {
     // console.log(
@@ -52,10 +77,9 @@ export function useAcrossContractBuy(token: PGFToken) {
     // );
     if (!account || !account.address) return;
     setAcrossInfoPending(true);
-    const acrossRouteInfo = await getAcrossRoute(chainId);
-    if (!acrossRouteInfo) return;
+    if (!routeInfo) return;
     // console.log("across route info", acrossRouteInfo);
-    const [fee, timestamp] = await getFee(acrossRouteInfo, inAmount);
+    const [fee, timestamp] = await getFee(routeInfo, inAmount);
     console.log(
       "across fee",
       `${Number(
@@ -65,8 +89,8 @@ export function useAcrossContractBuy(token: PGFToken) {
     setAcrossInfoPending(false);
     const acrossContract = {
       abi: SPOKE_ABI,
-      address: getSpokeContractAddress(chainId),
-      chainId,
+      address: getSpokeContractAddress(routeInfo.originChainId),
+      chainId: routeInfo.originChainId,
     };
     writeContract({
       ...acrossContract,
@@ -74,8 +98,8 @@ export function useAcrossContractBuy(token: PGFToken) {
       args: [
         account.address,
         PGF_FACTORY_CONTRACT_ADDRESS, // pgfFactory address
-        acrossRouteInfo.originToken, // base weth address
-        acrossRouteInfo.destinationToken, // ethereum weth address
+        routeInfo.originToken, // originChain eth address
+        routeInfo.destinationToken, // ethereum eth address
         inAmount,
         inAmount - BigInt(fee),
         PGF_CONTRACT_CHAIN_ID,
@@ -112,4 +136,34 @@ export function useAcrossContractBuy(token: PGFToken) {
     isPending: writePending || transactionPending || acrossInfoPending,
     isSuccess,
   };
+}
+
+export function useAcrossDepositState(
+  depositId: number | undefined,
+  chainId: number | undefined
+) {
+  const [status, setStatus] = useState<AcrossDepositStatus | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
+    if (chainId && depositId) {
+      interval = setInterval(() => {
+        console.log("get deposit status", chainId, depositId);
+        getDepositStatus(chainId, depositId).then((data) => {
+          console.log("deposit status", data);
+          setStatus(data);
+          if (data.fillStatus === "filled") {
+            clearInterval(interval);
+          }
+        });
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [depositId, chainId]);
+
+  return { status };
 }

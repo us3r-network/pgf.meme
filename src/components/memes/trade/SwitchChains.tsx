@@ -46,7 +46,7 @@ const SwitchChains = React.forwardRef<
       disabled={switchChainStatus === "pending"}
     >
       <SelectTrigger className="bg-secondary rounded-r-none text-white px-2">
-        <TokenInfo token={selectedChain.nativeCurrency} chain={selectedChain} />
+        <TokenInfo token={{...selectedChain.nativeCurrency, chainId: selectedChain.id}}  />
       </SelectTrigger>
       <SelectContent
         className={cn(
@@ -67,7 +67,7 @@ const SwitchChains = React.forwardRef<
                 value={chain.id.toString()}
                 className="cursor-pointer p-0"
               >
-                <TokenInfo token={chain.nativeCurrency} chain={chain} />
+                <TokenInfo token={{...chain.nativeCurrency, chainId: chain.id}} />
               </SelectItem>
             ))}
         </div>
@@ -77,27 +77,34 @@ const SwitchChains = React.forwardRef<
 });
 export default SwitchChains;
 
-export function TokenInfo({ token, chain }: { token: any; chain?: Chain }) {
-  // console.log("token", token, chain);
+export function TokenInfo({ token }: { token: any}) {
   return (
     <div className="flex flex-row items-center gap-2">
-      <img
-        className="size-8"
-        src={
-          token.contractAddress
-            ? token.logoURI
-            : chain === mainnet || chain === sepolia
-            ? "/images/nativeToken/mainnet.png"
-            : chain === arbitrum || chain === arbitrumSepolia
-            ? "/images/nativeToken/arbitrum.png"
-            : chain === base || chain === baseSepolia
-            ? "/images/nativeToken/base.png"
-            : chain === optimism || chain === optimismSepolia
-            ? "/images/nativeToken/optimism.png"
-            : null
-        }
-      />
+      {token.contractAddress ? (
+        <img className="size-8" src={token.logoURI} />
+      ) : (
+        <ChainLogo chainId={token.chainId} />
+      )}
       <div className="text-2xl">{token.symbol}</div>
     </div>
+  );
+}
+
+export function ChainLogo({ chainId }: { chainId: number }) {
+  return (
+    <img
+      className="size-8"
+      src={
+        chainId === mainnet.id || chainId === sepolia.id
+          ? "/images/nativeToken/mainnet.png"
+          : chainId === arbitrum.id || chainId === arbitrumSepolia.id
+          ? "/images/nativeToken/arbitrum.png"
+          : chainId === base.id || chainId === baseSepolia.id
+          ? "/images/nativeToken/base.png"
+          : chainId === optimism.id || chainId === optimismSepolia.id
+          ? "/images/nativeToken/optimism.png"
+          : undefined
+      }
+    />
   );
 }

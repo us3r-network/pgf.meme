@@ -1,25 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import useReferral from "@/hooks/app/useReferral";
+import {
+  useAcrossContractBuy,
+  useAcrossDepositState,
+  useAcrossRouteInfo,
+} from "@/hooks/contract/useAcrossContract";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
+import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
 import {
   useOutTokenAmountAfterFee,
   usePGFFactoryContractBuy,
 } from "@/hooks/contract/usePGFFactoryContract";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import useSound from "use-sound";
 import { Address, formatUnits } from "viem";
 import { useAccount } from "wagmi";
-import { supportedChains } from "./SwitchChains";
+import { ChainLogo, supportedChains } from "./SwitchChains";
 import { TokenAmountInput } from "./TokenAmountInput";
-import { useAcrossContractBuy } from "@/hooks/contract/useAcrossContract";
-import { isSupported } from "@/services/contract/across";
-import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
+import { CheckIcon } from "@radix-ui/react-icons";
 
-const MIN_IN_AMOUNT = 0.001;
+const MIN_IN_AMOUNT = 0.01;
 export function BuyMemeForm({
   token,
   buyBtnText,
@@ -266,13 +270,26 @@ const AcrossBuyButton = ({
     isSuccess,
   } = useAcrossContractBuy(token);
 
+  const depositId = parseInt(transactionReceipt?.logs[1].topics[2] as `0x${string}`, 16);
+  const { status: acrossDepositStatus } = useAcrossDepositState(
+    depositId,
+    account.chainId
+  );
+
+  const { routeInfo, isSupported } = useAcrossRouteInfo(account.chainId);
+
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = async () => {
     if (inAmount && outAmount && account) {
-      if (account.chainId && (await isSupported(account.chainId))) {
+      if (isSupported && routeInfo) {
         console.log("use across to buy from ", account.chain?.name);
-        buy(account.chainId, inAmount, outAmount, referral);
+        buy(routeInfo, inAmount, referral);
         play();
+        toast({    
+          variant: "notice",
+          description: <TransactionState />,
+          duration: 60000, // 60 seconds
+        });
       } else
         showNoticeToast(
           `${account.chain?.name} is not supported, click to switch transaction network`
@@ -280,33 +297,74 @@ const AcrossBuyButton = ({
     }
   };
 
+  const TransactionState = () => {
+    if (!account.chainId) return null;
+    return (
+      <div className="w-72 flex flex-col items-center gap-6 font-bold m-6">
+        <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
+            <ChainLogo chainId={account.chainId} />
+            <p>Start</p>
+          </div>
+          <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+          <div className="flex flex-col items-center gap-2">
+            <div className="size-8 rounded-full border-2 border-primary flex items-center justify-center">
+              {isSuccess && <CheckIcon className="size-4" />}
+            </div>
+            <p>Deposit</p>
+          </div>
+          <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+          <div className="flex flex-col items-center gap-2">
+            <ChainLogo chainId={PGF_CONTRACT_CHAIN_ID} />
+            <p>Fill</p>
+          </div>
+        </div>
+        <p>
+          {acrossDepositStatus?.fillStatus === "filled" ? (
+            <a
+              href={`${account.chain?.blockExplorers?.default.url}/tx/${acrossDepositStatus?.fillTxHash}`}
+            >
+              Transaction Completed! Click to view
+            </a>
+          ) : isSuccess ? (
+            `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`
+          ) : isPending ? (
+            "Depositing ...(1/2)"
+          ) : (
+            "Confirming in your wallet..."
+          )}
+        </p>
+      </div>
+    );
+  };
+
   useEffect(() => {
     if (isSuccess && transactionReceipt && token) {
       onSuccess?.(transactionReceipt);
-      toast({
-        title: "Buy Token",
-        description: (
-          <pre className="m-2 w-80 p-4">
-            <p>
-              Buy{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(Number(formatUnits(outAmount!, token.decimals!)))}{" "}
-              {token.symbol}
-            </p>
-            {PGF_CONTRACT_CHAIN?.blockExplorers && (
-              <p>
-                <a
-                  href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}/tx/${transactionReceipt.transactionHash}`}
-                  target="_blank"
-                >
-                  View Details
-                </a>
-              </p>
-            )}
-          </pre>
-        ),
-      });
+      // toast({
+      //   title: "Buy Token",
+      //   description: (
+      //     <pre className="m-2 w-80 p-4">
+      //       <p>
+      //         Buy{" "}
+      //         {new Intl.NumberFormat("en-US", {
+      //           notation: "compact",
+      //         }).format(Number(formatUnits(outAmount!, token.decimals!)))}{" "}
+      //         {token.symbol}
+      //       </p>
+      //       {PGF_CONTRACT_CHAIN?.blockExplorers && (
+      //         <p>
+      //           <a
+      //             href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}/tx/${transactionReceipt.transactionHash}`}
+      //             target="_blank"
+      //           >
+      //             View Details
+      //           </a>
+      //         </p>
+      //       )}
+      //     </pre>
+      //   ),
+      // });
     }
   }, [isSuccess]);
 

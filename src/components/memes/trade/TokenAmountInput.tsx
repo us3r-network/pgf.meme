@@ -37,7 +37,7 @@ export function TokenAmountInput({
         setTokenInfo(info);
       });
     } else {
-      console.log("getNativeTokenInfo", chainId, account.chainId);
+      // console.log("getNativeTokenInfo", chainId, account.chainId);
       getNativeTokenInfo({
         chainId: chainId || account.chainId || PGF_CONTRACT_CHAIN_ID,
         account: account?.address,

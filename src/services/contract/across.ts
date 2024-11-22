@@ -32,7 +32,7 @@ export const getAcrossRoute = async (chainId: number) => {
   }
 };
 
-export const isSupported = async (chainId: number) => {
+export const isAcrossSupported = async (chainId: number) => {
   const route = await getAcrossRoute(chainId);
   if (route) return true;
   else return false;
@@ -60,7 +60,7 @@ export const getDepositStatus = async (
   depositId: number
 ) => {
   const resp = await fetch(
-    `${ACROSS_ROUTE_FEE_URL}?originChainId=${originChainId}&depositId=${depositId}`
+    `${ACROSS_DEPOSIT_STATUS_URL}?originChainId=${originChainId}&depositId=${depositId}`
   );
   const data = await resp.json();
   return data;
