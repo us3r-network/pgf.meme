@@ -1,3 +1,5 @@
+"use client";
+
 import OwnedMemesTable from "@/components/tables/OwnedMemesTable";
 import useLoadOwnedMemes from "@/hooks/user/useLoadOwnedMemes";
 import { useEffect, useState } from "react";

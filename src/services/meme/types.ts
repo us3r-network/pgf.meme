@@ -1,7 +1,8 @@
+import { Address } from "viem";
 import type { TopicData } from "../topic/types";
 
 export type MemeData = {
-  address: string;
+  address: Address;
   symbol: string;
   name: string;
   image: string;

@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { MemeData, MemeGraduation } from "../meme/types";
 
 export type UserData = {
@@ -8,7 +9,7 @@ export type UserData = {
 
 export type UserLeaderboardData = {
   user: {
-    walletAddress: string;
+    walletAddress: Address;
     name?: string;
     avatar?: string;
   };
@@ -19,7 +20,7 @@ export type UserLeaderboardData = {
 
 export type OwnedMemeData = {
   user: {
-    walletAddress: string;
+    walletAddress: Address;
     name?: string;
     avatar?: string;
   };
@@ -30,6 +31,9 @@ export type OwnedMemeData = {
   graduation?: MemeGraduation;
   referralReward?: {
     amount: number;
+    proof: any;
+    index: number;
+    root: any;
     isClaimed: boolean;
   };
 };
