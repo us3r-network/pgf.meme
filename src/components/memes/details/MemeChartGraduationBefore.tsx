@@ -85,7 +85,7 @@ function MemeChart({ data }: { data: MemeChartData }) {
       chart.remove();
     };
   }, [data]);
-  return <div ref={chartContainerRef} className="w-full h-full" />;
+  return <div ref={chartContainerRef} className="w-full aspect-video" />;
 }
 
 function MemeChartGraduationBefore({ meme }: { meme: MemeData }) {
@@ -98,7 +98,7 @@ function MemeChartGraduationBefore({ meme }: { meme: MemeData }) {
   }, []);
   if (pending) {
     return (
-      <div className="w-full h-full flex justify-center items-start mt-[20%]">
+      <div className="w-full aspect-video flex justify-center items-start mt-[20%]">
         <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
       </div>
     );

@@ -21,31 +21,34 @@ export default function Home() {
       <div className="w-full hidden mb-3 max-sm:block">
         <CreateMemeButton variant={"mobile"} />
       </div>
-      <div className="w-full mb-6 max-sm:mb-3">
-        <HomeTopic />
-      </div>
-      <Tabs defaultValue={SortBy.trending} className="w-full">
-        <TabsList className="w-full mb-6 max-sm:mb-3">
-          <div className="flex-1 flex flex-row items-center overflow-x-auto gap-6 max-sm:gap-2">
-            {tabs.map((tab) => (
-              <TabsTrigger value={tab.value} key={tab.value}>
-                {tab.name}
-              </TabsTrigger>
-            ))}
-          </div>
-          {/* <SearchInput
+      <div className="w-full flex gap-4 relative">
+        <Tabs defaultValue={SortBy.trending} className="flex-1">
+          <TabsList className="w-full mb-6 max-sm:mb-3">
+            <div className="flex-1 flex flex-row items-center overflow-x-auto gap-6 max-sm:gap-2">
+              {tabs.map((tab) => (
+                <TabsTrigger value={tab.value} key={tab.value}>
+                  {tab.name}
+                </TabsTrigger>
+              ))}
+            </div>
+            {/* <SearchInput
             placeholder="Search meme..."
             disabled
             className="w-[260px] max-sm:hidden"
           /> */}
-        </TabsList>
+          </TabsList>
 
-        {tabs.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value}>
-            <MemeList sortBy={tab.value} />
-          </TabsContent>
-        ))}
-      </Tabs>
+          {tabs.map((tab) => (
+            <TabsContent value={tab.value} key={tab.value}>
+              <MemeList sortBy={tab.value} />
+            </TabsContent>
+          ))}
+        </Tabs>
+
+        <div className="w-[340px] sticky">
+          <HomeTopic />
+        </div>
+      </div>
     </div>
   );
 }

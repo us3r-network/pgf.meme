@@ -43,7 +43,7 @@ export function TopicAndMemes({
   };
 }) {
   const { topic, memes } = data;
-  const showMems = memes.slice(0, 3);
+  const showMems = memes.slice(0, 2);
   return (
     <div className="w-full">
       <div className="w-full flex flex-row gap-4 max-sm:flex-col">
@@ -55,7 +55,7 @@ export function TopicAndMemes({
         {/* Right section - 2x2 grid */}
         <div
           className={cn(
-            "flex-1 w-full grid grid-cols-3 gap-4 max-sm:grid-cols-2"
+            "flex-1 w-full grid grid-rows-2 gap-4 max-sm:grid-rows-1"
           )}
         >
           {showMems.map((item, idx) => {

@@ -2,8 +2,8 @@
 
 import Loading from "@/components/Loading";
 import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
-import MemeTabs from "@/components/memes/details/MemeTabs";
 import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
+import MemeCard from "@/components/memes/MemeCard";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
@@ -30,11 +30,11 @@ export default function MemeDetails() {
   return (
     <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
       <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
+        <MemeCard meme={meme} />
         <MemeTradeChart meme={meme} />
         <div className="w-full hidden max-sm:block">
           <MemeBaseInfo meme={meme} />
         </div>
-        <MemeTabs meme={meme} />
       </div>
       <div className="w-[400px] max-sm:hidden">
         <MemeBaseInfo meme={meme} />

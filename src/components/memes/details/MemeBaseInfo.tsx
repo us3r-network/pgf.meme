@@ -21,6 +21,7 @@ import {
 } from "@/lib/onchain";
 import { DEFAULT_CHAIN } from "@/constants/chain";
 import DefaultUserAvatar from "@/components/user/DefaultUserAvatar";
+import MemePosts from "./MemePosts";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   const token = {
@@ -70,7 +71,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             className="w-full bg-primary/20 h-6"
             indicatorClassName="bg-primary rounded-full"
           />
-          <div className=" break-words">
+          {/* <div className=" break-words">
             Purchases are made using a step-based price curve, and once the
             total reaches $69k, the meme coin is launched on Uniswap V3,
             enabling full buy/sell trading on the Ethereum mainnet. There are{" "}
@@ -97,7 +98,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
               />
             }
             text={shortPubKey(meme.createdBy.walletAddress)}
-          />
+          /> */}
           {meme.topic && (
             <LinkRow
               label="Topic"
@@ -106,7 +107,7 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             />
           )}
 
-          <CopyAddress address={meme.address} label="Address" />
+          {/* <CopyAddress address={meme.address} label="Address" />
           <LinkRow
             label={DEFAULT_CHAIN.blockExplorers.default.name}
             href={getBlockExploreAddressUrl(
@@ -128,10 +129,11 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
             />
           )}
 
-          <MemeShareButton meme={meme} />
+          <MemeShareButton meme={meme} /> */}
           {!!meme?.tgPostLink && (
             <div className="hidden max-sm:block">
               <JoinTelegramButton link={meme?.tgPostLink} />
+              <MemePosts meme={meme} />
             </div>
           )}
         </CardContent>
