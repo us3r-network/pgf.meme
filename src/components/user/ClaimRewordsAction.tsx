@@ -1,8 +1,11 @@
+"use client";
+
 import { OwnedMemeData } from "@/services/user/types";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useClaim } from "@/hooks/contract/merkle-distributor/useClaim";
 import { useToast } from "@/hooks/use-toast";
+import { parseUnits } from "viem";
 
 export default function ClaimRewordsAction({ data }: { data: OwnedMemeData }) {
   const { referralReward, graduation } = data;
@@ -32,10 +35,10 @@ export default function ClaimRewordsAction({ data }: { data: OwnedMemeData }) {
       onClick={() => {
         claim({
           token: data.meme.address,
-          index: 0,
+          index: data.referralReward?.index!,
           account: data.user.walletAddress,
-          amount: data.referralReward?.amount as unknown as bigint,
-          merkleProof: [],
+          amount: parseUnits(String(data.referralReward?.amount || 0), 18),
+          merkleProof: data.referralReward?.proof,
         });
       }}
     >

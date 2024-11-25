@@ -1,49 +1,55 @@
+"use client";
+
 import { API_BASE_URL } from "@/constants";
 import { TradeData } from "@/services/trade/types";
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
-type EventsMap = {
-  memeTrades: string;
-};
 export default function useTradesMessage() {
-  const [socket, setSocket] = useState<Socket<EventsMap, EventsMap> | null>(
-    null
-  );
-  const messageQueue = useRef<TradeData[]>([]);
+  const socket = useRef<Socket | null>(null);
+  // const messageQueue = useRef<TradeData[]>([]);
   const [trades, setTrades] = useState<TradeData[]>([]);
+  const [currentMessage, setCurrentMessage] = useState<TradeData | null>(null); // 当前滚动的消息
 
   useEffect(() => {
-    const newSocket = io(API_BASE_URL, {
+    socket.current = io(API_BASE_URL, {
       transports: ["websocket"],
       path: "/pgf-api/websocket",
     });
-    setSocket(newSocket);
 
-    newSocket.on("connect", () => {
+    socket.current.on("connect", () => {
       console.log("Connected to websocket");
     });
 
-    newSocket.on("memeTrades", (data) => {
-      messageQueue.current.push(data);
+    socket.current.on("memeTrades", (data) => {
+      setTrades((prev) => {
+        if (prev.find((item) => item.txHash === data.txHash)) return prev;
+        return [...prev, data];
+      });
     });
 
     return () => {
-      newSocket.disconnect();
+      // 清理 WebSocket 事件监听和连接
+      if (socket.current) {
+        socket.current.off("memeTrades");
+        socket.current.disconnect();
+        socket.current = null;
+      }
     };
   }, []);
 
-  // 每3秒从消息队列中取一个消息放到渲染列表
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (messageQueue.current.length > 0) {
-        const message = messageQueue.current[0];
-        messageQueue.current = messageQueue.current.slice(1);
-        setTrades((prev) => [message, ...prev]);
-      }
-    }, 3000);
-    return () => clearInterval(intervalId);
-  }, []);
+    // 如果当前没有消息正在滚动，从队列中取下一条消息
+    if (!currentMessage && trades.length > 0) {
+      setCurrentMessage(trades[0]);
+      setTrades((prev) => prev.slice(1)); // 移除已滚动的消息
+    }
+  }, [trades, currentMessage]);
 
-  return { trades };
+  const handleMarqueeComplete = () => {
+    // 当前消息滚动完成后清除
+    setCurrentMessage(null);
+  };
+
+  return { trades, currentMessage, handleMarqueeComplete };
 }

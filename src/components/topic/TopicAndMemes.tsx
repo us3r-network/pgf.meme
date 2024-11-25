@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { TopicData } from "@/services/topic/types";
 import { MemeData } from "@/services/meme/types";

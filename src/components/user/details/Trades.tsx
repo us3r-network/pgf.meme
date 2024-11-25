@@ -1,3 +1,5 @@
+"use client";
+
 import TradesTable from "@/components/tables/TradesTable";
 import useLoadUserTrades from "@/hooks/user/useLoadUserTrades";
 import { useEffect, useState } from "react";
