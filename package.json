@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@across-protocol/app-sdk": "^0.0.4",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",

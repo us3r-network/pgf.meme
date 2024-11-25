@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import useReferral from "@/hooks/app/useReferral";
 import {
-  useAcrossContractBuy,
-  useAcrossDepositState,
+  useAcrossSDKBuy,
   useAcrossRouteInfo,
-} from "@/hooks/contract/useAcrossContract";
+} from "@/hooks/contract/useAcrossSDK";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
 import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
 import {
@@ -22,6 +21,8 @@ import { useAccount } from "wagmi";
 import { ChainLogo, supportedChains } from "./SwitchChains";
 import { TokenAmountInput } from "./TokenAmountInput";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { TransactionProgress } from "@across-protocol/app-sdk";
+import { getChain } from "@/lib/onchain";
 
 const MIN_IN_AMOUNT = 0.01;
 export function BuyMemeForm({
@@ -260,35 +261,36 @@ const AcrossBuyButton = ({
   referral?: Address;
 }) => {
   const account = useAccount();
-  const {
-    buy,
-    transactionReceipt,
-    status,
-    writeError,
-    transationError,
-    isPending,
-    isSuccess,
-  } = useAcrossContractBuy(token);
+  const { buy, progress, isPending, isSuccess, transactionReceipt } =
+    useAcrossSDKBuy(token);
 
-  const depositId = parseInt(transactionReceipt?.logs[1].topics[2] as `0x${string}`, 16);
-  const { status: acrossDepositStatus } = useAcrossDepositState(
-    depositId,
+  // const depositId = parseInt(transactionReceipt?.logs[1].topics[2] as `0x${string}`, 16);
+
+  const { routeInfo, isSupported, limits } = useAcrossRouteInfo(
     account.chainId
   );
-
-  const { routeInfo, isSupported } = useAcrossRouteInfo(account.chainId);
+  const acrossEnabled =
+    limits?.minDeposit &&
+    limits?.maxDeposit &&
+    inAmount > BigInt(limits.minDeposit) &&
+    inAmount < BigInt(limits.maxDeposit);
 
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = async () => {
-    if (inAmount && outAmount && account) {
+    if (inAmount && outAmount && account?.chainId) {
       if (isSupported && routeInfo) {
         console.log("use across to buy from ", account.chain?.name);
         buy(routeInfo, inAmount, referral);
         play();
-        toast({    
+        toast({
           variant: "notice",
-          description: <TransactionState />,
-          duration: 60000, // 60 seconds
+          description: (
+            <TransactionState
+              progress={progress}
+              originChainId={account.chainId}
+            />
+          ),
+          duration: 120000, // 120 seconds
         });
       } else
         showNoticeToast(
@@ -297,99 +299,24 @@ const AcrossBuyButton = ({
     }
   };
 
-  const TransactionState = () => {
-    if (!account.chainId) return null;
-    return (
-      <div className="w-72 flex flex-col items-center gap-6 font-bold m-6">
-        <div className="flex flex-row items-center gap-2">
-          <div className="flex flex-col items-center gap-2">
-            <ChainLogo chainId={account.chainId} />
-            <p>Start</p>
-          </div>
-          <div className="h-[2px] w-20 bg-primary self-center mb-8" />
-          <div className="flex flex-col items-center gap-2">
-            <div className="size-8 rounded-full border-2 border-primary flex items-center justify-center">
-              {isSuccess && <CheckIcon className="size-4" />}
-            </div>
-            <p>Deposit</p>
-          </div>
-          <div className="h-[2px] w-20 bg-primary self-center mb-8" />
-          <div className="flex flex-col items-center gap-2">
-            <ChainLogo chainId={PGF_CONTRACT_CHAIN_ID} />
-            <p>Fill</p>
-          </div>
-        </div>
-        <p>
-          {acrossDepositStatus?.fillStatus === "filled" ? (
-            <a
-              href={`${account.chain?.blockExplorers?.default.url}/tx/${acrossDepositStatus?.fillTxHash}`}
-            >
-              Transaction Completed! Click to view
-            </a>
-          ) : isSuccess ? (
-            `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`
-          ) : isPending ? (
-            "Depositing ...(1/2)"
-          ) : (
-            "Confirming in your wallet..."
-          )}
-        </p>
-      </div>
-    );
-  };
-
   useEffect(() => {
     if (isSuccess && transactionReceipt && token) {
       onSuccess?.(transactionReceipt);
-      // toast({
-      //   title: "Buy Token",
-      //   description: (
-      //     <pre className="m-2 w-80 p-4">
-      //       <p>
-      //         Buy{" "}
-      //         {new Intl.NumberFormat("en-US", {
-      //           notation: "compact",
-      //         }).format(Number(formatUnits(outAmount!, token.decimals!)))}{" "}
-      //         {token.symbol}
-      //       </p>
-      //       {PGF_CONTRACT_CHAIN?.blockExplorers && (
-      //         <p>
-      //           <a
-      //             href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}/tx/${transactionReceipt.transactionHash}`}
-      //             target="_blank"
-      //           >
-      //             View Details
-      //           </a>
-      //         </p>
-      //       )}
-      //     </pre>
-      //   ),
-      // });
     }
   }, [isSuccess]);
-
-  useEffect(() => {
-    if (writeError || transationError) {
-      console.log("Buy token failed", writeError, transationError);
-      toast({
-        title: "Buy Token",
-        variant: "destructive",
-        description: (
-          <pre className="m-2 w-80 p-4">
-            <p>Buy token failed!</p>
-            <p>{writeError?.message || transationError?.message}</p>
-          </pre>
-        ),
-      });
-    }
-  }, [writeError, transationError]);
 
   return (
     <Button
       size="lg"
       className="w-full"
       onClick={onSubmit}
-      disabled={isPending || !inAmount || !outAmount || !account.address}
+      disabled={
+        isPending ||
+        !inAmount ||
+        !outAmount ||
+        !account.address ||
+        !acrossEnabled
+      }
     >
       {isPending ? "Confirming ..." : buyBtnText || "Buy"}
     </Button>
@@ -407,4 +334,59 @@ const showNoticeToast = (description: string) => {
       </div>
     ),
   });
+};
+
+const TransactionState = ({
+  progress,
+  originChainId,
+}: {
+  progress: TransactionProgress | undefined;
+  originChainId: number;
+}) => {
+  if (!progress) return null;
+  let description;
+  switch (progress.step) {
+    case "approve":
+      description = "Confirming in your wallet...";
+      break;
+    case "deposit":
+      if (progress.status === "txSuccess") {
+        description = (
+          <a
+            href={`${getChain(originChainId)?.blockExplorers?.default.url}/tx/${
+              progress.txReceipt?.transactionHash
+            }`}
+          >
+            Transaction Completed! Click to view
+          </a>
+        );
+      } else description = "Depositing ...(1/2)";
+      break;
+    case "fill":
+      description = `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`;
+      break;
+  }
+  return (
+    <div className="w-72 flex flex-col items-center gap-6 font-bold m-6">
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          <ChainLogo chainId={originChainId} />
+          <p>Start</p>
+        </div>
+        <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+        <div className="flex flex-col items-center gap-2">
+          <div className="size-8 rounded-full border-2 border-primary flex items-center justify-center">
+            {progress.step === "fill" && <CheckIcon className="size-4" />}
+          </div>
+          <p>Deposit</p>
+        </div>
+        <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+        <div className="flex flex-col items-center gap-2">
+          <ChainLogo chainId={PGF_CONTRACT_CHAIN_ID} />
+          <p>Fill</p>
+        </div>
+      </div>
+      <p>{description}</p>
+    </div>
+  );
 };

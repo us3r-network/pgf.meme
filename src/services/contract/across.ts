@@ -14,6 +14,13 @@ export const getSpokeContractAddress = (chainId: number) => {
     return undefined;
   }
 };
+export const getMulticallHandlerAddress = (chainId: number) => {
+  try {
+    return (acrossContract as any)[chainId.toString()]["MulticallHandler"]["address"];
+  } catch (e) {
+    return undefined;
+  }
+};
 
 const ACROSS_ROUTE_URL = ACROSS_API_ROOT + "available-routes";
 export const getAcrossRoute = async (chainId: number) => {
@@ -26,6 +33,7 @@ export const getAcrossRoute = async (chainId: number) => {
         item.destinationChainId === PGF_CONTRACT_CHAIN_ID &&
         item.isNative
     );
+    // console.log("available-routes",routes);
     return routes[0];
   } catch (e) {
     return undefined;
@@ -37,6 +45,19 @@ export const isAcrossSupported = async (chainId: number) => {
   if (route) return true;
   else return false;
 };
+
+const ACROSS_LIMITS_URL = ACROSS_API_ROOT + "limits";
+export const getLimits= async (route: AcrossRouteInfo) => {
+    const resp = await fetch(
+      `${ACROSS_LIMITS_URL}?inputToken=${route.originToken}&outputToken=${
+        route.destinationToken
+      }&originChainId=${route.originChainId}&destinationChainId=${
+        route.destinationChainId
+      }`
+    );
+    const data = await resp.json();
+    return data;
+  };
 
 const ACROSS_ROUTE_FEE_URL = ACROSS_API_ROOT + "suggested-fees";
 export const getFee = async (route: AcrossRouteInfo, amount: bigint) => {

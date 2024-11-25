@@ -15,7 +15,7 @@ import { useAccount } from "wagmi";
 export default function MemeActions({ token }: { token: PGFToken }) {
   const { referral } = useReferral();
   // @bufan
-  console.log("referral", referral);
+  // console.log("referral", referral);
   const account = useAccount();
   const tabs = [
     { name: "Buy", value: "buy" },
