@@ -1,25 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { PGF_CONTRACT_CHAIN, PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import useReferral from "@/hooks/app/useReferral";
+import {
+  useAcrossSDKBuy,
+  useAcrossRouteInfo,
+} from "@/hooks/contract/useAcrossSDK";
 import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
+import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
 import {
   useOutTokenAmountAfterFee,
   usePGFFactoryContractBuy,
 } from "@/hooks/contract/usePGFFactoryContract";
 import { toast } from "@/hooks/use-toast";
 import { PGFToken } from "@/services/contract/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import useSound from "use-sound";
 import { Address, formatUnits } from "viem";
 import { useAccount } from "wagmi";
-import { supportedChains } from "./SwitchChains";
+import { ChainLogo, supportedChains } from "./SwitchChains";
 import { TokenAmountInput } from "./TokenAmountInput";
-import { useAcrossContractBuy } from "@/hooks/contract/useAcrossContract";
-import { isSupported } from "@/services/contract/across";
-import { getNativeTokenInfo } from "@/hooks/contract/useNativeToken";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { TransactionProgress } from "@across-protocol/app-sdk";
+import { getChain } from "@/lib/onchain";
+import { Toaster } from "@/components/ui/toaster";
 
-const MIN_IN_AMOUNT = 0.001;
+const MIN_IN_AMOUNT = 0.01;
 export function BuyMemeForm({
   token,
   buyBtnText,
@@ -57,7 +63,9 @@ export function BuyMemeForm({
   const [inAmount, setInAmount] = useState(0n);
   const [debouncedInAmount] = useDebounce(inAmount, 500);
   const { outAmount } = useOutTokenAmountAfterFee(token, debouncedInAmount);
-
+  const [progress, setProgress] = useState<TransactionProgress | undefined>(
+    undefined
+  );
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <TokenAmountInput
@@ -89,6 +97,7 @@ export function BuyMemeForm({
               inAmount={inAmount}
               outAmount={outAmount}
               onSuccess={onSuccess}
+              onProgress={(progress) => setProgress(progress)}
               buyBtnText={buyBtnText}
               referral={referral}
             />
@@ -127,13 +136,20 @@ export function BuyMemeForm({
                 : "Fetching Price..."}
             </div>
           )}
-        <div className="text-center">
-          <p>
-            Supports purchasing memes from Layer 2 networks (OP, Base, Arbitrum)
-            and transacting to{" "}
-            <span className="font-bold text-primary">mainnet</span>.
-          </p>
-        </div>
+        {progress && account.chainId ? (
+          <TransactionState
+            progress={progress}
+            originChainId={account.chainId}
+          />
+        ) : (
+          <div className="text-center">
+            <p>
+              Supports purchasing memes from Layer 2 networks (OP, Base,
+              Arbitrum) and transacting to{" "}
+              <span className="font-bold text-primary">mainnet</span>.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -245,6 +261,7 @@ const AcrossBuyButton = ({
   inAmount,
   outAmount,
   onSuccess,
+  onProgress,
   buyBtnText,
   referral,
 }: {
@@ -252,26 +269,33 @@ const AcrossBuyButton = ({
   inAmount: bigint;
   outAmount: bigint | undefined;
   onSuccess?: (transactionReceipt: any) => void;
+  onProgress?: (progress: TransactionProgress | undefined) => void;
   buyBtnText?: string;
   referral?: Address;
 }) => {
   const account = useAccount();
-  const {
-    buy,
-    transactionReceipt,
-    status,
-    writeError,
-    transationError,
-    isPending,
-    isSuccess,
-  } = useAcrossContractBuy(token);
+  const { buy, reset, progress, isPending, isSuccess, transactionReceipt } =
+    useAcrossSDKBuy(token);
+  useEffect(() => {
+    console.log("progress update", progress);
+    onProgress?.(progress);
+  }, [progress]);
+
+  const { routeInfo, isSupported, limits } = useAcrossRouteInfo(
+    account.chainId
+  );
+  const acrossEnabled =
+    limits?.minDeposit &&
+    limits?.maxDeposit &&
+    inAmount > BigInt(limits.minDeposit) &&
+    inAmount < BigInt(limits.maxDeposit);
 
   const [play] = useSound("/audio/V.mp3");
   const onSubmit = async () => {
-    if (inAmount && outAmount && account) {
-      if (account.chainId && (await isSupported(account.chainId))) {
+    if (inAmount && outAmount && account?.chainId) {
+      if (isSupported && routeInfo) {
         console.log("use across to buy from ", account.chain?.name);
-        buy(account.chainId, inAmount, outAmount, referral);
+        buy(routeInfo, inAmount, referral);
         play();
       } else
         showNoticeToast(
@@ -283,55 +307,24 @@ const AcrossBuyButton = ({
   useEffect(() => {
     if (isSuccess && transactionReceipt && token) {
       onSuccess?.(transactionReceipt);
-      toast({
-        title: "Buy Token",
-        description: (
-          <pre className="m-2 w-80 p-4">
-            <p>
-              Buy{" "}
-              {new Intl.NumberFormat("en-US", {
-                notation: "compact",
-              }).format(Number(formatUnits(outAmount!, token.decimals!)))}{" "}
-              {token.symbol}
-            </p>
-            {PGF_CONTRACT_CHAIN?.blockExplorers && (
-              <p>
-                <a
-                  href={`${PGF_CONTRACT_CHAIN.blockExplorers.default.url}/tx/${transactionReceipt.transactionHash}`}
-                  target="_blank"
-                >
-                  View Details
-                </a>
-              </p>
-            )}
-          </pre>
-        ),
-      });
+      setTimeout(() => {
+        reset();
+      }, 10000);
     }
   }, [isSuccess]);
-
-  useEffect(() => {
-    if (writeError || transationError) {
-      console.log("Buy token failed", writeError, transationError);
-      toast({
-        title: "Buy Token",
-        variant: "destructive",
-        description: (
-          <pre className="m-2 w-80 p-4">
-            <p>Buy token failed!</p>
-            <p>{writeError?.message || transationError?.message}</p>
-          </pre>
-        ),
-      });
-    }
-  }, [writeError, transationError]);
 
   return (
     <Button
       size="lg"
       className="w-full"
       onClick={onSubmit}
-      disabled={isPending || !inAmount || !outAmount || !account.address}
+      disabled={
+        isPending ||
+        !inAmount ||
+        !outAmount ||
+        !account.address ||
+        !acrossEnabled
+      }
     >
       {isPending ? "Confirming ..." : buyBtnText || "Buy"}
     </Button>
@@ -349,4 +342,68 @@ const showNoticeToast = (description: string) => {
       </div>
     ),
   });
+};
+
+const TransactionState = ({
+  progress,
+  originChainId,
+}: {
+  progress: TransactionProgress | undefined;
+  originChainId: number;
+}) => {
+  const [description, setDescription] = useState<string | React.ReactNode>();
+  useEffect(() => {
+    console.log("progress in TransactionState", progress, originChainId);
+    let des;
+    if (progress?.step && progress?.status) {
+      switch (progress.step) {
+        case "approve":
+          des = "Confirming in your wallet...";
+          break;
+        case "deposit":
+          if (progress.status === "txSuccess") {
+            des = (
+              <a
+                href={`${
+                  getChain(originChainId)?.blockExplorers?.default.url
+                }/tx/${progress.txReceipt?.transactionHash}`}
+              >
+                Transaction Completed! Click to view
+              </a>
+            );
+          } else des = "Depositing ...(1/2)";
+          break;
+        case "fill":
+          des = `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`;
+          break;
+      }
+    } else {
+      des = "Preparing transaction...";
+    }
+    setDescription(des);
+  }, [progress]);
+
+  return (
+    <div className="w-72 flex flex-col items-center gap-6 font-bold m-6">
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          <ChainLogo chainId={originChainId} />
+          <p>Start</p>
+        </div>
+        <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+        <div className="flex flex-col items-center gap-2">
+          <div className="size-8 rounded-full border-2 border-primary flex items-center justify-center">
+            {progress?.step === "fill" && <CheckIcon className="size-4" />}
+          </div>
+          <p>Deposit</p>
+        </div>
+        <div className="h-[2px] w-20 bg-primary self-center mb-8" />
+        <div className="flex flex-col items-center gap-2">
+          <ChainLogo chainId={PGF_CONTRACT_CHAIN_ID} />
+          <p>Fill</p>
+        </div>
+      </div>
+      <p>{description}</p>
+    </div>
+  );
 };
