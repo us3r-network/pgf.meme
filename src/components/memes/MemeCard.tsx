@@ -16,7 +16,7 @@ import {
 } from "@/lib/onchain";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 
-export default function MemeCard({
+export default function MemeCardLink({
   meme,
   className,
 }: {
@@ -24,94 +24,105 @@ export default function MemeCard({
   className?: string;
 }) {
   return (
-    <Link
-      className={cn("w-full h-fit", className)}
-      href={`/memes/${meme.address}`}
-    >
-      <Card className="w-full h-full overflow-hidden">
-        <CardContent className="w-full h-full overflow-hidden flex flex-row gap-3 p-3">
-          <div className="h-[168px] aspect-square ">
-            <Avatar className="w-full h-full object-cover rounded-lg">
-              <AvatarImage
-                src={meme.image}
-                className="hover:scale-105 transition-all"
-              />
-              <AvatarFallback className="w-full h-full object-cover rounded-lg">
-                Image failed
-              </AvatarFallback>
-            </Avatar>
-          </div>
-
-          <div className="flex-1 flex flex-col gap-2">
-            <span className="text-primary text-2xl font-bold line-clamp-1 max-sm:text-base">
-              {meme.name}
-            </span>
-            <div className="flex items-center gap-3">
-              <div className="font-bold text-secondary">Market Cap</div>
-              <div className="text-xs">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 0,
-                  notation: "compact",
-                }).format(meme.stats.marketCap)}{" "}
-                (
-                {new Intl.NumberFormat("en-US", {
-                  notation: "compact",
-                }).format(meme.stats.buyersNumber)}{" "}
-                bought)
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="font-bold text-secondary">Created By</div>
-              {meme?.createdBy?.walletAddress && (
-                <Link
-                  className="flex items-center gap-1"
-                  href={`/u/${meme.createdBy.walletAddress}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <DefaultUserAvatar
-                    address={meme.createdBy.walletAddress}
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <span className="text-xs">
-                    {shortPubKey(meme.createdBy.walletAddress)}
-                  </span>
-                  <div className="text-xs">from now TODO</div>
-                </Link>
-              )}
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="font-bold text-secondary">Address</div>
-              <span className="text-xs">{shortPubKey(meme.address)}</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <MemeLinkButton
-                label={DEFAULT_CHAIN.blockExplorers.default.name}
-                href={getBlockExploreAddressUrl(
-                  PGF_CONTRACT_CHAIN_ID,
-                  meme.address
-                )}
-                iconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
-              />
-              {!!meme.graduation && (
-                <MemeLinkButton
-                  label={"Dexscreener"}
-                  href={getDexscreenerTokenUrl(
-                    PGF_CONTRACT_CHAIN_ID,
-                    meme.graduation.tokenAddress
-                  )}
-                  iconUrl={dexscreenerIconUrl}
-                />
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <Link className={cn("w-full", className)} href={`/memes/${meme.address}`}>
+      <MemeCard meme={meme} />
     </Link>
+  );
+}
+
+export function MemeCard({
+  meme,
+  className,
+}: {
+  meme: MemeData;
+  className?: string;
+}) {
+  return (
+    <Card className="w-full h-fit overflow-hidden">
+      <CardContent className="w-full h-full overflow-hidden flex flex-row gap-3 p-3">
+        <div className="h-[168px] aspect-square ">
+          <Avatar className="w-full h-full object-cover rounded-lg">
+            <AvatarImage
+              src={meme.image}
+              className="hover:scale-105 transition-all"
+            />
+            <AvatarFallback className="w-full h-full object-cover rounded-lg">
+              Image failed
+            </AvatarFallback>
+          </Avatar>
+        </div>
+
+        <div className="flex-1 flex flex-col gap-2">
+          <span className="text-primary text-2xl font-bold line-clamp-1 max-sm:text-base">
+            {meme.name} (${meme.symbol})
+          </span>
+          <div className="flex items-center gap-3">
+            <div className="font-bold text-secondary">Market Cap</div>
+            <div className="text-xs">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 0,
+                notation: "compact",
+              }).format(meme.stats.marketCap || 0)}{" "}
+              (
+              {new Intl.NumberFormat("en-US", {
+                notation: "compact",
+              }).format(meme.stats.buyersNumber || 0)}{" "}
+              bought)
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="font-bold text-secondary">Created By</div>
+            {meme?.createdBy?.walletAddress && (
+              <Link
+                className="flex items-center gap-1"
+                href={`/u/${meme.createdBy.walletAddress}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DefaultUserAvatar
+                  address={meme.createdBy.walletAddress}
+                  className="w-6 h-6 rounded-full"
+                />
+                <span className="text-xs">
+                  {shortPubKey(meme.createdBy.walletAddress)}
+                </span>
+                <div className="text-xs">
+                  {dayjs(meme.created_at).fromNow()}
+                </div>
+              </Link>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="font-bold text-secondary">Address</div>
+            <span className="text-xs">{shortPubKey(meme.address)}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <MemeLinkButton
+              label={DEFAULT_CHAIN.blockExplorers.default.name}
+              href={getBlockExploreAddressUrl(
+                PGF_CONTRACT_CHAIN_ID,
+                meme.address
+              )}
+              iconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
+            />
+            {!!meme.graduation && (
+              <MemeLinkButton
+                label={"Dexscreener"}
+                href={getDexscreenerTokenUrl(
+                  PGF_CONTRACT_CHAIN_ID,
+                  meme.graduation.tokenAddress
+                )}
+                iconUrl={dexscreenerIconUrl}
+              />
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -131,6 +142,7 @@ function MemeLinkButton({
       <Button
         variant={"secondary"}
         className="flex flex-row gap-1 items-center px-3 py-1"
+        onClick={(e) => e.stopPropagation()}
       >
         {icon ? (
           icon

@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MemeList from "@/components/memes/MemeList";
 import { SortBy } from "@/services/meme/types";
 import { CreateMemeButton } from "@/components/memes/create/CreateMemeButton";
-import HomeTopic from "@/components/topic/HomeTopic";
-import { SearchInput } from "@/components/ui/search-input";
+import HomeTopic from "@/components/topic/home-topic/HomeTopic";
+import HomeMemes from "@/components/memes/home-memes/HomeMemes";
 
 const capitalizeFirstLetter = (str: string) =>
   str[0].toUpperCase() + str.slice(1);
@@ -31,11 +31,6 @@ export default function Home() {
                 </TabsTrigger>
               ))}
             </div>
-            {/* <SearchInput
-            placeholder="Search meme..."
-            disabled
-            className="w-[260px] max-sm:hidden"
-          /> */}
           </TabsList>
 
           {tabs.map((tab) => (
@@ -45,8 +40,11 @@ export default function Home() {
           ))}
         </Tabs>
 
-        <div className="w-[340px] sticky">
+        <div className="w-[340px]">
           <HomeTopic />
+          <div className="w-full mt-6">
+            <HomeMemes />
+          </div>
         </div>
       </div>
     </div>

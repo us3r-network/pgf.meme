@@ -57,7 +57,7 @@ export default function MemeList({
       })}
       {loading
         ? Array.from({ length: 8 }).map((_, index) => (
-            <Skeleton key={index} className="h-[486px] rounded-[20px]" />
+            <Skeleton key={index} className="h-[192px] rounded-[20px]" />
           ))
         : null}
     </div>

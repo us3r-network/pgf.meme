@@ -1,5 +1,3 @@
-"use client";
-
 import { MemeData } from "@/services/meme/types";
 import { Card, CardContent } from "@/components/ui/card";
 import MemeChartGraduationAfter from "./MemeChartGraduationAfter";

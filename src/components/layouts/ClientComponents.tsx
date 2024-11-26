@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { ReactNode, useEffect } from "react";
 import Link from "next/link";
 import MessageMarquee from "../message/MessageMarquee";
 import AboutDialogButton from "../About";
@@ -12,6 +12,8 @@ import { useAccount } from "wagmi";
 import { cn } from "@/lib/utils";
 import Share2EarnDialogButton from "../Share2Earn";
 import { CustomConnectButton } from "../CustomConnectButton";
+import { SearchInput } from "../ui/search-input";
+import useSearchTerms from "@/hooks/app/useSearchTerms";
 
 export function DefaultHeader() {
   const pathname = usePathname();
@@ -19,6 +21,10 @@ export function DefaultHeader() {
   const router = useRouter();
   const account = useAccount();
   const showMessageMarquee = isHomePage || pathname.startsWith("/memes");
+  const { setSearchTerms } = useSearchTerms();
+  useEffect(() => {
+    setSearchTerms("");
+  }, [pathname]);
   return (
     <>
       {" "}
@@ -55,11 +61,19 @@ export function DefaultHeader() {
             </div>
           )}
 
+          {isHomePage && (
+            <SearchInput
+              placeholder="Search meme..."
+              className="flex-1 max-sm:hidden"
+              onChange={(e) => setSearchTerms(e.target.value)}
+            />
+          )}
+
           <div className="flex items-center gap-4 z-20 ml-auto max-sm:gap-2">
             <AboutDialogButton />
-            <div className="max-sm:hidden">
+            {/* <div className="max-sm:hidden">
               <Share2EarnDialogButton />
-            </div>
+            </div> */}
 
             <div className="max-sm:hidden">
               <CreateMemeButton />
@@ -89,7 +103,7 @@ export function DefaultHeader() {
   );
 }
 
-export function DefaultMain({ children }: { children: React.ReactNode }) {
+export function DefaultMain({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const showMessageMarquee = isHomePage || pathname.startsWith("/memes");

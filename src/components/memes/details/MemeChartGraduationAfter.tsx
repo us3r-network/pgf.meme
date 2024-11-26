@@ -26,5 +26,5 @@ export default function MemeChartGraduationAfter({ meme }: { meme: MemeData }) {
     poolAddress: meme.graduation?.poolAddress || "",
   });
 
-  return <iframe className="w-full aspect-[1/1.5]" src={dexUrl} />;
+  return <iframe className="w-full aspect-[1/1.3]" src={dexUrl} />;
 }

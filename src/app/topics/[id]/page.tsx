@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MemeList from "@/components/memes/MemeList";
 import { SortBy } from "@/services/meme/types";
 import TopicDetailsCardContent from "@/components/topic/TopicDetailsCardContent";
+import { SearchInput } from "@/components/ui/search-input";
 
 const capitalizeFirstLetter = (str: string) =>
   str[0].toUpperCase() + str.slice(1);
@@ -34,11 +35,11 @@ export default function TopicDetails({
               </TabsTrigger>
             ))}
           </div>
-          {/* <SearchInput
+          <SearchInput
             placeholder="Search meme..."
             disabled
             className="w-[260px] max-sm:hidden"
-          /> */}
+          />
         </TabsList>
 
         {tabs.map((tab) => (

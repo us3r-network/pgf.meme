@@ -3,7 +3,7 @@
 import Loading from "@/components/Loading";
 import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
 import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
-import MemeCard from "@/components/memes/MemeCard";
+import { MemeCard } from "@/components/memes/MemeCard";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";

@@ -10,6 +10,7 @@ export type MemeData = {
   createdBy: MemeCreatedBy;
   progress: number;
   stats: MemeStats;
+  created_at: Date;
   tgGroupLink?: string; // tg群链接
   tgPostLink?: string; // tg channel post link
   graduation?: MemeGraduation;
