@@ -105,14 +105,14 @@ export function useAcrossSDKBuy(token: PGFToken) {
       recipient: getMulticallHandlerAddress(routeInfo.originChainId),
       crossChainMessage: buyMessage,
     });
-    console.log("quote", quote);
+    // console.log("quote", quote);
     setAcrossInfoPending(false);
 
     await client.executeQuote({
       walletClient: wallet,
       deposit: quote.deposit, // returned by `getQuote`
       onProgress: (progress) => {
-        console.log("progress", progress);
+        // console.log("progress", progress);
         setProgress(progress);
         if (progress.step === "approve" && progress.status === "txSuccess") {
           // if approving an ERC20, you have access to the approval receipt
@@ -121,6 +121,20 @@ export function useAcrossSDKBuy(token: PGFToken) {
         if (progress.step === "deposit" && progress.status === "txSuccess") {
           // once deposit is successful you have access to depositId and the receipt
           const { depositId, txReceipt } = progress;
+          // mock the fill progress
+          setTimeout(() => {
+            setProgress({
+              step: "fill",
+              status: "txSuccess",
+              txReceipt,
+              actionSuccess: true,
+              fillTxTimestamp: BigInt(0),
+              meta: {
+                deposit: quote.deposit,
+                depositId,
+              },
+            });
+          }, 10000);
         }
         if (progress.step === "fill" && progress.status === "txSuccess") {
           // if the fill is successful, you have access the following data
@@ -131,8 +145,14 @@ export function useAcrossSDKBuy(token: PGFToken) {
     });
   };
 
+  const reset = () => {
+    setProgress(undefined);
+    setAcrossInfoPending(false);
+  };
+
   return {
     buy,
+    reset,
     progress,
     isPending: acrossInfoPending || progress?.status === "txPending",
     isSuccess: progress?.step === "fill" && progress?.status === "txSuccess",

@@ -23,6 +23,7 @@ import { TokenAmountInput } from "./TokenAmountInput";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { TransactionProgress } from "@across-protocol/app-sdk";
 import { getChain } from "@/lib/onchain";
+import { Toaster } from "@/components/ui/toaster";
 
 const MIN_IN_AMOUNT = 0.01;
 export function BuyMemeForm({
@@ -62,7 +63,9 @@ export function BuyMemeForm({
   const [inAmount, setInAmount] = useState(0n);
   const [debouncedInAmount] = useDebounce(inAmount, 500);
   const { outAmount } = useOutTokenAmountAfterFee(token, debouncedInAmount);
-
+  const [progress, setProgress] = useState<TransactionProgress | undefined>(
+    undefined
+  );
   return (
     <div className="flex-col justify-start items-start gap-8 inline-flex w-full">
       <TokenAmountInput
@@ -94,6 +97,7 @@ export function BuyMemeForm({
               inAmount={inAmount}
               outAmount={outAmount}
               onSuccess={onSuccess}
+              onProgress={(progress) => setProgress(progress)}
               buyBtnText={buyBtnText}
               referral={referral}
             />
@@ -132,13 +136,20 @@ export function BuyMemeForm({
                 : "Fetching Price..."}
             </div>
           )}
-        <div className="text-center">
-          <p>
-            Supports purchasing memes from Layer 2 networks (OP, Base, Arbitrum)
-            and transacting to{" "}
-            <span className="font-bold text-primary">mainnet</span>.
-          </p>
-        </div>
+        {progress && account.chainId ? (
+          <TransactionState
+            progress={progress}
+            originChainId={account.chainId}
+          />
+        ) : (
+          <div className="text-center">
+            <p>
+              Supports purchasing memes from Layer 2 networks (OP, Base,
+              Arbitrum) and transacting to{" "}
+              <span className="font-bold text-primary">mainnet</span>.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -250,6 +261,7 @@ const AcrossBuyButton = ({
   inAmount,
   outAmount,
   onSuccess,
+  onProgress,
   buyBtnText,
   referral,
 }: {
@@ -257,14 +269,17 @@ const AcrossBuyButton = ({
   inAmount: bigint;
   outAmount: bigint | undefined;
   onSuccess?: (transactionReceipt: any) => void;
+  onProgress?: (progress: TransactionProgress | undefined) => void;
   buyBtnText?: string;
   referral?: Address;
 }) => {
   const account = useAccount();
-  const { buy, progress, isPending, isSuccess, transactionReceipt } =
+  const { buy, reset, progress, isPending, isSuccess, transactionReceipt } =
     useAcrossSDKBuy(token);
-
-  // const depositId = parseInt(transactionReceipt?.logs[1].topics[2] as `0x${string}`, 16);
+  useEffect(() => {
+    console.log("progress update", progress);
+    onProgress?.(progress);
+  }, [progress]);
 
   const { routeInfo, isSupported, limits } = useAcrossRouteInfo(
     account.chainId
@@ -282,16 +297,6 @@ const AcrossBuyButton = ({
         console.log("use across to buy from ", account.chain?.name);
         buy(routeInfo, inAmount, referral);
         play();
-        toast({
-          variant: "notice",
-          description: (
-            <TransactionState
-              progress={progress}
-              originChainId={account.chainId}
-            />
-          ),
-          duration: 120000, // 120 seconds
-        });
       } else
         showNoticeToast(
           `${account.chain?.name} is not supported, click to switch transaction network`
@@ -302,6 +307,9 @@ const AcrossBuyButton = ({
   useEffect(() => {
     if (isSuccess && transactionReceipt && token) {
       onSuccess?.(transactionReceipt);
+      setTimeout(() => {
+        reset();
+      }, 10000);
     }
   }, [isSuccess]);
 
@@ -343,29 +351,38 @@ const TransactionState = ({
   progress: TransactionProgress | undefined;
   originChainId: number;
 }) => {
-  if (!progress) return null;
-  let description;
-  switch (progress.step) {
-    case "approve":
-      description = "Confirming in your wallet...";
-      break;
-    case "deposit":
-      if (progress.status === "txSuccess") {
-        description = (
-          <a
-            href={`${getChain(originChainId)?.blockExplorers?.default.url}/tx/${
-              progress.txReceipt?.transactionHash
-            }`}
-          >
-            Transaction Completed! Click to view
-          </a>
-        );
-      } else description = "Depositing ...(1/2)";
-      break;
-    case "fill":
-      description = `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`;
-      break;
-  }
+  const [description, setDescription] = useState<string | React.ReactNode>();
+  useEffect(() => {
+    console.log("progress in TransactionState", progress, originChainId);
+    let des;
+    if (progress?.step && progress?.status) {
+      switch (progress.step) {
+        case "approve":
+          des = "Confirming in your wallet...";
+          break;
+        case "deposit":
+          if (progress.status === "txSuccess") {
+            des = (
+              <a
+                href={`${
+                  getChain(originChainId)?.blockExplorers?.default.url
+                }/tx/${progress.txReceipt?.transactionHash}`}
+              >
+                Transaction Completed! Click to view
+              </a>
+            );
+          } else des = "Depositing ...(1/2)";
+          break;
+        case "fill":
+          des = `Filling on ${PGF_CONTRACT_CHAIN.name} ...(2/2)`;
+          break;
+      }
+    } else {
+      des = "Preparing transaction...";
+    }
+    setDescription(des);
+  }, [progress]);
+
   return (
     <div className="w-72 flex flex-col items-center gap-6 font-bold m-6">
       <div className="flex flex-row items-center gap-2">
@@ -376,7 +393,7 @@ const TransactionState = ({
         <div className="h-[2px] w-20 bg-primary self-center mb-8" />
         <div className="flex flex-col items-center gap-2">
           <div className="size-8 rounded-full border-2 border-primary flex items-center justify-center">
-            {progress.step === "fill" && <CheckIcon className="size-4" />}
+            {progress?.step === "fill" && <CheckIcon className="size-4" />}
           </div>
           <p>Deposit</p>
         </div>
