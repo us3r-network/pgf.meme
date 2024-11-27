@@ -15,7 +15,7 @@ const getChartWidgetUrl = ({
   if (!chainName || !poolAddress) {
     return "";
   }
-  return `https://www.geckoterminal.com/${chainName}/pools/${poolAddress}?embed=1&info=0&swaps=0&grayscale=1`;
+  return `https://dexscreener.com/${chainName}/${poolAddress}?embed=1&info=0`;
   // return `https://www.dextools.io/widget-chart/en/${chainID}/pe-light/${poolAddress}?theme=dark&chartType=1&chartResolution=30&drawingToolbars=false&chartInUsd=true`;
 };
 
@@ -26,5 +26,5 @@ export default function MemeChartGraduationAfter({ meme }: { meme: MemeData }) {
     poolAddress: meme.graduation?.poolAddress || "",
   });
 
-  return <iframe className="w-full h-full" src={dexUrl} />;
+  return <iframe className="w-full aspect-[1/1.3]" src={dexUrl} />;
 }

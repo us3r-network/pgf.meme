@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import MemeCard from "@/components/memes/MemeCard";
 import { useInView } from "react-cool-inview";
 import useLoadCreatedMemes from "@/hooks/user/useLoadCreatedMemes";
+import Loading from "@/components/Loading";
 
 export default function CreatedMemes({ address }: { address: string }) {
   const { items, loading, loadItems } = useLoadCreatedMemes({
@@ -33,28 +34,22 @@ export default function CreatedMemes({ address }: { address: string }) {
     },
   });
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 max-sm:gap-3">
-        {items.map((item, idx) => {
-          return (
-            <div
-              key={`${item.address}_${idx}`}
-              ref={idx === items.length - 1 ? observe : null}
-            >
-              <MemeCard
-                key={item.address}
-                meme={item}
-                className="w-full h-full"
-              />
-            </div>
-          );
-        })}
-        {loading
-          ? Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-[486px] rounded-[20px]" />
-            ))
-          : null}
-      </div>
+    <div className="flex flex-col gap-6">
+      {items.map((item, idx) => {
+        return (
+          <div
+            key={`${item.address}_${idx}`}
+            ref={idx === items.length - 1 ? observe : null}
+          >
+            <MemeCard key={item.address} meme={item} />
+          </div>
+        );
+      })}
+      {loading ? (
+        <div className="w-full flex justify-center items-start">
+          <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+        </div>
+      ) : null}
     </div>
   );
 }

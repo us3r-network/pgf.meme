@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SortBy } from "@/services/meme/types";
 import { TopicSortBy } from "@/services/topic/types";
 import TopicList from "@/components/topic/TopicList";
+import { SearchInput } from "@/components/ui/search-input";
 // import { SearchInput } from "@/components/ui/search-input";
 
 const capitalizeFirstLetter = (str: string) =>
@@ -34,11 +35,11 @@ export default function Topics() {
               </TabsTrigger>
             ))}
           </div>
-          {/* <SearchInput
+          <SearchInput
             placeholder="Search topic..."
             disabled
             className="w-[260px] max-sm:hidden"
-          /> */}
+          />
         </TabsList>
 
         {tabs.map((tab) => (

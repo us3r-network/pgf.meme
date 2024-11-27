@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import TradesTable from "@/components/tables/TradesTable";
 import useLoadUserTrades from "@/hooks/user/useLoadUserTrades";
 import { useEffect, useState } from "react";
@@ -19,7 +20,11 @@ export default function Trades({ address }: { address: string }) {
     }
   }, [mounted]);
   if (loading) {
-    return <div className="w-full flex justify-center mt-8">Loading...</div>;
+    return (
+      <div className="w-full aspect-video flex justify-center items-start mt-[20%]">
+        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+      </div>
+    );
   }
   return <TradesTable data={items} />;
 }

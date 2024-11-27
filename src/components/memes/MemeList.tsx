@@ -6,13 +6,16 @@ import useLoadMemes from "@/hooks/meme/useLoadMemes";
 import MemeCard from "@/components/memes/MemeCard";
 import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
+import { cn } from "@/lib/utils";
 
 export default function MemeList({
   sortBy,
   topicId,
+  column = 1,
 }: {
   sortBy: SortBy;
   topicId?: number;
+  column?: number;
 }) {
   const { items, loading, loadItems } = useLoadMemes({
     sortBy,
@@ -41,28 +44,22 @@ export default function MemeList({
     },
   });
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-sm:gap-3">
-        {items.map((item, idx) => {
-          return (
-            <div
-              key={`${item.address}_${idx}`}
-              ref={idx === items.length - 1 ? observe : null}
-            >
-              <MemeCard
-                key={item.address}
-                meme={item}
-                className="w-full h-full"
-              />
-            </div>
-          );
-        })}
-        {loading
-          ? Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-[486px] rounded-[20px]" />
-            ))
-          : null}
-      </div>
+    <div className={cn("grid gap-6", `grid-cols-${column}`)}>
+      {items.map((item, idx) => {
+        return (
+          <div
+            key={`${item.address}_${idx}`}
+            ref={idx === items.length - 1 ? observe : null}
+          >
+            <MemeCard key={item.address} meme={item} />
+          </div>
+        );
+      })}
+      {loading
+        ? Array.from({ length: 8 }).map((_, index) => (
+            <Skeleton key={index} className="h-[192px] rounded-[20px]" />
+          ))
+        : null}
     </div>
   );
 }
