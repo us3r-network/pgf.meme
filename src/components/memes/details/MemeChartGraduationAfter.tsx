@@ -2,7 +2,7 @@
 
 import { MemeData } from "@/services/meme/types";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
-import { getDextoolsChainName } from "@/lib/onchain";
+import { getEvmChainName } from "@/lib/onchain";
 
 const getChartWidgetUrl = ({
   chainId,
@@ -11,7 +11,7 @@ const getChartWidgetUrl = ({
   chainId: number;
   poolAddress: string;
 }) => {
-  const chainName = getDextoolsChainName(chainId);
+  const chainName = getEvmChainName(chainId);
   if (!chainName || !poolAddress) {
     return "";
   }

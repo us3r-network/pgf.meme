@@ -37,7 +37,8 @@ export function DefaultHeader() {
             >
               <img src="/images/logo.png" className="size-12 max-sm:size-10" />
               <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
-                <span className="max-sm:hidden">Welcome to </span> eths.fun✨
+                <span className="max-sm:hidden">Welcome to </span>{" "}
+                castcoin.fun✨
               </span>
             </Link>
           ) : (

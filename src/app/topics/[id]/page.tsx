@@ -44,7 +44,7 @@ export default function TopicDetails({
 
         {tabs.map((tab) => (
           <TabsContent value={tab.value} key={tab.value}>
-            <MemeList sortBy={tab.value} topicId={id} column={2} />
+            <MemeList sortBy={tab.value} topicId={id} />
           </TabsContent>
         ))}
       </Tabs>

@@ -71,7 +71,7 @@ function MemeChart({ data }: { data: MemeChartData }) {
     return { chart, handleResize };
   };
   useEffect(() => {
-    if (!chartContainerRef?.current || data.length === 0) return;
+    if (!chartContainerRef?.current || !data || data.length === 0) return;
     const { chart, handleResize } = createTokenChart(
       chartContainerRef.current,
       data

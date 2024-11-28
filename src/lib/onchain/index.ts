@@ -20,12 +20,7 @@ export function getBlockExploreTxUrl(chainId: number, txHash: string) {
   return `${chain.blockExplorers.default.url}/tx/${txHash}`;
 }
 
-export function getBlockExploreAddressUrl(chainId: number, address: string) {
-  const chain = getChain(chainId);
-  return `${chain.blockExplorers.default.url}/address/${address}`;
-}
-
-export const getDextoolsChainName = (chainId: number) => {
+export const getEvmChainName = (chainId: number) => {
   switch (chainId) {
     case 8453:
       return "base";
@@ -38,12 +33,50 @@ export const getDextoolsChainName = (chainId: number) => {
   }
 };
 
-export function getDexscreenerTokenUrl(chainId: number, address: string) {
-  const chain = getDextoolsChainName(chainId);
+export function getScanUrl(chainId: number | "sol", address: string) {
+  if (chainId === "sol") {
+    return `https://solscan.io/token/${address}`;
+  }
+  const chain = getChain(chainId);
+  return `${chain.blockExplorers.default.url}/address/${address}`;
+}
+
+export function getDexTokenUrl(chainId: number | "sol", address: string) {
+  if (chainId === "sol") {
+    return `https://dexscreener.com/solana/${address}`;
+  }
+  const chain = getEvmChainName(chainId);
   if (!chain) {
     return "";
   }
   return `https://dexscreener.com/${chain}/${address}`;
 }
+export function getDexTokenWidgetUrl(
+  chainId: number | "sol",
+  poolAddress: string
+) {
+  if (chainId === "sol") {
+    return `https://dexscreener.com/solana/${poolAddress}?embed=1&info=0`;
+  }
+  const chain = getEvmChainName(chainId);
+  if (!chain) {
+    return "";
+  }
+  return `https://dexscreener.com/${chain}/${poolAddress}?embed=1&info=0`;
+}
+export function getGmgnTokenUrl(chainId: number | "sol", address: string) {
+  if (chainId === "sol") {
+    return `https://gmgn.ai/sol/token/${address}`;
+  }
+  const chain = getEvmChainName(chainId);
+  if (!chain) {
+    return "";
+  }
+  return `https://gmgn.ai/${chain}/token/${address}`;
+}
 
 export const dexscreenerIconUrl = "https://dexscreener.com/favicon.ico";
+// export const gmgnIconUrl = "https://gmgn.ai/static/favicon2.ico";
+// export const solscanIconUrl = "https://solscan.io/favicon.png";
+export const gmgnIconUrl = "/images/gmgn-icon.png";
+export const solscanIconUrl = "/images/solscan-icon.png";

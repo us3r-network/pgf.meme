@@ -5,10 +5,11 @@ import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Comic_Neue as ComicNeueFont } from "next/font/google";
+import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "eths.fun",
-  description: "Welcome to eths.fun✨",
+  title: "castcoin.fun",
+  description: "Welcome to castcoin.fun✨",
 };
 
 const font = ComicNeueFont({
@@ -23,6 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script src="https://terminal.jup.ag/main-v3.js" data-preload></Script>
       <body className={`${font.className} antialiased`}>
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>

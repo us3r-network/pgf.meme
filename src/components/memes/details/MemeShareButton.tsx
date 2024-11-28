@@ -30,40 +30,18 @@ export default function MemeShareButton({
   meme: MemeData;
   className?: string;
 }) {
-  const isGraduation = !!meme.graduation?.poolAddress;
-  const { openConnectModal } = useConnectModal();
-  const btnText = isGraduation ? "Share" : "Share2Earn";
-  if (!isGraduation && openConnectModal) {
-    return (
-      <>
-        <Button
-          size={"lg"}
-          className="w-full max-sm:text-base"
-          onClick={() => {
-            openConnectModal();
-          }}
-        >
-          {btnText}
-        </Button>
-      </>
-    );
-  }
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size={"lg"} className="w-full max-sm:text-base">
-          {btnText}
+          Share
         </Button>
       </DialogTrigger>
       <DialogContent className="gap-8">
         <DialogHeader>
-          <DialogTitle>{btnText}</DialogTitle>
+          <DialogTitle>Share</DialogTitle>
         </DialogHeader>
-        {isGraduation ? (
-          <MemeShareContent meme={meme} />
-        ) : (
-          <ValidateBuyingMeme meme={meme} />
-        )}
+        <MemeShareContent meme={meme} />
       </DialogContent>
     </Dialog>
   );
@@ -118,20 +96,17 @@ function MemeShareContent({
   className?: string;
 }) {
   const { toast } = useToast();
-  const { address } = useAccount();
   const isGraduation = !!meme.graduation?.poolAddress;
-  const shareLink = `${window.location.origin}/memes/${meme.address}${
-    !isGraduation ? `?referral=${address || ""}` : ""
-  }`;
+  const shareLink = `${window.location.origin}/memes/${meme.address}`;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
-      {!isGraduation && (
-        <div className="w-full flex-col justify-start items-start gap-4 flex text-foreground text-2xl font-normal max-sm:text-base">
-          Your share link has been generated! Share it with friends, and if they
-          complete a transaction through this link, both of you will receive 5%
-          of the transaction amount as a reward.
-        </div>
-      )}
+      <span className="text-2xl font-normal max-sm:text-base self-start">
+        Share the Token with Friends! 🎉
+      </span>
+      <span className="text-2xl font-normal max-sm:text-base self-start">
+        Let your friends know about this awesome token! Simply copy the link
+        below and share it via your favorite platform.
+      </span>
 
       <div className="w-full shrink-0 justify-center items-start flex sm:gap-12 max-sm:justify-evenly">
         <ShareItem
@@ -187,20 +162,6 @@ function MemeShareContent({
         </div>
         <Copy className=" stroke-secondary size-6" />
       </div>
-      {!isGraduation && (
-        <>
-          {" "}
-          <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
-            The link reward only applies to the first transaction completed
-            through your link. Share more to generate new links and earn
-            additional rewards.
-          </div>
-          <div className="w-full text-foreground/60 font-normal max-sm:text-xs">
-            All rewards will be available for claim after token launch. Thank
-            you for your patience!
-          </div>
-        </>
-      )}
     </div>
   );
 }
