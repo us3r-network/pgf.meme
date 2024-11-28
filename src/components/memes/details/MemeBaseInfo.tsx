@@ -7,136 +7,114 @@ import { Address } from "viem";
 import MemeActions from "../trade/MemeActions";
 import MemeShareButton from "./MemeShareButton";
 import JoinTelegramButton from "@/components/telegram/JoinTelegramButton";
-import MemeSwap from "./MemeSwap";
+import MemeSwap from "./MemeSwapWithEvm";
 import { Card, CardContent } from "@/components/ui/card";
 import CopyAddress from "@/components/CopyAddress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import {
-  dexscreenerIconUrl,
-  getBlockExploreAddressUrl,
-  getDexscreenerTokenUrl,
-} from "@/lib/onchain";
+import { dexscreenerIconUrl, getScanUrl, getDexTokenUrl } from "@/lib/onchain";
 import { DEFAULT_CHAIN } from "@/constants/chain";
 import DefaultUserAvatar from "@/components/user/DefaultUserAvatar";
 import MemePosts from "./MemePosts";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
-  const token = {
-    contractAddress: meme.address as Address,
-    chainId: PGF_CONTRACT_CHAIN_ID,
-    logoURI: meme.image,
-  };
-
   // const progress = Intl.NumberFormat("en-US", {
   //   maximumFractionDigits: 2,
   //   minimumFractionDigits: 0,
   // }).format(meme?.progress || 0);
   return (
-    <div className="w-full flex flex-col gap-6">
-      <Card className="w-full border-secondary">
-        <CardContent>
-          {meme.graduation?.poolAddress ? (
-            <MemeSwap token={token} />
-          ) : (
-            <MemeActions token={token} />
-          )}
-        </CardContent>
-      </Card>
-
-      <Card className="w-full border-secondary">
-        <CardContent className="w-full flex flex-col gap-6">
-          <div className="w-full flex flex-row gap-2">
-            <img
-              className="w-[160px] h-[160px] rounded-[20px] object-cover"
-              src={meme.image}
-            />
-            <div className="flex-1">
-              <span className="text-primary text-xl">{meme.name}</span>
-              <br />
-              <span className="font-normal text-base">{meme.description}</span>
-            </div>
-          </div>
-
-          {/* <div className="flex flex-row items-center justify-between">
-            <span className="text-secondary font-bold">Progress</span>
-            <span className="text-secondary font-bold">
-              {Number(progress)}%
-            </span>
-          </div>
-          <Progress
-            value={Number(progress)}
-            className="w-full bg-primary/20 h-6"
-            indicatorClassName="bg-primary rounded-full"
-          /> */}
-          {/* <div className=" break-words">
-            Purchases are made using a step-based price curve, and once the
-            total reaches $69k, the meme coin is launched on Uniswap V3,
-            enabling full buy/sell trading on the Ethereum mainnet. There are{" "}
-            <span className="text-primary text-base font-bold ">
-              {meme.stats.availableAmount.toLocaleString()}
-            </span>{" "}
-            tokens still available for sale in the curve and there is{" "}
-            <span className="text-primary text-base font-bold">
-              {Intl.NumberFormat("en-US", {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 0,
-              }).format(meme.stats.bondingCurveEth)}{" "}
-              ETH
-            </span>{" "}
-            in the curve.
-          </div>
-          <LinkRow
-            label="Created By"
-            href={`/u/${meme.createdBy.walletAddress}`}
-            icon={
-              <DefaultUserAvatar
-                address={meme.createdBy.walletAddress}
-                className="w-6 h-6 rounded-full"
-              />
-            }
-            text={shortPubKey(meme.createdBy.walletAddress)}
-          /> */}
-          {meme.topic && (
-            <LinkRow
-              label="Topic"
-              href={`/topics/${meme.topic.id}`}
-              text={`#${meme.topic.name}`}
-            />
-          )}
-
-          {/* <CopyAddress address={meme.address} label="Address" />
-          <LinkRow
-            label={DEFAULT_CHAIN.blockExplorers.default.name}
-            href={getBlockExploreAddressUrl(
-              PGF_CONTRACT_CHAIN_ID,
-              meme.address
-            )}
-            iconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
-            text={shortPubKey(meme.address)}
+    <Card className="w-full border-secondary">
+      <CardContent className="w-full flex flex-col gap-6">
+        <div className="w-full flex flex-row gap-2">
+          <img
+            className="w-[160px] h-[160px] rounded-[20px] object-cover"
+            src={meme.image}
           />
-          {!!meme.graduation && (
-            <LinkRow
-              label={"Dexscreener"}
-              href={getDexscreenerTokenUrl(
-                PGF_CONTRACT_CHAIN_ID,
-                meme.graduation.tokenAddress
-              )}
-              iconUrl={dexscreenerIconUrl}
-              text={shortPubKey(meme.graduation.tokenAddress)}
-            />
-          )}
+          <div className="flex-1">
+            <span className="text-primary text-xl">{meme.name}</span>
+            <br />
+            <span className="font-normal text-base">{meme.description}</span>
+          </div>
+        </div>
 
-          <MemeShareButton meme={meme} /> */}
-          {!!meme?.tgPostLink && (
-            <div className="hidden max-sm:block">
-              <JoinTelegramButton link={meme?.tgPostLink} />
-              <MemePosts meme={meme} />
-            </div>
+        {/* <div className="flex flex-row items-center justify-between">
+        <span className="text-secondary font-bold">Progress</span>
+        <span className="text-secondary font-bold">
+          {Number(progress)}%
+        </span>
+      </div>
+      <Progress
+        value={Number(progress)}
+        className="w-full bg-primary/20 h-6"
+        indicatorClassName="bg-primary rounded-full"
+      /> */}
+        {/* <div className=" break-words">
+        Purchases are made using a step-based price curve, and once the
+        total reaches $69k, the meme coin is launched on Uniswap V3,
+        enabling full buy/sell trading on the Ethereum mainnet. There are{" "}
+        <span className="text-primary text-base font-bold ">
+          {meme.stats.availableAmount.toLocaleString()}
+        </span>{" "}
+        tokens still available for sale in the curve and there is{" "}
+        <span className="text-primary text-base font-bold">
+          {Intl.NumberFormat("en-US", {
+            maximumFractionDigits: 6,
+            minimumFractionDigits: 0,
+          }).format(meme.stats.bondingCurveEth)}{" "}
+          ETH
+        </span>{" "}
+        in the curve.
+      </div>
+      <LinkRow
+        label="Created By"
+        href={`/u/${meme.createdBy.walletAddress}`}
+        icon={
+          <DefaultUserAvatar
+            address={meme.createdBy.walletAddress}
+            className="w-6 h-6 rounded-full"
+          />
+        }
+        text={shortPubKey(meme.createdBy.walletAddress)}
+      /> */}
+        {meme.topic && (
+          <LinkRow
+            label="Topic"
+            href={`/topics/${meme.topic.id}`}
+            text={`#${meme.topic.name}`}
+          />
+        )}
+
+        {/* <CopyAddress address={meme.address} label="Address" />
+      <LinkRow
+        label={DEFAULT_CHAIN.blockExplorers.default.name}
+        href={getScanUrl(
+          PGF_CONTRACT_CHAIN_ID,
+          meme.address
+        )}
+        iconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
+        text={shortPubKey(meme.address)}
+      />
+      {!!meme.graduation && (
+        <LinkRow
+          label={"Dexscreener"}
+          href={getDexTokenUrl(
+            PGF_CONTRACT_CHAIN_ID,
+            meme.graduation.tokenAddress
           )}
-        </CardContent>
-      </Card>
-    </div>
+          iconUrl={dexscreenerIconUrl}
+          text={shortPubKey(meme.graduation.tokenAddress)}
+        />
+      )}
+
+      <MemeShareButton meme={meme} /> */}
+        {!!meme?.tgPostLink && (
+          <div className="hidden max-sm:block">
+            <JoinTelegramButton link={meme?.tgPostLink} />
+            <MemePosts meme={meme} />
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

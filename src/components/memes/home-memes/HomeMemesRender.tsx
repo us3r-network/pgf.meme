@@ -16,7 +16,11 @@ export default function HomeMemesRender({ memes }: { memes: MemeData[] }) {
 
         {memes.map((meme) => {
           return (
-            <Link className="w-full h-fit" href={`/memes/${meme.address}`}>
+            <Link
+              key={meme.address}
+              className="w-full h-fit"
+              href={`/memes/${meme.address}`}
+            >
               <Card key={meme.address} className="w-full border-secondary">
                 <CardContent className="w-full flex-col gap-2 flex p-3 bg-background">
                   <span className="w-full flex gap-1 text-primary text-2xl font-bold  max-sm:text-base">

@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import useLoadMemes from "@/hooks/meme/useLoadMemes";
-import MemeCard from "@/components/memes/MemeCard";
 import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
 import { cn } from "@/lib/utils";
+import MemeCardLink from "./MultiChainMemeCard";
 
 export default function MemeList({
   sortBy,
@@ -51,13 +51,13 @@ export default function MemeList({
             key={`${item.address}_${idx}`}
             ref={idx === items.length - 1 ? observe : null}
           >
-            <MemeCard key={item.address} meme={item} />
+            <MemeCardLink key={item.address} meme={item} />
           </div>
         );
       })}
       {loading
         ? Array.from({ length: 8 }).map((_, index) => (
-            <Skeleton key={index} className="h-[192px] rounded-[20px]" />
+            <Skeleton key={index} className="h-[240px] rounded-[20px]" />
           ))
         : null}
     </div>

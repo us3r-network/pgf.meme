@@ -3,7 +3,7 @@ import { TopicData } from "@/services/topic/types";
 import { MemeData } from "@/services/meme/types";
 import TopicCard from "./TopicCard";
 import { Skeleton } from "../ui/skeleton";
-import MemeCard from "../memes/MemeCard";
+import { MemeCard } from "../memes/MultiChainMemeCard";
 
 export function TopicAndMemesSkeleton() {
   return (

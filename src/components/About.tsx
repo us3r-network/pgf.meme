@@ -19,61 +19,79 @@ export default function AboutDialogButton() {
           <DialogTitle>How eths.fun works?</DialogTitle>
         </DialogHeader>
         <div className="flex-col justify-start items-start gap-8 inline-flex max-sm:flex-1 max-sm:overflow-y-auto">
-          {/* <div className="hidden max-sm:block">
-            <GuideText
-              guides={[
-                {
-                  title: `Create & Share Meme Coins`,
-                  description: `Meme coins can be bought across multiple blockchains. After create, 20% tokens will be allocated to Vitalik(15%) and charity pool(5%) for charity.`,
-                },
-                {
-                  title: `Trade with Impact`,
-                  description: `Purchases are made using a step-based price curve, and once the total reaches $69k, the meme coin is launched on Uniswap V3, enabling full buy/sell trading on the Ethereum mainnet.`,
-                },
-                {
-                  title: `Earn by Sharing`,
-                  description: `Share your meme coin link and earn 4% commission on every transaction made through your referral.`,
-                  guides: [
-                    {
-                      title: `Buy memes`,
-                      description: `hold a few tokens to unlock the Share to Earn feature! Once you’ve got them, you’re all set to start sharing and earning rewards!`,
-                    },
-                    {
-                      title: `Share memes`,
-                      description: `Click the “Share2Earn” button to generate your unique link and share it with friends. Once your friend completes a transaction through this link, both of you will receive a 5% token reward!`,
-                    },
-                    {
-                      title: `Claim memes`,
-                      description: `Go to the “Held” list in your profile to view your earned reward tokens. Once the token launches, the Claim button will be active, and you can collect your rewards!`,
-                    },
-                  ],
-                },
-              ]}
-            />
-          </div> */}
-          {/* <div className="max-sm:hidden"> */}
-          <GuideText
-            guides={[
-              {
-                title: `Create & Share Meme Coins`,
-                description: `Meme coins can be bought across multiple blockchains. After create, 20% tokens will be allocated to Vitalik(15%) and charity pool(5%) for charity.`,
-              },
-              {
-                title: `Trade with Impact`,
-                description: `Purchases are made using a step-based price curve, and once the total reaches $69k, the meme coin is launched on Uniswap V3, enabling full buy/sell trading on the Ethereum mainnet.`,
-              },
-              {
-                title: `Buy from L2s, trade on Ethereum Mainnet`,
-                description: `Supports purchasing memes from Layer 2 networks (OP, Base, Arbitrum) and transacting to mainnet.`,
-              },
-              {
-                title: `Earn by Sharing`,
-                description: `Hold and share memes to earn an additional 5% reward from transactions made through your referral.`,
-              },
-            ]}
-          />
+          <div className="flex flex-col gap-8">
+            <div className="h-[420px] flex-col justify-start items-start gap-4 inline-flex">
+              <div className="text-secondary text-2xl font-bold">
+                {" "}
+                1. Create & Share Meme Coins
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                You can create your own meme token in two ways:
+              </div>
+              <div className="self-stretch">
+                <span className="text-2xl font-bold">
+                  {" "}
+                  • On Warpcast:
+                  <br />
+                </span>
+                <span className="text-2xl font-normal">Post a cast, tag </span>
+                <span className="text-2xl font-bold">@bot</span>
+                <span className="text-2xl font-normal">
+                  , and include token name, symbol, and an image. The bot will
+                  handle the rest.
+                </span>
+              </div>
+              <div className="self-stretch">
+                <span className="text-2xl font-normal"> • </span>
+                <span className="text-2xl font-bold">
+                  On Website:
+                  <br />
+                </span>
+                <span className="text-2xl font-normal">
+                  Fill in token details (name, symbol, image, description) and
+                  hit Create.
+                </span>
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                💡 Tokens are instantly deployed on Uniswap v3 for trading.
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                After create, 20% tokens will be allocated to Vitalik(15%) and
+                charity pool(5%) for charity.
+              </div>
+            </div>
+
+            <div className="h-[134px] flex-col justify-start items-start gap-4 inline-flex">
+              <div className="text-secondary text-2xl font-bold">
+                2. Trade with Impact
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                {" "}
+                • Trade your token on Uniswap v3.
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                {" "}
+                • A 1% transaction fee supports team development and ecosystem
+                growth.
+              </div>
+            </div>
+
+            <div className="h-[118px] flex-col justify-start items-start gap-4 inline-flex">
+              <div className="text-secondary text-2xl font-bold">
+                3. Buy from L2s, trade on Ethereum Mainnet
+              </div>
+              <div className="self-stretch text-2xl font-normal">
+                {" "}
+                • Use the website for seamless trades across Ethereum Mainnet
+                and Layer 2 networks (Optimism, Base, Arbitrum).
+              </div>
+            </div>
+
+            <div className="text-primary text-2xl font-bold">
+              Start creating and trading today! 🚀
+            </div>
+          </div>
         </div>
-        {/* </div> */}
       </DialogContent>
     </Dialog>
   );

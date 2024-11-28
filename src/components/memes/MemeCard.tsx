@@ -3,18 +3,14 @@ import { MemeData } from "@/services/meme/types";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
 import { shortPubKey } from "@/lib/shortAddress";
 import DefaultUserAvatar from "../user/DefaultUserAvatar";
 import dayjs from "dayjs";
 import { Button } from "../ui/button";
 import { DEFAULT_CHAIN } from "@/constants/chain";
-import {
-  dexscreenerIconUrl,
-  getBlockExploreAddressUrl,
-  getDexscreenerTokenUrl,
-} from "@/lib/onchain";
+import { dexscreenerIconUrl, getScanUrl, getDexTokenUrl } from "@/lib/onchain";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
+import MemeShareButton from "./details/MemeShareButton";
 
 export default function MemeCardLink({
   meme,
@@ -25,7 +21,7 @@ export default function MemeCardLink({
 }) {
   return (
     <Link className={cn("w-full", className)} href={`/memes/${meme.address}`}>
-      <MemeCard meme={meme} />
+      <MemeCard meme={meme} hideShare />
     </Link>
   );
 }
@@ -33,9 +29,11 @@ export default function MemeCardLink({
 export function MemeCard({
   meme,
   className,
+  hideShare,
 }: {
   meme: MemeData;
   className?: string;
+  hideShare?: boolean;
 }) {
   return (
     <Card className="w-full h-fit overflow-hidden">
@@ -103,21 +101,23 @@ export function MemeCard({
           <div className="flex items-center gap-2">
             <MemeLinkButton
               label={DEFAULT_CHAIN.blockExplorers.default.name}
-              href={getBlockExploreAddressUrl(
-                PGF_CONTRACT_CHAIN_ID,
-                meme.address
-              )}
+              href={getScanUrl(PGF_CONTRACT_CHAIN_ID, meme.address)}
               iconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
             />
             {!!meme.graduation && (
               <MemeLinkButton
                 label={"Dexscreener"}
-                href={getDexscreenerTokenUrl(
+                href={getDexTokenUrl(
                   PGF_CONTRACT_CHAIN_ID,
-                  meme.graduation.tokenAddress
+                  meme.graduation.poolAddress
                 )}
                 iconUrl={dexscreenerIconUrl}
               />
+            )}
+            {!hideShare && (
+              <div className="ml-auto">
+                <MemeShareButton meme={meme} />
+              </div>
             )}
           </div>
         </div>

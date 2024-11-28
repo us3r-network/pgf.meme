@@ -1,63 +1,33 @@
-"use client";
-import {
-  NATIVE_TOKEN_METADATA,
-  WRAP_NATIVE_TOKEN_METADATA,
-} from "@/constants/chain";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
-import { config } from "@/constants/wagmiConfig";
-import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
-import { getEthersProvider } from "@/lib/onchain/ethers";
-import { PGFToken } from "@/services/contract/types";
-import { SwapWidget, Theme } from "@uniswap/widgets";
-import "@uniswap/widgets/fonts.css";
-import { useEffect, useState } from "react";
+import { MemeData } from "@/services/meme/types";
+import { Address } from "viem";
+import MemeSwapWithEvm from "./MemeSwapWithEvm";
+import { Card, CardContent } from "@/components/ui/card";
+import MemeSwapWithSol from "./MemeSwapWithSol";
 
-export default function MemeSwap({ token }: { token: PGFToken }) {
-  const provider = getEthersProvider(config);
-  const [tokenInfo, setTokenInfo] = useState<PGFToken>();
-  useEffect(() => {
-    getTokenInfo({
-      contractAddress: token.contractAddress,
-      chainId: token.chainId,
-    }).then((info) => {
-      setTokenInfo(info);
-    });
-  }, [token]);
-
-  const tokenList = tokenInfo
-    ? [
-        NATIVE_TOKEN_METADATA,
-        WRAP_NATIVE_TOKEN_METADATA,
-        {
-          name: tokenInfo.name || "",
-          symbol: tokenInfo.symbol || "",
-          decimals: tokenInfo.decimals || 0,
-          chainId: tokenInfo.chainId || 0,
-          address: tokenInfo.contractAddress,
-          logoURI: tokenInfo.logoURI,
-        },
-      ]
-    : [];
-  const theme: Theme = {
-    container: "transparent",
-    outline: "transparent",
-    deepShadow: "transparent",
+export default function MemeSwap({
+  meme,
+  isSol,
+}: {
+  meme: MemeData;
+  isSol?: boolean;
+}) {
+  const token = {
+    contractAddress: meme.address as Address,
+    chainId: PGF_CONTRACT_CHAIN_ID,
+    logoURI: meme.image,
   };
-  // console.log("MY_TOKEN_LIST", tokenList, provider);
-  if (!tokenInfo) return null;
   return (
-    <div className="w-full">
-      <SwapWidget
-        // provider={provider as any} // Type assertion to fix provider type mismatch
-        theme={theme}
-        width="100%"
-        className="bg-transparent"
-        brandedFooter={false}
-        tokenList={tokenList}
-        defaultChainId={PGF_CONTRACT_CHAIN_ID}
-        defaultInputTokenAddress={NATIVE_TOKEN_METADATA.address} // Use provided amount or default to 2n
-        defaultOutputTokenAddress={tokenInfo.contractAddress}
-      />
-    </div>
+    <Card className="w-full h-[442px] border-secondary">
+      <CardContent className="w-full h-full p-0">
+        {isSol ? (
+          <MemeSwapWithSol
+            token={{ address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263" }}
+          />
+        ) : (
+          <MemeSwapWithEvm token={token} />
+        )}
+      </CardContent>
+    </Card>
   );
 }
