@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { MemeData } from "@/services/meme/types";
+import { MemeData, TokenData } from "@/services/meme/types";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -7,19 +7,18 @@ import { shortPubKey } from "@/lib/shortAddress";
 import DefaultUserAvatar from "../user/DefaultUserAvatar";
 import dayjs from "dayjs";
 import { Button } from "../ui/button";
-import { DEFAULT_CHAIN } from "@/constants/chain";
 import {
   dexscreenerIconUrl,
   getScanUrl,
   getDexTokenUrl,
-  getEvmChainName,
   getGmgnTokenUrl,
   gmgnIconUrl,
   solscanIconUrl,
 } from "@/lib/onchain";
-import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import MemeShareButton from "./details/MemeShareButton";
 import { Separator } from "../ui/separator";
+import { base } from "viem/chains";
+import CopyAddress from "../CopyAddress";
 
 export default function MemeCardLink({
   meme,
@@ -44,9 +43,15 @@ export function MemeCard({
   className?: string;
   hideShare?: boolean;
 }) {
+  const baseToken = meme.baseToken;
+  const solToken = meme.solToken;
+  const totalMarketCap =
+    Number(baseToken?.marketCap || 0) + Number(solToken?.marketCap || 0);
+  const totalBuysNumber =
+    Number(baseToken?.txns?.h24 || 0) + Number(solToken?.txns?.h24 || 0);
   return (
     <Card className="w-full h-fit overflow-hidden">
-      <CardContent className="w-full overflow-hidden p-3">
+      <CardContent className="w-full overflow-hidden p-3 bg-white">
         <div className="flex flex-row gap-3 ">
           {" "}
           <div className="h-[94px] aspect-square ">
@@ -73,11 +78,11 @@ export function MemeCard({
                   maximumFractionDigits: 2,
                   minimumFractionDigits: 0,
                   notation: "compact",
-                }).format(meme.stats.marketCap || 0)}{" "}
-                (
+                }).format(totalMarketCap)}{" "}
+                (Total{" "}
                 {new Intl.NumberFormat("en-US", {
                   notation: "compact",
-                }).format(meme.stats.buyersNumber || 0)}{" "}
+                }).format(totalBuysNumber)}{" "}
                 bought)
               </div>
             </div>
@@ -113,11 +118,27 @@ export function MemeCard({
         <Separator className="h-1 w-full bg-primary my-3" />
         <div className="flex flex-row gap-3 ">
           <div className="flex-1">
-            <MemeInfoOnChain meme={meme} />
+            <MemeInfoOnChain
+              token={meme.baseToken}
+              chainName={base.name}
+              scanName={base.blockExplorers.default.name}
+              scanIconUrl={`${base.blockExplorers.default.url}/favicon.ico`}
+              scanUrl={getScanUrl(base.id, baseToken?.tokenAddress)}
+              dexUrl={getDexTokenUrl(base.id, baseToken?.tokenAddress!)}
+              gmgnUrl={getGmgnTokenUrl(base.id, baseToken?.tokenAddress!)}
+            />
           </div>
           <Separator className="h-auto w-1 bg-primary" />
           <div className="flex-1">
-            <MemeInfoOnChain meme={meme} isSol />
+            <MemeInfoOnChain
+              token={meme.solToken}
+              chainName={"Solana"}
+              scanName={"Solscan"}
+              scanIconUrl={solscanIconUrl}
+              scanUrl={getScanUrl("sol", solToken?.tokenAddress)}
+              dexUrl={getDexTokenUrl("sol", solToken?.tokenAddress!)}
+              gmgnUrl={getGmgnTokenUrl("sol", solToken?.tokenAddress!)}
+            />
           </div>
         </div>
       </CardContent>
@@ -125,40 +146,23 @@ export function MemeCard({
   );
 }
 
-function MemeInfoOnChain({ meme, isSol }: { meme: MemeData; isSol?: boolean }) {
-  // TODO - isSol
-  const marketCap = isSol
-    ? meme.stats.marketCap || 0
-    : meme.stats.marketCap || 0;
-  const buyersNumber = isSol
-    ? meme.stats.buyersNumber || 0
-    : meme.stats.buyersNumber || 0;
-  const tokenAddress = isSol ? meme.address : meme.address;
-
-  const scanName = isSol
-    ? "Solscan"
-    : DEFAULT_CHAIN.blockExplorers.default.name;
-  const scanUrl = isSol
-    ? getScanUrl("sol", tokenAddress)
-    : getScanUrl(PGF_CONTRACT_CHAIN_ID, tokenAddress);
-  const scanIconUrl = isSol
-    ? solscanIconUrl
-    : `${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`;
-
-  const dexUrl = isSol
-    ? getDexTokenUrl("sol", meme?.address!)
-    : getDexTokenUrl(PGF_CONTRACT_CHAIN_ID, meme?.address!);
-
-  const gmgnUrl = isSol
-    ? getGmgnTokenUrl("sol", meme?.address!)
-    : getGmgnTokenUrl(PGF_CONTRACT_CHAIN_ID, meme?.address!);
-
-  const chainNameStr = isSol
-    ? "solana"
-    : getEvmChainName(PGF_CONTRACT_CHAIN_ID);
-  const chainName =
-    chainNameStr.charAt(0).toUpperCase() + chainNameStr.slice(1);
-
+function MemeInfoOnChain({
+  token,
+  scanName,
+  scanUrl,
+  scanIconUrl,
+  dexUrl,
+  gmgnUrl,
+  chainName,
+}: {
+  token: TokenData;
+  scanName: string;
+  scanUrl: string;
+  scanIconUrl: string;
+  dexUrl: string;
+  gmgnUrl: string;
+  chainName: string;
+}) {
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex items-center gap-3">
@@ -170,18 +174,19 @@ function MemeInfoOnChain({ meme, isSol }: { meme: MemeData; isSol?: boolean }) {
             maximumFractionDigits: 2,
             minimumFractionDigits: 0,
             notation: "compact",
-          }).format(marketCap)}{" "}
+          }).format(token?.marketCap || 0)}{" "}
           (
           {new Intl.NumberFormat("en-US", {
             notation: "compact",
-          }).format(buyersNumber)}{" "}
+          }).format(token?.txns?.h24?.buys || 0)}{" "}
           bought)
         </div>
       </div>
 
       <div className="flex items-center gap-3">
         <div className="font-bold text-secondary">{chainName} Address</div>
-        <span className="text-xs">{shortPubKey(tokenAddress)}</span>
+        {/* <span className="text-xs">{shortPubKey(token?.tokenAddress)}</span> */}
+        <CopyAddress address={token?.tokenAddress} size="small" />
       </div>
 
       <div className="flex items-center gap-2">

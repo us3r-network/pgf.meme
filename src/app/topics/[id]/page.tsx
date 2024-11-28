@@ -18,7 +18,7 @@ export default function TopicDetails({
   const tabs = [
     { name: capitalizeFirstLetter(SortBy.trending), value: SortBy.trending },
     { name: capitalizeFirstLetter(SortBy.newest), value: SortBy.newest },
-    { name: capitalizeFirstLetter(SortBy.launching), value: SortBy.launching },
+    // { name: capitalizeFirstLetter(SortBy.launching), value: SortBy.launching },
     { name: capitalizeFirstLetter(SortBy.marketCap), value: SortBy.marketCap },
   ];
   return (
@@ -35,11 +35,11 @@ export default function TopicDetails({
               </TabsTrigger>
             ))}
           </div>
-          <SearchInput
+          {/* <SearchInput
             placeholder="Search meme..."
             disabled
             className="w-[260px] max-sm:hidden"
-          />
+          /> */}
         </TabsList>
 
         {tabs.map((tab) => (

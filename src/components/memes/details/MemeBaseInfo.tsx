@@ -7,7 +7,7 @@ import { Address } from "viem";
 import MemeActions from "../trade/MemeActions";
 import MemeShareButton from "./MemeShareButton";
 import JoinTelegramButton from "@/components/telegram/JoinTelegramButton";
-import MemeSwap from "./MemeSwapWithEvm";
+import MemeSwap from "../MemeSwapWithUniswap";
 import { Card, CardContent } from "@/components/ui/card";
 import CopyAddress from "@/components/CopyAddress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";

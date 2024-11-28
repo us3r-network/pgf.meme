@@ -16,6 +16,16 @@ export function getMemes(params: {
   });
 }
 
+export function getTopMemes(params: {
+  chainId: "base" | "solana";
+}): RequestPromise<ApiResp<Array<MemeData>>> {
+  return request({
+    url: `/memes`,
+    method: "get",
+    params,
+  });
+}
+
 export function getMeme({
   address,
 }: {

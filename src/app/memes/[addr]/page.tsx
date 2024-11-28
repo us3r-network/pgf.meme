@@ -3,7 +3,7 @@
 import Loading from "@/components/Loading";
 import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
 import MemeSwap from "@/components/memes/details/MemeSwap";
-import MemeSwapWithSol from "@/components/memes/details/MemeSwapWithSol";
+import MemeSwapWithSol from "@/components/memes/MemeSwapWithJupiter";
 import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
 import { MemeCard } from "@/components/memes/MultiChainMemeCard";
 import ButtonToggle from "@/components/ui/button-toggle";

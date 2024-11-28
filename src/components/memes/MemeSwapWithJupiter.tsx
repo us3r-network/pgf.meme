@@ -14,7 +14,19 @@ const insertIntegratedTargetEl = (container: HTMLElement) => {
   container.innerHTML = "";
   container.appendChild(win.integratedTerminalTarget);
 };
-export default function MemeSwapWithSol({
+// jupiter-terminal
+const updateJupiterTerminalStyles = () => {
+  const target = document.getElementById("jupiter-terminal");
+  if (target) {
+    const parent = target.parentElement;
+    if (parent) {
+      parent.style.zIndex = "0";
+    }
+    return true;
+  }
+  return false;
+};
+export default function MemeSwapWithJupiter({
   token,
 }: {
   token: {
@@ -38,6 +50,7 @@ export default function MemeSwapWithSol({
         initialOutputMint: tokenAddress,
       },
     });
+    updateJupiterTerminalStyles();
   }, [tokenAddress]);
 
   useEffect(() => {
@@ -46,22 +59,44 @@ export default function MemeSwapWithSol({
       intervalId = setInterval(() => {
         setIsLoaded(Boolean(win.Jupiter.init));
       }, 500);
+    } else if (intervalId) {
+      clearInterval(intervalId);
     }
-
-    if (intervalId) {
-      return () => clearInterval(intervalId);
-    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [isLoaded]);
 
   const containerRef = useRef(null);
   useEffect(() => {
     setTimeout(() => {
-      if (isLoaded && Boolean(win.Jupiter.init) && containerRef.current) {
+      if (isLoaded && containerRef.current) {
         insertIntegratedTargetEl(containerRef.current);
         launchTerminal();
       }
     }, 200);
   }, [isLoaded, launchTerminal]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | undefined = undefined;
+    if (isLoaded) {
+      intervalId = setInterval(() => {
+        const updated = updateJupiterTerminalStyles();
+        if (updated) {
+          clearInterval(intervalId);
+        }
+      }, 500);
+    } else if (intervalId) {
+      clearInterval(intervalId);
+    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isLoaded]);
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-full overflow-auto relative">
