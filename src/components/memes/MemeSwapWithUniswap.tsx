@@ -53,12 +53,12 @@ export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <SwapWidget
         // provider={provider as any} // Type assertion to fix provider type mismatch
         theme={theme}
         width="100%"
-        className="bg-transparent h-full"
+        className="bg-transparent"
         brandedFooter={false}
         tokenList={tokenList}
         defaultChainId={PGF_CONTRACT_CHAIN_ID}

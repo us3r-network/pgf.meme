@@ -105,8 +105,8 @@ export default function MemeSwapWithJupiter({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full overflow-auto relative">
-      <div className="w-full h-full overflow-hidden flex justify-center">
+    <div className="flex flex-col lg:flex-row w-full overflow-auto relative">
+      <div className="w-full overflow-hidden flex justify-center">
         {/* Loading state */}
         {!isLoaded ? (
           <div className="h-full w-full  flex items-center justify-center">
@@ -116,7 +116,7 @@ export default function MemeSwapWithJupiter({
 
         <div
           ref={containerRef}
-          className={`flex h-full w-full overflow-auto justify-center bg-[#304256] ${
+          className={`flex w-full overflow-auto justify-center bg-[#304256] ${
             !isLoaded ? "hidden" : ""
           }`}
         ></div>
