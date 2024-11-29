@@ -18,7 +18,7 @@ export default function MemeSwap({
     logoURI: meme.image,
   };
   return (
-    <Card className="w-full h-[400px] border-secondary">
+    <Card className="w-full min-h-[400px] border-secondary">
       <CardContent className="w-full h-full p-0">
         {isSol ? (
           <MemeSwapWithJupiter
