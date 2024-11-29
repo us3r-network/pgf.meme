@@ -11,7 +11,8 @@ import {
 import { CreateMemeForm } from "./CreateMemeForm";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 export function CreateMemeButton({
   variant = "pc",
 }: {
@@ -43,9 +44,9 @@ export function CreateMemeButton({
       </>
     );
   }
-  const router = useRouter()
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -63,7 +64,7 @@ export function CreateMemeButton({
         <DialogHeader>
           <DialogTitle>Create Meme</DialogTitle>
         </DialogHeader>
-        <div className="flex-1 overflow-y-auto">
+        <ScrollArea className="flex-1 overflow-y-auto">
           <CreateMemeForm
             onSuccess={(transactionReceipt) => {
               setOpen(false);
@@ -72,7 +73,7 @@ export function CreateMemeButton({
               router.push(`/memes/${tokenAddress}`);
             }}
           />
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

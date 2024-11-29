@@ -6,7 +6,7 @@ import useLoadMemes from "@/hooks/meme/useLoadMemes";
 import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
 import { cn } from "@/lib/utils";
-import MemeCardLink from "./MultiChainMemeCard";
+import { MemeCard } from "./MultiChainMemeCard";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
 
 export default function MemeList({
@@ -59,7 +59,7 @@ export default function MemeList({
             key={`${item.address}_${idx}`}
             ref={idx === items.length - 1 ? observe : null}
           >
-            <MemeCardLink key={item.address} meme={item} />
+            <MemeCard key={item.address} meme={item} hideShare />
           </div>
         );
       })}

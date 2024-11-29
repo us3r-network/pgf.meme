@@ -3,18 +3,22 @@ import type { TopicData } from "../topic/types";
 import { NeynarCast } from "../neynar";
 
 export type MemeData = {
+  // Meme 基本信息
   address: Address;
   symbol: string;
   name: string;
   image: string;
   description: string;
   createdBy: MemeCreatedBy;
-  created_at: Date;
+  createdAt: number;
   tgPostLink?: string; // tg channel post link
   topic?: TopicData;
 
+  // Meme 关联信息
   // cast?: NeynarCast;
   castHash?: string;
+  requestorFid?: string;
+
   baseToken: TokenData;
   solToken: TokenData;
 };
@@ -24,8 +28,9 @@ export type TokenData = {
   poolAddress: string;
   symbol: string;
   name: string;
-  decimals: number;
   marketCap: number;
+  priceNative: string;
+  priceUsd: string;
   volume: {
     h24: number;
     h6: number;

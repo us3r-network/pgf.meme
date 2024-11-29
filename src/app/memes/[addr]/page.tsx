@@ -41,7 +41,7 @@ export default function MemeDetails() {
   return (
     <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
       <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
-        <MemeCard meme={meme} />
+        <MemeCard meme={meme} hideSwap noMemeDetailLink />
         <ButtonToggle
           options={chainOptions}
           value={chainType}

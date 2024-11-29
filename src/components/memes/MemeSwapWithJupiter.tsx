@@ -1,18 +1,18 @@
 "use client";
 
+import { JUPITER_ENDPOINT } from "@/constants/jupiter";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-var win = window as any;
 const insertIntegratedTargetEl = (container: HTMLElement) => {
-  if (!win.integratedTerminalTarget) {
+  if (!(window as any).integratedTerminalTarget) {
     const el = document.createElement("div");
     el.id = "integrated-terminal";
     el.style.width = "100%";
     el.style.height = "100%";
-    win.integratedTerminalTarget = el;
+    (window as any).integratedTerminalTarget = el;
   }
   container.innerHTML = "";
-  container.appendChild(win.integratedTerminalTarget);
+  container.appendChild((window as any).integratedTerminalTarget);
 };
 // jupiter-terminal
 const updateJupiterTerminalStyles = () => {
@@ -37,27 +37,25 @@ export default function MemeSwapWithJupiter({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const launchTerminal = useCallback(async () => {
-    if (win.Jupiter._instance) {
-      win.Jupiter.resume();
+    if ((window as any).Jupiter._instance) {
+      (window as any).Jupiter.resume();
     }
-    win.Jupiter.init({
+    (window as any).Jupiter.init({
       displayMode: "integrated",
       integratedTargetId: "integrated-terminal",
-      endpoint:
-        "https://virulent-summer-paper.solana-mainnet.quiknode.pro/f8673ea444e4b1d54d1c556663d2d00f1f0c437f",
+      endpoint: JUPITER_ENDPOINT,
       formProps: {
         initialInputMint: "So11111111111111111111111111111111111111112",
         initialOutputMint: tokenAddress,
       },
     });
-    updateJupiterTerminalStyles();
   }, [tokenAddress]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | undefined = undefined;
-    if (!isLoaded || !win.Jupiter.init) {
+    if (!isLoaded || !(window as any).Jupiter.init) {
       intervalId = setInterval(() => {
-        setIsLoaded(Boolean(win.Jupiter.init));
+        setIsLoaded(Boolean((window as any).Jupiter.init));
       }, 500);
     } else if (intervalId) {
       clearInterval(intervalId);
@@ -97,6 +95,14 @@ export default function MemeSwapWithJupiter({
       }
     };
   }, [isLoaded]);
+
+  useEffect(() => {
+    return () => {
+      if ((window as any).Jupiter._instance) {
+        (window as any).Jupiter.close();
+      }
+    };
+  }, []);
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-full overflow-auto relative">

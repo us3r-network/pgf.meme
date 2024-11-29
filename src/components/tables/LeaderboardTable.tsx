@@ -11,11 +11,17 @@ import {
 } from "../ui/table";
 import { Card, CardContent } from "../ui/card";
 import DefaultUserAvatar from "../user/DefaultUserAvatar";
+import NoData from "./NoData";
 export default function LeaderboardTable({
   data,
+  showEmpty = false,
 }: {
   data: UserLeaderboardData[];
+  showEmpty?: boolean;
 }) {
+  if (showEmpty) {
+    return <NoData />;
+  }
   return (
     <Card>
       <CardContent className="bg-primary p-2">

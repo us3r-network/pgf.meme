@@ -1,9 +1,9 @@
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { MemeData } from "@/services/meme/types";
 import { Address } from "viem";
-import MemeSwapWithEvm from "../MemeSwapWithUniswap";
 import { Card, CardContent } from "@/components/ui/card";
-import MemeSwapWithSol from "../MemeSwapWithJupiter";
+import MemeSwapWithUniswap from "../MemeSwapWithUniswap";
+import MemeSwapWithJupiter from "../MemeSwapWithJupiter";
 
 export default function MemeSwap({
   meme,
@@ -21,11 +21,11 @@ export default function MemeSwap({
     <Card className="w-full h-[400px] border-secondary">
       <CardContent className="w-full h-full p-0">
         {isSol ? (
-          <MemeSwapWithSol
-            token={{ address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263" }}
+          <MemeSwapWithJupiter
+            token={{ address: meme?.solToken?.tokenAddress }}
           />
         ) : (
-          <MemeSwapWithEvm token={token} />
+          <MemeSwapWithUniswap token={token} />
         )}
       </CardContent>
     </Card>

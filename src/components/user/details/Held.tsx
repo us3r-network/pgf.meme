@@ -26,5 +26,10 @@ export default function Held({ address }: { address: string }) {
       </div>
     );
   }
-  return <OwnedMemesTable data={items} />;
+  return (
+    <OwnedMemesTable
+      data={items}
+      showEmpty={mounted && !loading && items.length === 0}
+    />
+  );
 }

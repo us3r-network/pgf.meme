@@ -11,8 +11,18 @@ import {
 } from "../ui/table";
 import { Card, CardContent } from "../ui/card";
 import ClaimRewordsAction from "../user/ClaimRewordsAction";
+import NoData from "./NoData";
 
-export default function OwnedMemesTable({ data }: { data: OwnedMemeData[] }) {
+export default function OwnedMemesTable({
+  data,
+  showEmpty,
+}: {
+  data: OwnedMemeData[];
+  showEmpty?: boolean;
+}) {
+  if (showEmpty) {
+    return <NoData />;
+  }
   return (
     <Card>
       <CardContent className="bg-primary p-2">

@@ -5,7 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useInView } from "react-cool-inview";
 import useLoadCreatedMemes from "@/hooks/user/useLoadCreatedMemes";
 import Loading from "@/components/Loading";
-import MemeCard from "@/components/memes/MultiChainMemeCard";
+import { MemeCard } from "@/components/memes/MultiChainMemeCard";
+import NoData from "@/components/tables/NoData";
 
 export default function CreatedMemes({ address }: { address: string }) {
   const { items, loading, loadItems } = useLoadCreatedMemes({
@@ -35,6 +36,7 @@ export default function CreatedMemes({ address }: { address: string }) {
   });
   return (
     <div className="flex flex-col gap-6">
+      {mounted && !loading && items.length === 0 && <NoData />}
       {items.map((item, idx) => {
         return (
           <div

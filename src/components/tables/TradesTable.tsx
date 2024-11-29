@@ -16,8 +16,18 @@ import {
 } from "../ui/table";
 import { Card, CardContent } from "../ui/card";
 import DefaultUserAvatar from "../user/DefaultUserAvatar";
+import NoData from "./NoData";
 
-export default function TradesTable({ data }: { data: TradeData[] }) {
+export default function TradesTable({
+  data,
+  showEmpty,
+}: {
+  data: TradeData[];
+  showEmpty?: boolean;
+}) {
+  if (showEmpty) {
+    return <NoData />;
+  }
   return (
     <Card>
       <CardContent className="bg-primary p-2">
@@ -80,8 +90,8 @@ export default function TradesTable({ data }: { data: TradeData[] }) {
                   </span>
                 </TableCell>
                 {/* <TableCell>
-              <span>{dayjs(item.date * 1000).fromNow(true)}</span>
-            </TableCell> */}
+                <span>{dayjs(item.date * 1000).fromNow(true)}</span>
+              </TableCell> */}
 
                 <TableCell className="rounded-r-2xl">
                   <Link
