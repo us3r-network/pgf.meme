@@ -26,5 +26,10 @@ export default function Trades({ address }: { address: string }) {
       </div>
     );
   }
-  return <TradesTable data={items} />;
+  return (
+    <TradesTable
+      data={items}
+      showEmpty={mounted && !loading && items.length === 0}
+    />
+  );
 }

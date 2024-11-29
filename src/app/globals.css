@@ -27,11 +27,6 @@ a span:hover {
   height: 36px !important;
 }
 
-/* jupiter-terminal styles */
-.jupiter-has-tooltip:hover .jupiter-tooltip {
-  @apply visible !z-0;
-}
-
 @layer base {
   :root {
     --background: 0, 0%, 100%;

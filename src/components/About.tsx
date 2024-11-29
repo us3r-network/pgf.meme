@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { CircleHelp } from "lucide-react";
 import GuideText from "./GuideText";
+import { ScrollArea } from "./ui/scroll-area";
 
 export default function AboutDialogButton() {
   return (
@@ -14,11 +15,11 @@ export default function AboutDialogButton() {
       <DialogTrigger asChild>
         <CircleHelp className="fill-primary-foreground stroke-primary size-10 cursor-pointer" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen flex flex-col">
+      <DialogContent className="sm:max-w-[816px] max-h-[90vh] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
           <DialogTitle>How castcoin.fun works?</DialogTitle>
         </DialogHeader>
-        <div className="flex-col justify-start items-start gap-8 inline-flex max-sm:flex-1 max-sm:overflow-y-auto">
+        <ScrollArea className="flex-col justify-start items-start gap-8 inline-flex flex-1 overflow-y-auto">
           <div className="flex flex-col gap-8">
             <div className="flex-col justify-start items-start gap-4 inline-flex">
               <div className="text-secondary text-2xl font-bold">
@@ -53,11 +54,14 @@ export default function AboutDialogButton() {
                 </span>
               </div>
               <div className="self-stretch">
-                <span className="text-2xl">
+                <span className="div text-2xl -ml-2">
                   💡 Once submitted, we’ll create two versions of your token:
                   <br />
                 </span>
-                <span className="text-2xl font-bold">• On Base Chain: </span>
+                <span className="text-2xl font-bold  pl-2">
+                  {" "}
+                  • On Base Chain:{" "}
+                </span>
                 <span className="text-2xl">Deployed on </span>
                 <span className="text-2xl font-bold">Uniswap v3</span>
                 <span className="text-2xl">
@@ -65,7 +69,10 @@ export default function AboutDialogButton() {
                   for trading.
                   <br />
                 </span>
-                <span className="text-2xl font-bold">• On Solana Chain: </span>
+                <span className="text-2xl font-bold  pl-2">
+                  {" "}
+                  • On Solana Chain:{" "}
+                </span>
                 <span className="text-2xl">Deployed on </span>
                 <span className="text-2xl font-bold">Jupiter</span>
                 <span className="text-2xl"> for trading.</span>
@@ -79,12 +86,10 @@ export default function AboutDialogButton() {
               <div className="text-2xl">
                 Your token is now live and ready for trading:
               </div>
-              <div className="self-stretch text-2xl">
-                {" "}
+              <div className="self-stretch text-2xl pl-1">
                 • On Uniswap v3: Trade your Base chain token.
               </div>
-              <div className="self-stretch text-2xl">
-                {" "}
+              <div className="self-stretch text-2xl  pl-1">
                 • On Jupiter: Trade your Solana chain token.
               </div>
               <div className="self-stretch text-2xl">
@@ -114,7 +119,7 @@ export default function AboutDialogButton() {
               Start creating and trading today! 🚀
             </div>
           </div>
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

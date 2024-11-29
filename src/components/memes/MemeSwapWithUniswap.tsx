@@ -12,7 +12,7 @@ import { SwapWidget, Theme } from "@uniswap/widgets";
 import "@uniswap/widgets/fonts.css";
 import { useEffect, useState } from "react";
 
-export default function MemeSwapWithEvm({ token }: { token: PGFToken }) {
+export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
   const provider = getEthersProvider(config);
   const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   useEffect(() => {
@@ -44,7 +44,14 @@ export default function MemeSwapWithEvm({ token }: { token: PGFToken }) {
     deepShadow: "transparent",
   };
   // console.log("MY_TOKEN_LIST", tokenList, provider);
-  if (!tokenInfo) return null;
+  if (!tokenInfo) {
+    return (
+      <div className="h-full w-full  flex items-center justify-center">
+        <p className="">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full">
       <SwapWidget

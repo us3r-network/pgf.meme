@@ -6,7 +6,8 @@ import useLoadMemes from "@/hooks/meme/useLoadMemes";
 import { SortBy } from "@/services/meme/types";
 import { useInView } from "react-cool-inview";
 import { cn } from "@/lib/utils";
-import MemeCardLink from "./MultiChainMemeCard";
+import { MemeCard } from "./MultiChainMemeCard";
+import useSearchTerms from "@/hooks/app/useSearchTerms";
 
 export default function MemeList({
   sortBy,
@@ -17,9 +18,11 @@ export default function MemeList({
   topicId?: number;
   column?: number;
 }) {
+  const { searchTerms } = useSearchTerms();
   const { items, loading, loadItems } = useLoadMemes({
     sortBy,
     topicId,
+    query: searchTerms,
   });
 
   const [mounted, setMounted] = useState(false);
@@ -27,10 +30,15 @@ export default function MemeList({
   useEffect(() => {
     setMounted(true);
   }, []);
+  // useEffect(() => {
+  //   if (!mounted) return;
+  //   loadItems();
+  // }, [mounted]);
+
   useEffect(() => {
     if (!mounted) return;
-    loadItems();
-  }, [mounted]);
+    loadItems(true);
+  }, [mounted, searchTerms]);
 
   const { observe } = useInView({
     // For better UX, we can grow the root margin so the data will be loaded earlier
@@ -51,7 +59,7 @@ export default function MemeList({
             key={`${item.address}_${idx}`}
             ref={idx === items.length - 1 ? observe : null}
           >
-            <MemeCardLink key={item.address} meme={item} />
+            <MemeCard key={item.address} meme={item} hideShare />
           </div>
         );
       })}

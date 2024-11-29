@@ -3,7 +3,7 @@
 import Loading from "@/components/Loading";
 import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
 import MemeSwap from "@/components/memes/details/MemeSwap";
-import MemeSwapWithSol from "@/components/memes/details/MemeSwapWithSol";
+import MemeSwapWithSol from "@/components/memes/MemeSwapWithJupiter";
 import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
 import { MemeCard } from "@/components/memes/MultiChainMemeCard";
 import ButtonToggle from "@/components/ui/button-toggle";
@@ -41,7 +41,7 @@ export default function MemeDetails() {
   return (
     <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
       <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
-        <MemeCard meme={meme} />
+        <MemeCard meme={meme} hideSwap noMemeDetailLink />
         <ButtonToggle
           options={chainOptions}
           value={chainType}

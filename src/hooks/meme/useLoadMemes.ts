@@ -8,11 +8,13 @@ const PAGE_SIZE = 20;
 export default function useLoadMemes(props?: {
   sortBy?: SortBy;
   topicId?: number;
+  query?: string;
 }) {
   const [items, setItems] = useState<MemeData[]>([]);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
   const sortByRef = useRef(props?.sortBy);
   const topicIdRef = useRef(props?.topicId);
+  const queryRef = useRef(props?.query);
   const pageInfoRef = useRef({
     hasNextPage: true,
     nextPageNumber: 1,
@@ -20,9 +22,17 @@ export default function useLoadMemes(props?: {
 
   const loading = status === AsyncRequestStatus.PENDING;
 
-  const loadItems = async () => {
+  const loadItems = async (isQueryChange?: boolean) => {
     const sortBy = sortByRef.current;
     const topicId = topicIdRef.current;
+    const query = queryRef.current;
+    if (isQueryChange) {
+      pageInfoRef.current = {
+        hasNextPage: true,
+        nextPageNumber: 1,
+      };
+      setItems([]);
+    }
     const { hasNextPage, nextPageNumber } = pageInfoRef.current;
 
     if (hasNextPage === false) {
@@ -35,6 +45,7 @@ export default function useLoadMemes(props?: {
         pageNumber: nextPageNumber,
         ...(sortBy ? { sortBy } : {}),
         ...(topicId ? { topicId } : {}),
+        query: query || "",
       };
       const resp = await getMemes(params);
       const { code, data, msg } = resp.data || {};

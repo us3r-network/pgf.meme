@@ -13,11 +13,9 @@ export default function useSearchTerms() {
   const { searchTerms } = useAppSelector(selectApp);
 
   const setSearchTerms = useCallback(
-    (str: string) => {
-      debounce(() => {
-        dispatch(setSearchTermsToStore(str));
-      }, 500);
-    },
+    debounce((terms: string) => {
+      dispatch(setSearchTermsToStore(terms));
+    }, 500),
     [dispatch]
   );
 
