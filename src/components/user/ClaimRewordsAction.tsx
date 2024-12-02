@@ -8,9 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { parseUnits } from "viem";
 
 export default function ClaimRewordsAction({ data }: { data: OwnedMemeData }) {
-  const { referralReward, graduation } = data;
+  const { referralReward } = data;
   const [isClaimed, setIsClaimed] = useState(referralReward?.isClaimed);
-  const canClaim = referralReward && !isClaimed && !!graduation?.poolAddress;
+  const canClaim = referralReward && !isClaimed;
   const { claim, isSuccess } = useClaim();
   const { toast } = useToast();
   useEffect(() => {
