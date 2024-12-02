@@ -96,7 +96,7 @@ function MemeShareContent({
   className?: string;
 }) {
   const { toast } = useToast();
-  const isGraduation = !!meme.graduation?.poolAddress;
+  // const isGraduation = !!meme.graduation?.poolAddress;
   const shareLink = `${window.location.origin}/memes/${meme.address}`;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">

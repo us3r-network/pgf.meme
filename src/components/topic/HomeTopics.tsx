@@ -182,7 +182,7 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
               </span>
             </div>
           </div>
-          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
+          {/* <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent">
             <div className="p-6 flex justify-between items-end">
               <span className="text-2xl text-secondary max-sm:text-base">
                 {new Intl.NumberFormat("en-US", {
@@ -202,7 +202,7 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </Link>

@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { MemeData, MemeGraduation } from "../meme/types";
+import { MemeData } from "../meme/types";
 
 export type UserData = {
   id: string;
@@ -28,7 +28,6 @@ export type OwnedMemeData = {
   memeAmount: number;
   ethAmount: number;
   usdAmount: number;
-  graduation?: MemeGraduation;
   referralReward?: {
     amount: number;
     proof: any;
