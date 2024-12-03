@@ -177,6 +177,7 @@ export async function getTokenInfo({
       args: [account],
     } as any);
   }
+  console.log("contracts", contracts);
 
   const data = await readContracts(config, {
     contracts,

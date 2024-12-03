@@ -1,6 +1,6 @@
 "use client";
 
-import { JUPITER_ENDPOINT } from "@/constants/jupiter";
+import { SOLANA_ENDPOINT } from "@/constants/solana";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const insertIntegratedTargetEl = (container: HTMLElement) => {
@@ -43,7 +43,7 @@ export default function MemeSwapWithJupiter({
     (window as any).Jupiter.init({
       displayMode: "integrated",
       integratedTargetId: "integrated-terminal",
-      endpoint: JUPITER_ENDPOINT,
+      endpoint: SOLANA_ENDPOINT,
       formProps: {
         initialInputMint: "So11111111111111111111111111111111111111112",
         initialOutputMint: tokenAddress,
@@ -105,7 +105,7 @@ export default function MemeSwapWithJupiter({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row w-full overflow-auto relative">
+    <div className="flex flex-col lg:flex-row w-full h-full overflow-auto relative">
       <div className="w-full overflow-hidden flex justify-center">
         {/* Loading state */}
         {!isLoaded ? (

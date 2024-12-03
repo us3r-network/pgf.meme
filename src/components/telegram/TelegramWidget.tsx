@@ -75,7 +75,10 @@ export const TelegramCommentsWidget = ({
     const element = document.getElementById(
       "telegram-widget-comments-container"
     );
-    if (element?.childElementCount === 0) element?.appendChild(script);
-  }, []);
+    if (element) {
+      element.innerHTML = "";
+      element?.appendChild(script);
+    }
+  }, [discussion]);
   return <div id="telegram-widget-comments-container"></div>;
 };

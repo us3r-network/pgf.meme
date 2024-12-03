@@ -275,7 +275,9 @@ function SelectMemeTopic({
       </SelectTrigger>
       <SelectContent>
         {topics.map((topic) => (
-          <SelectItem value={topic.id.toString()}>{topic.name}</SelectItem>
+          <SelectItem key={topic.id} value={topic.id.toString()}>
+            {topic.name}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>
