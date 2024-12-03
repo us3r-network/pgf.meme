@@ -50,6 +50,7 @@ export default function HomeMemes() {
               <SelectContent className="bg-primary text-primary-foreground">
                 {chainIdOptions.map((item) => (
                   <SelectItem
+                    key={item.value}
                     value={item.value}
                     className="  text-2xl font-bold"
                   >

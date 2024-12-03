@@ -46,7 +46,9 @@ const SwitchChains = React.forwardRef<
       disabled={switchChainStatus === "pending"}
     >
       <SelectTrigger className="bg-secondary rounded-r-none text-white px-2">
-        <TokenInfo token={{...selectedChain.nativeCurrency, chainId: selectedChain.id}}  />
+        <TokenInfo
+          token={{ ...selectedChain.nativeCurrency, chainId: selectedChain.id }}
+        />
       </SelectTrigger>
       <SelectContent
         className={cn(
@@ -64,10 +66,13 @@ const SwitchChains = React.forwardRef<
             .filter((chain) => chain !== selectedChain)
             .map((chain) => (
               <SelectItem
+                key={chain.id}
                 value={chain.id.toString()}
                 className="cursor-pointer p-0"
               >
-                <TokenInfo token={{...chain.nativeCurrency, chainId: chain.id}} />
+                <TokenInfo
+                  token={{ ...chain.nativeCurrency, chainId: chain.id }}
+                />
               </SelectItem>
             ))}
         </div>
@@ -77,7 +82,7 @@ const SwitchChains = React.forwardRef<
 });
 export default SwitchChains;
 
-export function TokenInfo({ token }: { token: any}) {
+export function TokenInfo({ token }: { token: any }) {
   return (
     <div className="flex flex-row items-center gap-2">
       {token.contractAddress ? (

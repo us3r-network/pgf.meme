@@ -33,6 +33,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@types/lodash": "^4.17.12",
     "@uniswap/widgets": "^2.59.0",
+    "@wormhole-foundation/wormhole-connect": "^1.1.6",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.13",

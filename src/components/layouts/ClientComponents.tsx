@@ -14,6 +14,7 @@ import Share2EarnDialogButton from "../Share2Earn";
 import { CustomConnectButton } from "../CustomConnectButton";
 import { SearchInput } from "../ui/search-input";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export function DefaultHeader() {
   const pathname = usePathname();
