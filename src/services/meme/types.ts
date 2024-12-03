@@ -61,6 +61,12 @@ export type TokenData = {
       sells: number;
     };
   };
+  nttConnect: {
+    manager: string;
+    transceiver: {
+      address: string;
+    };
+  };
 };
 
 export type MemeCreatedBy = {

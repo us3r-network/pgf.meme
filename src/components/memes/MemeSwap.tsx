@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import MemeSwapWithJupiter from "./MemeSwapWithJupiter";
 import { base } from "viem/chains";
 import { cn } from "@/lib/utils";
-import MemeSwapWithMatcha from "./MemeSwapWithMatcha";
+import MemeSwapWithUniswap from "./MemeSwapWithUniswap";
 
 export default function MemeSwap({
   meme,
@@ -26,14 +26,22 @@ export default function MemeSwap({
 
   return (
     <Card className={cn("w-full min-h-[400px] border-secondary")}>
-      <CardContent className="w-full h-full p-0">
-        {isSol ? (
+      <CardContent className="w-full p-0">
+        <div className={cn("", isSol ? "block" : "hidden")}>
+          <MemeSwapWithJupiter
+            token={{ address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" }}
+          />
+        </div>
+        <div className={cn("", isSol ? "hidden" : "block")}>
+          <MemeSwapWithUniswap token={token} />
+        </div>
+        {/* {isSol ? (
           <MemeSwapWithJupiter
             token={{ address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" }}
           />
         ) : (
-          <MemeSwapWithMatcha token={token} />
-        )}
+          <MemeSwapWithUniswap token={token} />
+        )} */}
       </CardContent>
     </Card>
   );

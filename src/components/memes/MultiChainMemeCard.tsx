@@ -22,6 +22,7 @@ import CopyAddress from "../CopyAddress";
 import MemeSwapDialogWithUniswap from "./MemeSwapDialogWithUniswap";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { MemeSwapDialogWithJupiter } from "./MemeSwapDialogWithJupiter";
+import { Address } from "viem";
 
 export function MemeCard({
   meme,
@@ -133,7 +134,8 @@ export function MemeCard({
                 hideSwap ? null : (
                   <MemeSwapDialogWithUniswap
                     token={{
-                      contractAddress: meme.address,
+                      contractAddress: (baseToken?.tokenAddress ||
+                        "") as Address,
                       chainId: PGF_CONTRACT_CHAIN_ID,
                       logoURI: meme.image,
                     }}
