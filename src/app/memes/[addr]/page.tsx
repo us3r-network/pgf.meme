@@ -11,6 +11,7 @@ import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MemeBridge from "@/components/memes/MemeBridge";
+import { cn } from "@/lib/utils";
 
 export default function MemeDetails() {
   const [chainType, setChainType] = useState("evm");
@@ -52,7 +53,13 @@ export default function MemeDetails() {
         value={tradeActionType}
         onChange={setTradeActionType}
       />
-      {tradeActionType === "trade" ? memeSwapEl : memeBridgeEl}
+      <div className={cn("", tradeActionType === "trade" ? "block" : "hidden")}>
+        {memeSwapEl}
+      </div>
+      <div className={cn("", tradeActionType === "trade" ? "hidden" : "block")}>
+        {memeBridgeEl}
+      </div>
+      {/* {tradeActionType === "trade" ? memeSwapEl : memeBridgeEl} */}
     </>
   );
   return (

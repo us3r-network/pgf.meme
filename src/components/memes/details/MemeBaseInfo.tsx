@@ -9,7 +9,7 @@ import MemePosts from "./MemePosts";
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   return (
     <Card className="w-full border-secondary">
-      <CardContent className="w-full flex flex-col gap-6">
+      <CardContent className="w-full flex flex-col gap-6 p-3">
         <div className="w-full flex flex-row gap-2">
           <img
             className="w-[160px] h-[160px] rounded-[20px] object-cover"

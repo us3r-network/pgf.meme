@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const TELEGRAM_WIDGET_ENDPOINT =
   "https://telegram.org/js/telegram-widget.js?22";
@@ -68,17 +68,15 @@ export const TelegramCommentsWidget = ({
   discussion: string;
   limit?: number;
 }) => {
+  const tgRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const script = getTelegramScript();
     script.setAttribute("data-telegram-discussion", discussion);
     script.setAttribute("data-comments-limit", String(limit));
-    const element = document.getElementById(
-      "telegram-widget-comments-container"
-    );
-    if (element) {
-      element.innerHTML = "";
-      element?.appendChild(script);
+    if (tgRef.current) {
+      tgRef.current.innerHTML = "";
+      tgRef.current.appendChild(script);
     }
-  }, [discussion]);
-  return <div id="telegram-widget-comments-container"></div>;
+  }, []);
+  return <div ref={tgRef}></div>;
 };

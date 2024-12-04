@@ -8,6 +8,7 @@ import WormholeConnect, {
 } from "@wormhole-foundation/wormhole-connect";
 import { SOLANA_ENDPOINT } from "@/constants/solana";
 
+const isTestNet = process.env.NEXT_PUBLIC_TESTNET === "true";
 export default function MemeBridge({
   meme,
   fromSol,
@@ -15,20 +16,43 @@ export default function MemeBridge({
   meme: MemeData;
   fromSol?: boolean;
 }) {
-  const defaultInputs = fromSol
-    ? { fromChain: "Solana", toChain: "ArbitrumSepolia" }
-    : { fromChain: "ArbitrumSepolia", toChain: "Solana" };
-  const wormholeConfig: WormholeConnectConfig = {
-    network: "Testnet",
-    rpcs: {
-      Solana: SOLANA_ENDPOINT,
-      Ethereum: "https://rpc.ankr.com/eth",
+  const baseToken = meme.baseToken || {
+    name: meme.name,
+    symbol: meme.symbol,
+    tokenAddress: "0x32e55Aaad72f99243AF3d0C26234bcAfE1b892E3",
+    nttConnect: {
+      manager: "0x4Eac365860007d4aE33076eb191740Ad03F2ff8b",
+      transceiver: {
+        address: "0x148AfBF98a9DE8CEE3a888C0Fca6A61C5Bdb93e4",
+      },
     },
-    chains: ["ArbitrumSepolia", "Solana"],
-    tokens: ["WSVarbsep", "WSVsol"],
+  };
+  const solToken = meme.solToken || {
+    name: meme.name,
+    symbol: meme.symbol,
+    tokenAddress: "772N7BvoBjyu84ZuTrWAUiSXujMvcFN9srGAL6DrHZKH",
+    nttConnect: {
+      manager: "nTtCWLfbe6yFepSauh5hqkbrtUeDq7pMRiBLHhY9Hkc",
+      transceiver: {
+        address: "8Af44CqbTNeqSeWHpCXZJFFx5zcRRDjJir3F8KbgQXSN",
+      },
+    },
+  };
+  const network = isTestNet ? "Testnet" : "Mainnet";
+  const chain = isTestNet ? "Sepolia" : "Base";
+  const wormholeConfig: WormholeConnectConfig = {
+    network,
+    // rpcs: {
+    //   Solana: SOLANA_ENDPOINT,
+    //   Sepolia: "https://eth-sepolia.api.onfinality.io/public",
+    //   Base: "wss://base.callstaticrpc.com",
+    //   BaseSepolia: "wss://base-sepolia-rpc.publicnode.com",
+    // },
+    chains: [chain, "Solana"],
+    tokens: ["WSVevm", "WSVsol"],
     ui: {
       title: "",
-      defaultInputs: defaultInputs as any,
+      defaultInputs: { fromChain: "Solana", toChain: chain },
       showHamburgerMenu: false,
     },
     routes: [
@@ -36,23 +60,23 @@ export default function MemeBridge({
         tokens: {
           WSV_NTT: [
             {
-              chain: "ArbitrumSepolia",
-              manager: "0x3F52328B390276eFF9C77940Bc7F81e098De5Ed1",
-              token: "0xff1Fa5B426C6155fbc7e22da6700Ad8C95Da01F4",
+              chain: chain,
+              manager: baseToken.nttConnect.manager,
+              token: baseToken.tokenAddress,
               transceiver: [
                 {
-                  address: "0xA12b94F1a82fbd3bD2721659e692A6467b3Fe478",
+                  address: baseToken.nttConnect.transceiver.address,
                   type: "wormhole",
                 },
               ],
             },
             {
               chain: "Solana",
-              manager: "ntNGLGC45T7X1cMX6ezdPdcZDUwEQL3sb62nhEVhLwa",
-              token: "Hyfw9cTZbMaWJqBcWxutVkT8NLuCwixbdGj6zWY7amD2",
+              manager: solToken.nttConnect.manager,
+              token: solToken.tokenAddress,
               transceiver: [
                 {
-                  address: "2PeCzGTK2j4cMSb2yZQxLfVBbnsuenf7i3KdSTRfPRZi",
+                  address: solToken.nttConnect.transceiver.address,
                   type: "wormhole",
                 },
               ],
@@ -62,31 +86,31 @@ export default function MemeBridge({
       }),
     ],
     tokensConfig: {
-      WSVarbsep: {
-        key: "WSVarbsep",
-        symbol: "WSV",
-        nativeChain: "ArbitrumSepolia",
-        displayName: "WSV",
+      WSVevm: {
+        key: "WSVevm",
+        symbol: meme.symbol,
+        nativeChain: chain,
+        displayName: meme.name,
         tokenId: {
-          chain: "ArbitrumSepolia",
-          address: "0xff1Fa5B426C6155fbc7e22da6700Ad8C95Da01F4",
+          chain: chain,
+          address: baseToken.tokenAddress,
         },
         coinGeckoId: "wormhole",
-        icon: "https://wormhole.com/token.png",
+        icon: meme.image,
         decimals: 18,
       },
 
       WSVsol: {
         key: "WSVsol",
-        symbol: "WSV",
+        symbol: meme.symbol,
         nativeChain: "Solana",
-        displayName: "WSV",
+        displayName: meme.name,
         tokenId: {
           chain: "Solana",
-          address: "Hyfw9cTZbMaWJqBcWxutVkT8NLuCwixbdGj6zWY7amD2",
+          address: solToken.tokenAddress,
         },
         coinGeckoId: "wormhole",
-        icon: "https://wormhole.com/token.png",
+        icon: meme.image,
         decimals: 9,
       },
     },

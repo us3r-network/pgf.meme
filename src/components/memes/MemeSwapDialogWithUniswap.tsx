@@ -7,13 +7,19 @@ import {
 } from "@/components/ui/dialog";
 import { PGFToken } from "@/services/contract/types";
 import { Button } from "../ui/button";
-import MemeSwapWithMatcha from "./MemeSwapWithMatcha";
+import MemeSwapWithUniswap from "./MemeSwapWithUniswap";
+import { base } from "viem/chains";
+import { Address } from "viem";
 
 export default function MemeSwapDialogWithUniswap({
   token,
 }: {
   token: PGFToken;
 }) {
+  const t = {
+    contractAddress: "0x0Db510e79909666d6dEc7f5e49370838c16D950f" as Address,
+    chainId: base.id,
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,7 +29,7 @@ export default function MemeSwapDialogWithUniswap({
         <DialogHeader>
           <DialogTitle>Trade on Uniswap</DialogTitle>
         </DialogHeader>
-        <MemeSwapWithMatcha token={token} />
+        <MemeSwapWithUniswap token={t} />
       </DialogContent>
     </Dialog>
   );
