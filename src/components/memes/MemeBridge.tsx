@@ -1,4 +1,3 @@
-"use client";
 import { MemeData } from "@/services/meme/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
