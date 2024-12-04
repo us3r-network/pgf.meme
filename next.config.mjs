@@ -15,7 +15,7 @@ const nextConfig = {
     };
     return config;
   },
-  // swcMinify: false,
+  swcMinify: false,
 };
 
 export default nextConfig;
