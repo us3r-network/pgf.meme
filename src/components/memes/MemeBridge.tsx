@@ -129,6 +129,12 @@ export default function MemeBridge({
           config={wormholeConfig}
           theme={{
             mode: "light",
+            // input: "",
+            primary: "#FD1E95",
+            secondary: "#03BFFF",
+            // text: "#1E1E1E",
+            // textSecondary: "#1E1E1E",
+            font: "",
           }}
         />
       </CardContent>
