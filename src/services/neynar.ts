@@ -12,7 +12,7 @@ export type NeynarCast = {
   channel: NeynarChannel;
   text: string;
   timestamp: string;
-  embeds: any[];
+  embeds: Array<NeynarEmbed>;
   reactions: Reactions;
   replies: Replies;
   mentioned_profiles: Author[];
@@ -20,6 +20,18 @@ export type NeynarCast = {
   viewer_context?: {
     liked: boolean;
     recasted: boolean;
+  };
+};
+export type NeynarEmbed = {
+  url: string;
+  metadata: {
+    content_type: string;
+    content_length: number;
+    _status: string;
+    image: {
+      width_px: number;
+      height_px: number;
+    };
   };
 };
 
