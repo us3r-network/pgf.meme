@@ -6,6 +6,7 @@ import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Comic_Neue as ComicNeueFont } from "next/font/google";
 import Script from "next/script";
+import BgGifs from "@/components/layouts/BgGifs";
 
 export const metadata: Metadata = {
   title: "castcoin.fun",

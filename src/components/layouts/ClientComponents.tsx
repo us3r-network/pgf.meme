@@ -15,6 +15,10 @@ import { CustomConnectButton } from "../CustomConnectButton";
 import { SearchInput } from "../ui/search-input";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import {
+  CreateMemeWithTwitter,
+  CreateMemeWithWarpcast,
+} from "../memes/create/CreateMemeWithBot";
 
 export function DefaultHeader() {
   const pathname = usePathname();
@@ -72,14 +76,19 @@ export function DefaultHeader() {
           )}
 
           <div className="flex items-center gap-4 z-20 ml-auto max-sm:gap-2">
+            <div className="max-sm:hidden flex items-center gap-4">
+              <span className="text-2xl font-bold text-primary-foreground">
+                Create Meme From
+              </span>
+              <CreateMemeWithWarpcast />
+              <CreateMemeWithTwitter />
+              <CreateMemeButton />
+            </div>
             <AboutDialogButton />
             {/* <div className="max-sm:hidden">
               <Share2EarnDialogButton />
             </div> */}
 
-            <div className="max-sm:hidden">
-              <CreateMemeButton />
-            </div>
             <div className="hidden max-sm:block">
               <CustomConnectButton
                 showBalance={false}
@@ -95,7 +104,7 @@ export function DefaultHeader() {
       </header>
       <div
         className={cn(
-          "w-screen  fixed  left-0 bg-secondary z-10 h-[58px] top-[80px] max-sm:h-[40px] max-sm:top-[70px]",
+          "w-screen  fixed  left-0 bg-secondary z-10 h-[58px] top-[80px] max-sm:h-[40px] max-sm:top-[70px] border-b-4 border-primary",
           !showMessageMarquee && "hidden"
         )}
       >

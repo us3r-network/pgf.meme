@@ -19,46 +19,32 @@ export function CreateMemeButton({
   variant?: "pc" | "mobile" | null | undefined;
 }) {
   const { openConnectModal } = useConnectModal();
-  if (openConnectModal) {
-    return (
-      <>
-        {variant === "mobile" ? (
-          <Button
-            className="w-full h-12 font-bold text-xl"
-            onClick={() => {
-              openConnectModal();
-            }}
-          >
-            Create a new meme
-          </Button>
-        ) : (
-          <Button
-            className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold"
-            onClick={() => {
-              openConnectModal();
-            }}
-          >
-            Create
-          </Button>
-        )}
-      </>
-    );
-  }
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
+  const createBtnEl = (
+    <img className="w-[48px] h-[48px]" src="/images/logo.png" />
+  );
+  if (openConnectModal) {
+    return (
+      <Button
+        className="p-0 m-0 w-[48px] h-[48px]"
+        onClick={() => {
+          openConnectModal();
+        }}
+      >
+        <img className="w-full h-full rounded-[10px]" src="/images/logo.png" />
+      </Button>
+    );
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {variant === "mobile" ? (
-          <Button className="w-full h-12 text-xl font-bold">
-            Create a new meme
-          </Button>
-        ) : (
-          <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
-            Create
-          </Button>
-        )}
+        <Button className="p-0 m-0 w-[48px] h-[48px]">
+          <img
+            className="w-full h-full rounded-[10px]"
+            src="/images/logo.png"
+          />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen max-sm:max-h-full max-h-[90%] flex flex-col">
         <DialogHeader>
