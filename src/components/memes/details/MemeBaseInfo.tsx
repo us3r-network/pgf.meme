@@ -5,28 +5,28 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import MemePosts from "./MemePosts";
+import MemeCast from "./MemeCast";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
+  // TODO: mock cast hash
+  const castHash =
+    meme.castHash || "0x0155c958ef72761ce424805b36d768719101fb70";
   return (
     <Card className="w-full border-secondary">
       <CardContent className="w-full flex flex-col gap-6 p-3">
-        <div className="w-full flex flex-row gap-2">
-          <img
-            className="w-[160px] h-[160px] rounded-[20px] object-cover"
-            src={meme.image}
-          />
-          <div className="flex-1">
-            <span className="text-primary text-xl">{meme.name}</span>
-            <br />
-            <span className="font-normal text-base">{meme.description}</span>
-          </div>
-        </div>
-        {meme.topic && (
-          <LinkRow
-            label="Topic"
-            href={`/topics/${meme.topic.id}`}
-            text={`#${meme.topic.name}`}
-          />
+        {castHash ? (
+          <MemeCast hash={castHash} />
+        ) : (
+          <>
+            <MemeInfo meme={meme} />{" "}
+            {meme.topic && (
+              <LinkRow
+                label="Topic"
+                href={`/topics/${meme.topic.id}`}
+                text={`#${meme.topic.name}`}
+              />
+            )}
+          </>
         )}
 
         {!!meme?.tgPostLink && (
@@ -40,6 +40,21 @@ export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   );
 }
 
+function MemeInfo({ meme }: { meme: MemeData }) {
+  return (
+    <div className="w-full flex flex-row gap-2">
+      <img
+        className="w-[160px] h-[160px] rounded-[20px] object-cover"
+        src={meme.image}
+      />
+      <div className="flex-1">
+        <span className="text-primary text-xl">{meme.name}</span>
+        <br />
+        <span className="font-normal text-base">{meme.description}</span>
+      </div>
+    </div>
+  );
+}
 function LinkRow({
   label,
   href,
