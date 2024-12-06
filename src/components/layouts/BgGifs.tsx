@@ -18,16 +18,18 @@ export default function BgGifs() {
               rowIndex % 2 === 0 ? "justify-around" : "justify-between"
             )}
           >
-            {Array.from({ length: 5 }).map((_, colIndex) => (
-              <div key={colIndex} className="w-[140px] h-[140px]">
-                <Image
-                  src={gifs[rowIndex % 2].src}
-                  alt={gifs[rowIndex % 2].alt}
-                  width={140}
-                  height={140}
-                />
-              </div>
-            ))}
+            {Array.from({ length: rowIndex % 2 === 0 ? 5 : 6 }).map(
+              (_, colIndex) => (
+                <div key={colIndex} className="w-[140px] h-[140px]">
+                  <Image
+                    src={gifs[rowIndex % 2].src}
+                    alt={gifs[rowIndex % 2].alt}
+                    width={140}
+                    height={140}
+                  />
+                </div>
+              )
+            )}
           </div>
         ))}
       </div>

@@ -6,17 +6,19 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import MemePosts from "./MemePosts";
 import MemeCast from "./MemeCast";
+import MemeTweet from "./MemeTweet";
 
 export default function MemeBaseInfo({ meme }: { meme: MemeData }) {
   // TODO: mock cast hash
   const castHash =
-    meme.castHash || "0x0155c958ef72761ce424805b36d768719101fb70";
+    meme?.castHash || "0x0155c958ef72761ce424805b36d768719101fb70";
+  const tweetId = meme?.tweetId || "20";
   return (
     <Card className="w-full border-secondary">
       <CardContent className="w-full flex flex-col gap-6 p-3">
-        {castHash ? (
-          <MemeCast hash={castHash} />
-        ) : (
+        {castHash && <MemeCast hash={castHash} />}
+        {tweetId && <MemeTweet id={tweetId} />}
+        {!castHash && !tweetId && (
           <>
             <MemeInfo meme={meme} />{" "}
             {meme.topic && (

@@ -18,6 +18,7 @@ export type MemeData = {
   // cast?: NeynarCast;
   castHash?: string;
   requestorFid?: string;
+  tweetId?: string;
 
   baseToken: TokenData;
   solToken: TokenData;
