@@ -9,44 +9,45 @@ import { MemeCard } from "@/components/memes/MultiChainMemeCard";
 import ButtonToggle from "@/components/ui/button-toggle";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import MemeBridge from "@/components/memes/MemeBridge";
 import { cn } from "@/lib/utils";
 
+const chainOptions = [
+  {
+    value: "evm",
+    label: "Base",
+    icon: (
+      <img
+        src="/images/chain/base.png"
+        alt="base"
+        className="size-[40px] rounded-full"
+      />
+    ),
+  },
+  {
+    value: "sol",
+    label: "Solana",
+    icon: (
+      <img
+        src="/images/chain/solana.png"
+        alt="solana"
+        className="size-[40px] rounded-full"
+      />
+    ),
+  },
+];
+const tradeActionOptions = [
+  { value: "trade", label: "Trade" },
+  { value: "bridge", label: "Bridge" },
+];
 export default function MemeDetails() {
+  const params = useParams<{ addr: string }>();
+  const addr = params!.addr;
   const [chainType, setChainType] = useState("evm");
   const [tradeActionType, setTradeActionType] = useState("trade");
-  const chainOptions = [
-    {
-      value: "evm",
-      label: "Base",
-      icon: (
-        <img
-          src="/images/chain/base.png"
-          alt="base"
-          className="size-[40px] rounded-full"
-        />
-      ),
-    },
-    {
-      value: "sol",
-      label: "Solana",
-      icon: (
-        <img
-          src="/images/chain/solana.png"
-          alt="solana"
-          className="size-[40px] rounded-full"
-        />
-      ),
-    },
-  ];
-  const tradeActionOptions = [
-    { value: "trade", label: "Trade" },
-    { value: "bridge", label: "Bridge" },
-  ];
   const isSol = chainType === "sol";
-  const params = useParams<{ addr: string }>();
-  const addr = params.addr;
+
   const { meme, pending, loadMeme } = useLoadMeme({
     address: addr,
   });
@@ -63,9 +64,21 @@ export default function MemeDetails() {
   if (!meme) {
     return null;
   }
-  const memeBridgeEl = <MemeBridge meme={meme} fromSol={isSol} />;
-  const memeSwapEl = <MemeSwap meme={meme} isSol={isSol} />;
-  const memeBaseInfoEl = <MemeBaseInfo meme={meme} />;
+  const memeBridgeEl = (
+    <Suspense fallback={<Loading />}>
+      <MemeBridge meme={meme} fromSol={isSol} />
+    </Suspense>
+  );
+  const memeSwapEl = (
+    <Suspense fallback={<Loading />}>
+      <MemeSwap meme={meme} isSol={isSol} />
+    </Suspense>
+  );
+  const memeBaseInfoEl = (
+    <Suspense fallback={<Loading />}>
+      <MemeBaseInfo meme={meme} />
+    </Suspense>
+  );
   const memeTradeActionTab = (
     <>
       <ButtonToggle
