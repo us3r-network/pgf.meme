@@ -17,8 +17,28 @@ export default function MemeDetails() {
   const [chainType, setChainType] = useState("evm");
   const [tradeActionType, setTradeActionType] = useState("trade");
   const chainOptions = [
-    { value: "evm", label: "Base" },
-    { value: "sol", label: "Solana" },
+    {
+      value: "evm",
+      label: "Base",
+      icon: (
+        <img
+          src="/images/chain/base.png"
+          alt="base"
+          className="size-[40px] rounded-full"
+        />
+      ),
+    },
+    {
+      value: "sol",
+      label: "Solana",
+      icon: (
+        <img
+          src="/images/chain/solana.png"
+          alt="solana"
+          className="size-[40px] rounded-full"
+        />
+      ),
+    },
   ];
   const tradeActionOptions = [
     { value: "trade", label: "Trade" },

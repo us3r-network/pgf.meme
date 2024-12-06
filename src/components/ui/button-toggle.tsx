@@ -8,6 +8,7 @@ interface ToggleProps {
   options: Array<{
     value: any;
     label: string;
+    icon?: React.ReactNode;
   }>;
   onChange?: (value: any) => void;
 }
@@ -30,12 +31,13 @@ export default function ButtonToggle({
           key={option.value}
           onClick={() => handleClick(option.value)}
           className={cn(
-            "flex-1 text-[36px] font-bold rounded-md transition-colors flex justify-center items-center",
+            "flex-1 text-[36px] font-bold rounded-md transition-colors flex justify-center items-center gap-2",
             selected === option.value
               ? "bg-white text-foreground"
               : "bg-primary text-primary-foreground"
           )}
         >
+          {option.icon}
           {option.label}
         </button>
       ))}

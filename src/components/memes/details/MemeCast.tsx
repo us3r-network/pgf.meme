@@ -30,6 +30,8 @@ export default function MemeCast({ hash }: { hash: string }) {
       </div>
     </div>;
   }
+
+  if (!cast) return null;
   return (
     <Link
       className="w-full flex flex-row gap-3"

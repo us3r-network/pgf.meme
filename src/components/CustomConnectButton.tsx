@@ -56,7 +56,7 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                 if (!connected) {
                   return (
                     <Button
-                      className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold"
+                      className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold h-[52px]"
                       onClick={openConnectModal}
                       type="button"
                     >
@@ -106,7 +106,7 @@ export const CustomConnectButton = (props: ConnectButtonProps) => {
                     {chain.name}
                   </Button> */}
                     <DropdownMenuTrigger>
-                      <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold">
+                      <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary font-bold h-[52px]">
                         {account.ensAvatar ? (
                           <div
                             style={{

@@ -110,7 +110,7 @@ function MemeShareContent({
 
       <div className="w-full shrink-0 justify-center items-start flex sm:gap-12 max-sm:justify-evenly">
         <ShareItem
-          icon="/images/warpcast.png"
+          icon="/images/farcaster.png"
           name="Warpcast"
           onClick={() => {
             shareToWarpcast([shareLink], "");
@@ -124,7 +124,7 @@ function MemeShareContent({
           }}
         />
         <ShareItem
-          icon="/images/twitter.png"
+          icon="/images/x.png"
           name="Twitter"
           onClick={() => {
             shareToTwitter(shareLink);
@@ -182,8 +182,8 @@ function ShareItem({
     >
       <img
         src={icon}
-        alt="telegram"
-        className="w-[80px] h-[80px] max-sm:w-[48px] max-sm:h-[48px]"
+        alt={name}
+        className="w-[80px] h-[80px] max-sm:w-[48px] max-sm:h-[48px] rounded-full"
       />
       <div className=" text-center text-[#16181d] max-sm:text-xs">{name}</div>
     </div>
