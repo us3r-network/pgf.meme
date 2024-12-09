@@ -13,6 +13,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CreateMemeFormWithApi } from "./CreateMemeFormWithApi";
 export function CreateMemeButton({
   variant = "pc",
 }: {
@@ -51,10 +52,10 @@ export function CreateMemeButton({
           <DialogTitle>Create Meme</DialogTitle>
         </DialogHeader>
         <ScrollArea className="flex-1 overflow-y-auto">
-          <CreateMemeForm
-            onSuccess={(transactionReceipt) => {
+          <CreateMemeFormWithApi
+            onSuccess={(meme) => {
               setOpen(false);
-              const tokenAddress = transactionReceipt.logs[0].address;
+              const tokenAddress = meme.address;
               console.log("token route", `/memes/${tokenAddress}`);
               router.push(`/memes/${tokenAddress}`);
             }}

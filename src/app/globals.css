@@ -21,12 +21,6 @@ a span:hover {
   display: none;
 }
 
-/* rainbowkit styles */
-
-[data-rk] [data-testid="rk-connect-button"] {
-  height: 36px !important;
-}
-
 @layer base {
   :root {
     --background: 0, 0%, 100%;

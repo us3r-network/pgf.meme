@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { PGFToken } from "../contract/types";
 import request, { RequestPromise } from "../request";
 import { ApiResp } from "../types";
@@ -37,6 +38,21 @@ export function getMeme({
   });
 }
 
+export async function launchMeme(data: {
+  name: string;
+  symbol: string;
+  image?: string;
+  description: string;
+  topicId?: number;
+  launcherEvmAddress: Address;
+}): RequestPromise<ApiResp<MemeData>> {
+  return request({
+    url: `/memes/launch`,
+    method: "post",
+    data,
+  });
+}
+
 export async function postMeme(
   token: PGFToken
 ): RequestPromise<ApiResp<MemeData>> {
@@ -60,7 +76,7 @@ export function getMemeLeaderboard({
   });
 }
 
-export async function uploadImage(file: File): RequestPromise<ApiResp<string>> {
+export async function uploadImage(file: File) {
   // console.log("uploadImage", file);
   const arweaveResp = await request({
     url: `/arweave/upload/image`,
@@ -70,7 +86,7 @@ export async function uploadImage(file: File): RequestPromise<ApiResp<string>> {
     },
     data: { file },
   });
-  return arweaveResp.data.data.arseedUrl;
+  return arweaveResp.data.data.arUrl as string;
 }
 
 export function validateBuyingMeme({
