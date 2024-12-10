@@ -1,11 +1,6 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-const gifs = [
-  { src: "/images/Vitalik-unscreen.gif", alt: "Vitalik" },
-  { src: "/images/Toly-unscreen.gif", alt: "Toly" },
-];
-
 export default function BgGifs() {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 -z-10 overflow-hidden mt-[80px] max-sm:mt-[70px]">
@@ -21,12 +16,23 @@ export default function BgGifs() {
             {Array.from({ length: rowIndex % 2 === 0 ? 5 : 6 }).map(
               (_, colIndex) => (
                 <div key={colIndex} className="w-[140px] h-[140px]">
-                  <Image
-                    src={gifs[rowIndex % 2].src}
-                    alt={gifs[rowIndex % 2].alt}
-                    width={140}
-                    height={140}
-                  />
+                  {rowIndex % 2 === 0 ? (
+                    <Image
+                      src="/images/Vitalik-unscreen.gif"
+                      alt="Vitalik"
+                      width={140}
+                      height={140}
+                      unoptimized
+                    />
+                  ) : (
+                    <Image
+                      src="/images/Toly-unscreen.gif"
+                      alt="Toly"
+                      width={140}
+                      height={140}
+                      unoptimized
+                    />
+                  )}
                 </div>
               )
             )}

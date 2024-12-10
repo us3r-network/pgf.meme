@@ -105,7 +105,7 @@ export default function MemeSwapWithJupiter({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-[400px] overflow-auto relative">
+    <div className="flex flex-col lg:flex-row w-full h-full overflow-auto relative">
       <div className="w-full overflow-hidden flex justify-center">
         {/* Loading state */}
         {!isLoaded ? (

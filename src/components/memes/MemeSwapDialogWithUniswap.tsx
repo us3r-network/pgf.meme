@@ -25,11 +25,13 @@ export default function MemeSwapDialogWithUniswap({
       <DialogTrigger asChild>
         <Button>Swap</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] gap-8 max-sm:h-screen flex flex-col">
+      <DialogContent className="sm:max-w-[560px] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
           <DialogTitle>Trade on Uniswap</DialogTitle>
         </DialogHeader>
-        <MemeSwapWithUniswap token={t} />
+        <div className="h-[560px] rounded-md overflow-hidden">
+          <MemeSwapWithUniswap token={t} />
+        </div>
       </DialogContent>
     </Dialog>
   );

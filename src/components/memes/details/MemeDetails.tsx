@@ -1,15 +1,28 @@
 "use client";
 
-import Loading from "@/components/Loading";
-import MemeBaseInfo from "@/components/memes/details/MemeBaseInfo";
-import MemeSwap from "@/components/memes/MemeSwap";
-import MemeTradeChart from "@/components/memes/details/MemeTradeChart";
 import { MemeCard } from "@/components/memes/MultiChainMemeCard";
 import ButtonToggle from "@/components/ui/button-toggle";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
 import { Suspense, useEffect, useState } from "react";
-import MemeBridge from "@/components/memes/MemeBridge";
+
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+
+const MemeSwap = dynamic(() => import("@/components/memes/MemeSwap"), {
+  ssr: false,
+});
+const MemeTradeChart = dynamic(
+  () => import("@/components/memes/details/MemeTradeChart"),
+  { ssr: false }
+);
+const MemeBridge = dynamic(() => import("@/components/memes/MemeBridge"), {
+  ssr: false,
+});
+const MemeBaseInfo = dynamic(
+  () => import("@/components/memes/details/MemeBaseInfo"),
+  { ssr: false }
+);
 
 const chainOptions = [
   {
@@ -50,45 +63,35 @@ export default function MemeDetails({ addr }: { addr: string }) {
   useEffect(() => {
     loadMeme();
   }, []);
-  if (pending) {
-    return (
-      <div className="flex justify-center items-start mt-[20%]">
-        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
-      </div>
-    );
-  }
   if (!meme) {
     return null;
   }
-  const memeBridgeEl = (
-    <Suspense fallback={<Loading />}>
-      <MemeBridge meme={meme} fromSol={isSol} />
-    </Suspense>
-  );
-  const memeSwapEl = (
-    <Suspense fallback={<Loading />}>
-      <MemeSwap meme={meme} isSol={isSol} />
-    </Suspense>
-  );
   const memeBaseInfoEl = (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Skeleton className="w-full h-[600px]" />}>
       <MemeBaseInfo meme={meme} />
     </Suspense>
   );
-  const memeTradeActionTab = (
+  const BridgeEl = (
+    <Suspense fallback={<Skeleton className="w-full h-[400px]" />}>
+      <MemeBridge meme={meme} fromSol={isSol} />
+    </Suspense>
+  );
+  const SwapEl = (
+    <Suspense fallback={<Skeleton className="w-full h-[400px]" />}>
+      <MemeSwap meme={meme} isSol={isSol} />
+    </Suspense>
+  );
+  const tradeActionTab = (
     <>
       <ButtonToggle
         options={tradeActionOptions}
         value={tradeActionType}
         onChange={setTradeActionType}
       />
-      <div className={cn("", tradeActionType === "trade" ? "block" : "hidden")}>
-        {memeSwapEl}
-      </div>
+      {tradeActionType === "trade" ? SwapEl : null}
       <div className={cn("", tradeActionType === "trade" ? "hidden" : "block")}>
-        {memeBridgeEl}
+        {BridgeEl}
       </div>
-      {/* {tradeActionType === "trade" ? memeSwapEl : memeBridgeEl} */}
     </>
   );
   return (
@@ -103,12 +106,12 @@ export default function MemeDetails({ addr }: { addr: string }) {
         <MemeTradeChart meme={meme} isSol={isSol} />
 
         <div className="w-full flex-col gap-6 hidden max-sm:flex">
-          {memeTradeActionTab}
+          {tradeActionTab}
           {memeBaseInfoEl}
         </div>
       </div>
       <div className="w-[400px] flex flex-col gap-6 max-sm:hidden">
-        {memeTradeActionTab}
+        {tradeActionTab}
         {memeBaseInfoEl}
       </div>
     </div>

@@ -14,6 +14,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateMemeFormWithApi } from "./CreateMemeFormWithApi";
+import Image from "next/image";
+
 export function CreateMemeButton({
   variant = "pc",
 }: {
@@ -33,7 +35,9 @@ export function CreateMemeButton({
           openConnectModal();
         }}
       >
-        <img className="w-full h-full rounded-[10px]" src="/images/logo.png" />
+        <div className="w-full h-full relative overflow-hidden">
+          <Image src="/images/logo.png" alt="logo" fill />
+        </div>
       </Button>
     );
   }
@@ -41,10 +45,9 @@ export function CreateMemeButton({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="p-0 m-0 w-[48px] h-[48px]">
-          <img
-            className="w-full h-full rounded-[10px]"
-            src="/images/logo.png"
-          />
+          <div className="w-full h-full relative overflow-hidden">
+            <Image src="/images/logo.png" alt="logo" fill />
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen max-sm:max-h-full max-h-[90%] flex flex-col">

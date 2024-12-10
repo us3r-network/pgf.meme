@@ -10,7 +10,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Provider } from "react-redux";
 import { WagmiProvider } from "wagmi";
 import AsyncData from "./AsyncData";
-import { Toaster } from "./ui/toaster";
 import { merge } from "lodash";
 import { PGF_CONTRACT_CHAIN } from "@/constants/pgf";
 
@@ -45,7 +44,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-      <Toaster />
     </>
   );
 }

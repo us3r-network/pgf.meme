@@ -1,28 +1,24 @@
-import { Suspense } from "react";
-import { unstable_cache } from "next/cache";
-import { TweetSkeleton, EmbeddedTweet, TweetNotFound } from "react-tweet";
-import { getTweet as _getTweet } from "react-tweet/api";
-
-const getTweet = unstable_cache(
-  async (id: string) => _getTweet(id),
-  ["tweet"],
-  { revalidate: 3600 * 24 }
-);
-
-const TweetPage = async ({ id }: { id: string }) => {
-  try {
-    const tweet = await getTweet(id);
-    return tweet ? <EmbeddedTweet tweet={tweet} /> : <TweetNotFound />;
-  } catch (error) {
-    console.error(error);
-    return <TweetNotFound error={error} />;
-  }
-};
+import Script from "next/script";
+import React from "react";
 
 export default function MemeTweet({ id }: { id: string }) {
   return (
-    <Suspense fallback={<TweetSkeleton />}>
-      <TweetPage id={id} />
-    </Suspense>
+    <>
+      {" "}
+      <blockquote
+        className="twitter-tweet"
+        data-theme="light" // 可改为 'dark'
+      >
+        <div className="w-full min-h-[200px] flex flex-row justify-center items-center">
+          <a
+            href={`https://twitter.com/user/status/${id}`}
+            className="text-center"
+          >
+            Loading tweet...
+          </a>
+        </div>
+      </blockquote>
+      <Script src="https://platform.twitter.com/widgets.js" async />
+    </>
   );
 }

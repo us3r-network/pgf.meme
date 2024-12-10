@@ -19,6 +19,7 @@ import {
   CreateMemeWithTwitter,
   CreateMemeWithWarpcast,
 } from "../memes/create/CreateMemeWithBot";
+import Image from "next/image";
 
 export function DefaultHeader() {
   const pathname = usePathname();
@@ -40,7 +41,11 @@ export function DefaultHeader() {
               className="h-12 justify-start items-center gap-4 inline-flex hover:no-underline"
               href="/"
             >
-              <img src="/images/logo.png" className="size-12 max-sm:size-10" />
+              {/* <img src="/images/logo.png" className="size-12 max-sm:size-10" /> */}
+              <div className="size-12 max-sm:size-10 relative">
+                <Image src="/images/logo.png" alt="logo" fill />
+              </div>
+
               <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
                 castcoin.fun✨
               </span>
