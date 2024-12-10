@@ -2,6 +2,7 @@ import Script from "next/script";
 import React from "react";
 
 export default function MemeTweet({ id }: { id: string }) {
+  const href = `https://twitter.com/user/status/${id}`;
   return (
     <>
       {" "}
@@ -9,12 +10,14 @@ export default function MemeTweet({ id }: { id: string }) {
         className="twitter-tweet"
         data-theme="light" // 可改为 'dark'
       >
-        <div className="w-full min-h-[200px] flex flex-row justify-center items-center">
+        <div className="w-full min-h-[200px] flex flex-col gap-5 justify-center items-center">
+          <span>Created from x</span>
           <a
-            href={`https://twitter.com/user/status/${id}`}
-            className="text-center"
+            href={href}
+            className="text-center hover:underline "
+            target="_blank"
           >
-            Loading tweet...
+            Loading {href}
           </a>
         </div>
       </blockquote>
