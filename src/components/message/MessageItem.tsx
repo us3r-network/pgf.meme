@@ -4,7 +4,7 @@ import Link from "next/link";
 import DefaultUserAvatar from "../user/DefaultUserAvatar";
 
 export default function MessageItem({ data }: { data: TradeData }) {
-  const { user, meme, memeAmount, ethAmount, txType } = data;
+  const { user, meme, memeAmount, ethAmount, solAmount, txType } = data;
   return (
     <div className="h-12 p-4 box-border bg-secondary rounded-[10px] justify-center items-center gap-2 inline-flex mr-4">
       <Link
@@ -21,10 +21,15 @@ export default function MessageItem({ data }: { data: TradeData }) {
         {txType === "sell" ? "sell" : "bought"}
       </div>
       <div className=" text-secondary-foreground  text-nowrap">
-        {Intl.NumberFormat("en-US", {
-          maximumFractionDigits: 6,
-        }).format(Number(ethAmount))}{" "}
-        ETH
+        {ethAmount
+          ? `${Intl.NumberFormat("en-US", {
+              maximumFractionDigits: 6,
+            }).format(Number(ethAmount))} ETH`
+          : solAmount
+          ? `${Intl.NumberFormat("en-US", {
+              maximumFractionDigits: 6,
+            }).format(Number(solAmount))} SOL`
+          : ""}{" "}
       </div>
       <Link
         href={`/memes/${meme.address}`}

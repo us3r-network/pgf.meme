@@ -11,6 +11,7 @@ export type TradeData = {
   };
   txType: "buy" | "sell";
   ethAmount: number;
+  solAmount: number;
   memeAmount: number;
   date: number;
   txHash: string;
