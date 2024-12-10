@@ -87,16 +87,28 @@ export function DefaultHeader() {
             {/* <div className="max-sm:hidden">
               <Share2EarnDialogButton />
             </div> */}
-
-            <div className="hidden max-sm:block">
-              <CustomConnectButton
+            <div>
+              {/* rainbowkit styles */}
+              <style jsx global>{`
+                [data-testid="rk-connect-button"],
+                [data-testid="rk-account-button"] {
+                  height: 52px !important;
+                  font-size: 24px !important;
+                  font-weight: 700 !important;
+                  padding: 12px !important;
+                  padding-left: 24px !important;
+                  padding-right: 24px !important;
+                }
+                [data-testid="rk-connect-button"] > div,
+                [data-testid="rk-account-button"] > div {
+                  padding: 0px !important;
+                }
+              `}</style>
+              <ConnectButton
                 showBalance={false}
                 chainStatus={"none"}
                 label="Connect"
               />
-            </div>
-            <div className="max-sm:hidden">
-              <CustomConnectButton chainStatus={"none"} />
             </div>
           </div>
         </div>

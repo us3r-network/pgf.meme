@@ -24,7 +24,7 @@ export async function generateMetadata(
     throw new Error(msg);
   }
 
-  const title = `${data.name} - ($${data.symbol})`;
+  const title = `${data.name}  ($${data.symbol})`;
   const description = data.description || "";
   const image = data.image || "";
   return {

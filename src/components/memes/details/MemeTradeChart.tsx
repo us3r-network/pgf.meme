@@ -36,7 +36,7 @@ export default function MemeTradeChart({
   return (
     <Card className="w-full">
       <CardContent className="w-full flex flex-col justify-start items-start gap-3 p-0">
-        <div className="w-full aspect-[1/1.2] max-sm:aspect-[1/2]">
+        <div className="w-full aspect-[1/1] max-sm:aspect-[1/2]">
           {" "}
           <iframe
             className={cn("w-full h-full", isSol ? "hidden" : "block")}

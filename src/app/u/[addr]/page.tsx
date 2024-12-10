@@ -1,5 +1,6 @@
+import CreatedMemes from "@/components/user/details/CreatedMemes";
 import UserBaseInfo from "@/components/user/details/UserBaseInfo";
-import UserTabs from "@/components/user/details/UserTabs";
+// import UserTabs from "@/components/user/details/UserTabs";
 
 export default function UserDetails({
   params,
@@ -15,7 +16,8 @@ export default function UserDetails({
         <UserBaseInfo address={addr} />
       </div>
       <div className="flex-1 max-sm:w-full">
-        <UserTabs address={addr} />
+        <CreatedMemes address={addr} />
+        {/* <UserTabs address={addr} /> */}
       </div>
     </div>
   );
