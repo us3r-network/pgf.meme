@@ -3,8 +3,9 @@ import type { TopicData } from "../topic/types";
 import { NeynarCast } from "../neynar";
 
 export type MemeData = {
+  id: number;
   // Meme 基本信息
-  address: Address;
+  address?: Address;
   symbol: string;
   name: string;
   image: string;

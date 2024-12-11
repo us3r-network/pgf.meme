@@ -19,7 +19,7 @@ export default function useLaunchMeme(opts?: {
       info: {
         name: string;
         symbol: string;
-        image?: string;
+        imageUrl?: string;
         imageFile?: File;
         description: string;
         topicId?: number;
@@ -38,14 +38,14 @@ export default function useLaunchMeme(opts?: {
       setStatus(AsyncRequestStatus.PENDING);
       statusRef.current = AsyncRequestStatus.PENDING;
       try {
-        let image = info?.image || "";
-        if (!image && info.imageFile) {
-          image = await uploadImage(info.imageFile);
+        let imageUrl = info?.imageUrl || "";
+        if (!imageUrl && info.imageFile) {
+          imageUrl = await uploadImage(info.imageFile);
           delete info.imageFile;
         }
         const resp = await launchMeme({
           ...info,
-          image,
+          imageUrl,
           launcherEvmAddress: address,
         });
         const { code, data, msg } = resp.data || {};
