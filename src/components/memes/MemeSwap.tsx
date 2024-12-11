@@ -1,3 +1,5 @@
+"use client";
+
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { MemeData } from "@/services/meme/types";
 import { Address } from "viem";
@@ -27,14 +29,17 @@ export default function MemeSwap({
   return (
     <Card className={cn("w-full min-h-[400px] border-secondary")}>
       <CardContent className="w-full p-0">
-        <div className={cn("", isSol ? "block" : "hidden")}>
+        <div className={cn("w-full h-[400px]", isSol ? "block" : "hidden")}>
           <MemeSwapWithJupiter
             token={{ address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" }}
           />
         </div>
-        <div className={cn("", isSol ? "hidden" : "block")}>
-          <MemeSwapWithUniswap token={token} />
-        </div>
+
+        {!isSol && (
+          <div className="w-full h-[560px]">
+            <MemeSwapWithUniswap token={token} />
+          </div>
+        )}
         {/* {isSol ? (
           <MemeSwapWithJupiter
             token={{ address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" }}

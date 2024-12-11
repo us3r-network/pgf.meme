@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MemeList from "@/components/memes/MemeList";
 import { SortBy } from "@/services/meme/types";
 import { CreateMemeButton } from "@/components/memes/create/CreateMemeButton";
-import HomeMemes from "@/components/memes/home-memes/HomeMemes";
+// import HomeMemes from "@/components/memes/home-memes/HomeMemes";
 
 const capitalizeFirstLetter = (str: string) =>
   str[0].toUpperCase() + str.slice(1);
@@ -38,9 +38,9 @@ export default function Home() {
           ))}
         </Tabs>
 
-        <div className="w-[340px]">
+        {/* <div className="w-[340px]">
           <HomeMemes />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { shareToTwitter } from "@/lib/sharing/twitter";
 import { shareToWarpcast } from "@/lib/sharing/warpcast";
 import Link from "next/link";
+import Image from "next/image";
 
 const botText = `
   @bot Launch a new token!
@@ -24,10 +25,13 @@ export function CreateMemeWithWarpcast() {
           shareToWarpcast([], "", botText);
         }}
       >
-        <img
+        {/* <img
           src="/images/warpcast.png"
           className="w-full h-full rounded-[10px]"
-        />
+        /> */}
+        <div className="w-full h-full rounded-[10px] relative overflow-hidden">
+          <Image src="/images/warpcast.png" alt="logo" fill />
+        </div>
       </Button>
     </>
   );
@@ -43,7 +47,9 @@ export function CreateMemeWithTwitter() {
         shareToTwitter("", botText);
       }}
     >
-      <img src="/images/x.png" className="w-full h-full rounded-[10px]" />
+      <div className="w-full h-full rounded-[10px] relative overflow-hidden">
+        <Image src="/images/x.png" alt="logo" fill />
+      </div>
     </Button>
   );
 }

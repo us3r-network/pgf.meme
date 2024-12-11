@@ -1,21 +1,13 @@
-import * as React from "react";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { ReactNode } from "react";
 import { DefaultHeader, DefaultMain } from "./ClientComponents";
 import BgGifs from "./BgGifs";
 
-export default function DefaultLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DefaultLayout({ children }: { children: ReactNode }) {
   return (
-    <SidebarProvider defaultOpen={false}>
-      <SidebarInset>
-        <DefaultHeader />
-
-        <DefaultMain>{children}</DefaultMain>
-        <BgGifs />
-      </SidebarInset>
-    </SidebarProvider>
+    <>
+      <DefaultHeader />
+      <DefaultMain>{children}</DefaultMain>
+      <BgGifs />
+    </>
   );
 }

@@ -16,24 +16,30 @@ export async function generateMetadata(
   const addr = (await params).addr;
 
   // fetch data
-  const resp = await getMeme({
-    address: addr,
-  });
-  const { code, data, msg } = resp.data || {};
-  if (code !== ApiRespCode.SUCCESS) {
-    throw new Error(msg);
-  }
+  try {
+    const resp = await getMeme({
+      address: addr,
+    });
+    const { code, data, msg } = resp.data || {};
+    if (code !== ApiRespCode.SUCCESS) {
+      throw new Error(msg);
+    }
 
-  const title = `${data.name}  ($${data.symbol})`;
-  const description = data.description || "";
-  const image = data.image || "";
-  return {
-    title: title,
-    description,
-    openGraph: {
-      images: [image],
-    },
-  };
+    const title = `${data.name}  ($${data.symbol})`;
+    const description = data.description || "";
+    const image = data.image || "";
+    return {
+      title: title,
+      description,
+      openGraph: {
+        images: [image],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Meme Not Found",
+    };
+  }
 }
 
 export default async function MemePage({ params, searchParams }: Props) {

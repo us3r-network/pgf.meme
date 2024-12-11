@@ -22,7 +22,7 @@ export function MemeSwapDialogWithJupiter({
       <DialogTrigger asChild>
         <Button>Swap</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] gap-8 max-sm:h-screen flex flex-col">
+      <DialogContent className="sm:max-w-[560px] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
           <DialogTitle>Trade on Jupiter</DialogTitle>
         </DialogHeader>

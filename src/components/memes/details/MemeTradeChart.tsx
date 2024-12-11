@@ -1,3 +1,5 @@
+"use client";
+
 import { MemeData } from "@/services/meme/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
@@ -37,15 +39,11 @@ export default function MemeTradeChart({
     <Card className="w-full">
       <CardContent className="w-full flex flex-col justify-start items-start gap-3 p-0">
         <div className="w-full aspect-[1/1] max-sm:aspect-[1/2]">
-          {" "}
-          <iframe
-            className={cn("w-full h-full", isSol ? "hidden" : "block")}
-            src={baseDexUrl}
-          />
-          <iframe
-            className={cn("w-full h-full", isSol ? "block" : "hidden")}
-            src={solDexUrl}
-          />
+          {isSol ? (
+            <iframe className="w-full h-full" src={solDexUrl} />
+          ) : (
+            <iframe className="w-full h-full" src={baseDexUrl} />
+          )}
         </div>
 
         {/* <iframe

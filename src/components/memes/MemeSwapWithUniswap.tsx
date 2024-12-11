@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 // import {
 //   NATIVE_TOKEN_METADATA,
 //   WRAP_NATIVE_TOKEN_METADATA,
@@ -7,8 +7,10 @@ import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 // import { config } from "@/constants/wagmiConfig";
 // import { getTokenInfo } from "@/hooks/contract/useERC20Contract";
 import { getEvmChainName } from "@/lib/onchain";
+import { cn } from "@/lib/utils";
 // import { getEthersProvider } from "@/lib/onchain/ethers";
 import { PGFToken } from "@/services/contract/types";
+import { useRef, useState } from "react";
 // import { SwapWidget, Theme } from "@uniswap/widgets";
 // import "@uniswap/widgets/fonts.css";
 // import { useEffect, useState } from "react";
@@ -56,16 +58,26 @@ export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
   //     </div>
   //   );
   // }
-
+  const loadingRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="w-full h-[560px]">
+    <div className="w-full h-full relative">
       <iframe
-        src={`https://app.uniswap.org/#/swap?exactField=input&outputCurrency=${
+        src={`https://app.uniswap.org/swap?outputCurrency=${
           token.contractAddress
-        }&chain=${getEvmChainName(PGF_CONTRACT_CHAIN_ID)}`}
-        className="w-full h-full"
+        }&chain=${getEvmChainName(PGF_CONTRACT_CHAIN_ID)}&random=${Date.now()}`}
+        className={cn("w-full h-full")}
+        onLoad={() => {
+          if (loadingRef.current) {
+            loadingRef.current.style.display = "none";
+          }
+        }}
       ></iframe>
-
+      <div
+        className="h-full w-full  flex items-center justify-center overflow-hidden absolute top-0 left-0 bg-white"
+        ref={loadingRef}
+      >
+        <p className="">Loading...</p>
+      </div>
       {/* Issues: https://github.com/Uniswap/widgets/issues/641 */}
 
       {/* <SwapWidget
