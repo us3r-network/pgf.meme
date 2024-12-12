@@ -43,6 +43,7 @@ export function MemeCard({
     Number(baseToken?.marketCap || 0) + Number(solToken?.marketCap || 0);
   const totalBuysNumber =
     Number(baseToken?.txns?.h24 || 0) + Number(solToken?.txns?.h24 || 0);
+  const deployerAddress = meme.deployerEVMAddress || meme.deployerSolanaAddress;
   const memeInfo = (
     <div className="flex flex-row gap-3 ">
       {" "}
@@ -81,19 +82,17 @@ export function MemeCard({
 
         <div className="flex items-center gap-3">
           <div className="font-bold text-secondary">Created By</div>
-          {meme?.createdBy?.walletAddress && (
+          {deployerAddress && (
             <Link
               className="flex items-center gap-1"
-              href={`/u/${meme.createdBy.walletAddress}`}
+              href={`/u/${deployerAddress}`}
               onClick={(e) => e.stopPropagation()}
             >
               <DefaultUserAvatar
-                address={meme.createdBy.walletAddress}
+                address={deployerAddress}
                 className="w-6 h-6 rounded-full"
               />
-              <span className="text-xs">
-                {shortPubKey(meme.createdBy.walletAddress)}
-              </span>
+              <span className="text-xs">{shortPubKey(deployerAddress)}</span>
               <div className="text-xs">{dayjs(meme.createdAt).fromNow()}</div>
             </Link>
           )}
@@ -112,7 +111,12 @@ export function MemeCard({
         {noMemeDetailLink ? (
           memeInfo
         ) : (
-          <Link className={cn("w-full", className)} href={`/memes/${meme.id}`}>
+          <Link
+            className={cn("w-full", className)}
+            href={`/memes/${
+              baseToken?.tokenAddress || solToken?.tokenAddress || meme.id
+            }`}
+          >
             {memeInfo}
           </Link>
         )}

@@ -49,8 +49,10 @@ export function CreateMemeButton() {
           <CreateMemeFormWithApi
             onSuccess={(meme) => {
               setOpen(false);
-              const tokenAddress = meme.id;
-              console.log("token route", `/memes/${tokenAddress}`);
+              const baseToken = meme?.baseToken;
+              const solToken = meme?.solToken;
+              const tokenAddress =
+                baseToken?.tokenAddress || solToken?.tokenAddress || meme.id;
               router.push(`/memes/${tokenAddress}`);
             }}
           />

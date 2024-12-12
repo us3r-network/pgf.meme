@@ -1,4 +1,5 @@
 import { config } from "@/constants/wagmiConfig";
+import { baseSepolia } from "viem/chains";
 
 /**
  * Gets the chain object for the given chain id.

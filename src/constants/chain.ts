@@ -1,9 +1,10 @@
 import { getChain } from "@/lib/onchain";
 import { Address } from "viem";
-import { base } from "viem/chains";
+import { base, baseSepolia } from "viem/chains";
 
-export const DEFAULT_CHAINID: number =
-  Number(process.env.NEXT_PUBLIC_PGF_CONTRACT_CHAIN_ID) || base.id;
+export const TESTNET = process.env.NEXT_PUBLIC_TESTNET === "true";
+
+export const DEFAULT_CHAINID: number = TESTNET ? baseSepolia.id : base.id;
 export const DEFAULT_CHAIN = getChain(DEFAULT_CHAINID);
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

@@ -8,6 +8,7 @@ import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 const MemeSwap = dynamic(() => import("@/components/memes/MemeSwap"), {
   ssr: false,
@@ -60,10 +61,12 @@ export default function MemeDetails({ addr }: { addr: string }) {
   const { meme, pending, loadMeme } = useLoadMeme({
     address: addr,
   });
+  const baseToke = meme?.baseToken;
+  const solToken = meme?.solToken;
   useEffect(() => {
     loadMeme();
   }, []);
-  if (!meme) {
+  if (pending || !meme) {
     return null;
   }
   const memeBaseInfoEl = (
@@ -71,27 +74,30 @@ export default function MemeDetails({ addr }: { addr: string }) {
       <MemeBaseInfo meme={meme} />
     </Suspense>
   );
-  const BridgeEl = (
-    <Suspense fallback={<Skeleton className="w-full h-[400px]" />}>
-      <MemeBridge meme={meme} fromSol={isSol} />
-    </Suspense>
-  );
   const SwapEl = (
     <Suspense fallback={<Skeleton className="w-full h-[400px]" />}>
       <MemeSwap meme={meme} isSol={isSol} />
     </Suspense>
   );
+  const enableBridge = !!baseToke?.nttConnect && !!solToken?.nttConnect;
   const tradeActionTab = (
     <>
-      <ButtonToggle
-        options={tradeActionOptions}
-        value={tradeActionType}
-        onChange={setTradeActionType}
-      />
+      {enableBridge && (
+        <ButtonToggle
+          options={tradeActionOptions}
+          value={tradeActionType}
+          onChange={setTradeActionType}
+        />
+      )}
+
       {tradeActionType === "trade" ? SwapEl : null}
-      <div className={cn("", tradeActionType === "trade" ? "hidden" : "block")}>
-        {BridgeEl}
-      </div>
+      {enableBridge && (
+        <div
+          className={cn("", tradeActionType === "trade" ? "hidden" : "block")}
+        >
+          <MemeBridge meme={meme} fromSol={isSol} />
+        </div>
+      )}
     </>
   );
   return (
@@ -102,6 +108,12 @@ export default function MemeDetails({ addr }: { addr: string }) {
           options={chainOptions}
           value={chainType}
           onChange={setChainType}
+          disabledValues={[!baseToke ? "evm" : null, !solToken ? "sol" : null]}
+          onClickDisableOption={(opt) => {
+            toast({
+              title: `Not yet deployed to ${opt.label}`,
+            });
+          }}
         />
         <MemeTradeChart meme={meme} isSol={isSol} />
 

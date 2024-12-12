@@ -39,13 +39,22 @@ export default function OwnedMemesTable({
             {data.map((item, index) => {
               const hasReferralReward = item.referralReward;
               const rewardAmount = item?.referralReward?.amount;
+              const meme = item?.meme;
+              const baseToken = meme?.baseToken;
+              const solToken = meme?.solToken;
               return (
                 <TableRow
                   key={`${item.user.walletAddress}_${index}`}
                   className="w-full h-16 py-3 px-5 bg-primary-foreground"
                 >
                   <TableCell className="rounded-l-2xl">
-                    <Link href={`/memes/${item.meme.id}`}>
+                    <Link
+                      href={`/memes/${
+                        baseToken?.tokenAddress ||
+                        solToken?.tokenAddress ||
+                        meme.id
+                      }`}
+                    >
                       <span className=" font-bold">
                         {item.meme.name} (${item.meme.symbol})
                       </span>

@@ -1,14 +1,12 @@
+import { MemeData } from "../meme/types";
+
 export type TradeData = {
   user: {
     walletAddress: string;
     name?: string;
     avatar?: string;
   };
-  meme: {
-    address: string;
-    name: string;
-    image: string;
-  };
+  meme: MemeData;
   txType: "buy" | "sell";
   ethAmount: number;
   solAmount: number;

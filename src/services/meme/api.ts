@@ -32,8 +32,22 @@ export function getMeme({
 }: {
   address: string;
 }): RequestPromise<ApiResp<MemeData>> {
+  let url = "";
+  // EVM链地址：以0x开头，长度42，包含0-9和a-f
+  const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+  // Solana链地址：Base58编码，长度在32到44之间
+  const solanaRegex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+
+  if (evmRegex.test(address)) {
+    url = `/memes/one?evmAddress=${address}`;
+  } else if (solanaRegex.test(address)) {
+    url = `/memes/one?solanaAddress=${address}`;
+  } else {
+    url = `/memes/${address}`;
+  }
   return request({
-    url: `/memes/${address}`,
+    url,
     method: "get",
   });
 }
