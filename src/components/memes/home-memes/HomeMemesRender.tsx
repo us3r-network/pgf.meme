@@ -19,11 +19,13 @@ export default function HomeMemesRender({
         const priceChange = token?.priceChange?.h24 || 0;
         return (
           <Link
-            key={meme.address}
+            key={meme.id}
             className="w-full h-fit"
-            href={`/memes/${meme.address}`}
+            href={`/memes/${
+              baseToken?.tokenAddress || solToken?.tokenAddress || meme.id
+            }`}
           >
-            <Card key={meme.address} className="w-full border-secondary">
+            <Card key={meme.id} className="w-full border-secondary">
               <CardContent className="w-full flex-col gap-2 flex p-3 bg-background">
                 <span className="w-full flex gap-1 text-primary text-2xl font-bold  max-sm:text-base">
                   <span className="line-clamp-1">{meme.name}</span>

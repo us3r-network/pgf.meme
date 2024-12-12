@@ -147,7 +147,7 @@ export function HomeTopicItem({
         >
           {memes.map((item, idx) => {
             return (
-              <div key={`${item.address}_${idx}`} className="aspect-square">
+              <div key={`${item.id}_${idx}`} className="aspect-square">
                 <MemeCard meme={item} />
               </div>
             );
@@ -165,7 +165,7 @@ function MemeCard({ meme, className }: { meme: MemeData; className?: string }) {
         " w-full h-full relative rounded-2xl overflow-hidden block",
         className
       )}
-      href={`/memes/${meme?.address || ""}`}
+      href={`/memes/${meme?.id || ""}`}
     >
       <Card className="w-full h-full overflow-hidden border-secondary">
         <CardContent className="w-full h-full relative p-0">

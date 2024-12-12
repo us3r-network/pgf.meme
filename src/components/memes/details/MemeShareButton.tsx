@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { shareToFacebook } from "@/lib/sharing/facebook";
 import { shareToTelegramWeb } from "@/lib/sharing/telegram";
 import { shareToTwitter } from "@/lib/sharing/twitter";
@@ -47,9 +47,15 @@ function MemeShareContent({
   meme: MemeData;
   className?: string;
 }) {
-  const { toast } = useToast();
-  // const isGraduation = !!meme.graduation?.poolAddress;
-  const shareLink = `${window.location.origin}/memes/${meme.address}`;
+  const baseTokenAddress = meme?.baseToken?.tokenAddress;
+  const solTokenAddress = meme?.solToken?.tokenAddress;
+  const shareLink = `${window.location.origin}/memes/${meme.id}`;
+  const baseLink = baseTokenAddress
+    ? `${window.location.origin}/memes/${baseTokenAddress}`
+    : "";
+  const solLink = baseTokenAddress
+    ? `${window.location.origin}/memes/${solTokenAddress}`
+    : "";
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
       <span className="text-2xl font-normal max-sm:text-base self-start">
@@ -97,23 +103,9 @@ function MemeShareContent({
           }}
         />
       </div>
-      <div
-        className="w-full box-border cursor-pointer py-3 px-6 rounded-xl border-4 border-secondary justify-start items-center gap-6 flex flex-row "
-        onClick={() => {
-          navigator.clipboard.writeText(shareLink);
-          toast({
-            title: "Link copied",
-            description: shareLink,
-          });
-        }}
-      >
-        <div className="w-0 flex-1 ">
-          <span className="line-clamp-1 text-foreground text-xl max-sm:text-xs">
-            {shareLink}
-          </span>
-        </div>
-        <Copy className=" stroke-secondary size-6" />
-      </div>
+      <CopyLink link={shareLink} />
+      {baseLink && <CopyLink link={baseLink} />}
+      {solLink && <CopyLink link={solLink} />}
     </div>
   );
 }
@@ -138,6 +130,28 @@ function ShareItem({
         className="w-[80px] h-[80px] max-sm:w-[48px] max-sm:h-[48px] rounded-full"
       />
       <div className=" text-center text-[#16181d] max-sm:text-xs">{name}</div>
+    </div>
+  );
+}
+
+function CopyLink({ link }: { link: string }) {
+  return (
+    <div
+      className="w-full box-border cursor-pointer py-3 px-6 rounded-xl border-4 border-secondary justify-start items-center gap-6 flex flex-row "
+      onClick={() => {
+        navigator.clipboard.writeText(link);
+        toast({
+          title: "Link copied",
+          description: link,
+        });
+      }}
+    >
+      <div className="w-0 flex-1 ">
+        <span className="line-clamp-1 text-foreground text-xl max-sm:text-xs">
+          {link}
+        </span>
+      </div>
+      <Copy className=" stroke-secondary size-6" />
     </div>
   );
 }

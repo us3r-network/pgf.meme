@@ -5,6 +5,8 @@ import DefaultUserAvatar from "../user/DefaultUserAvatar";
 
 export default function MessageItem({ data }: { data: TradeData }) {
   const { user, meme, memeAmount, ethAmount, solAmount, txType } = data;
+  const baseToken = meme?.baseToken;
+  const solToken = meme?.solToken;
   return (
     <div className="h-12 p-4 box-border bg-secondary rounded-[10px] justify-center items-center gap-2 inline-flex mr-4">
       <Link
@@ -32,7 +34,9 @@ export default function MessageItem({ data }: { data: TradeData }) {
           : ""}{" "}
       </div>
       <Link
-        href={`/memes/${meme.address}`}
+        href={`/memes/${
+          baseToken?.tokenAddress || solToken?.tokenAddress || meme.id
+        }`}
         className="justify-start items-start gap-2 flex flex-1 overflow-hidden"
       >
         <span className="text-secondary-foreground  text-nowrap">

@@ -1,28 +1,27 @@
-import { Address } from "viem";
 import type { TopicData } from "../topic/types";
-import { NeynarCast } from "../neynar";
 
 export type MemeData = {
-  id: number;
   // Meme 基本信息
-  address?: Address;
+  id: number;
   symbol: string;
   name: string;
   image: string;
   description: string;
-  createdBy: MemeCreatedBy;
-  createdAt: number;
+  createdAt: Date;
   tgPostLink?: string; // tg channel post link
   topic?: TopicData;
 
-  // Meme 关联信息
-  // cast?: NeynarCast;
+  deployerEVMAddress: string;
+  deployerSolanaAddress: string;
+  deployerFid: string;
+  deployerFcName: string;
   castHash?: string;
-  requestorFid?: string;
+
+  deployerTwitterHandle?: string;
   tweetId?: string;
 
-  baseToken: TokenData;
-  solToken: TokenData;
+  baseToken: TokenData; // 部署在base上的token
+  solToken: TokenData; // 部署在sol上的token
 };
 
 export type TokenData = {
@@ -69,12 +68,6 @@ export type TokenData = {
       address: string;
     };
   };
-};
-
-export type MemeCreatedBy = {
-  walletAddress: string;
-  name?: string;
-  avatar?: string;
 };
 
 export enum SortBy {

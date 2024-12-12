@@ -40,7 +40,7 @@ export default function MemeBridge({
     },
   };
   const network = isTestNet ? "Testnet" : "Mainnet";
-  const chain = isTestNet ? "Sepolia" : "Base";
+  const chain = isTestNet ? "BaseSepolia" : "Base";
   const wormholeConfig: WormholeConnectConfig = {
     network,
     // rpcs: {
