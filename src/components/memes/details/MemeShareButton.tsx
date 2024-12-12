@@ -49,13 +49,14 @@ function MemeShareContent({
 }) {
   const baseTokenAddress = meme?.baseToken?.tokenAddress;
   const solTokenAddress = meme?.solToken?.tokenAddress;
-  const shareLink = `${window.location.origin}/memes/${meme.id}`;
+  const idLink = `${window.location.origin}/memes/${meme.id}`;
   const baseLink = baseTokenAddress
     ? `${window.location.origin}/memes/${baseTokenAddress}`
     : "";
   const solLink = baseTokenAddress
     ? `${window.location.origin}/memes/${solTokenAddress}`
     : "";
+  const shareLink = baseLink || solLink || idLink;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
       <span className="text-2xl font-normal max-sm:text-base self-start">
@@ -104,8 +105,6 @@ function MemeShareContent({
         />
       </div>
       <CopyLink link={shareLink} />
-      {baseLink && <CopyLink link={baseLink} />}
-      {solLink && <CopyLink link={solLink} />}
     </div>
   );
 }
