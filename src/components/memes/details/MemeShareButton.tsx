@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import useValidateBuyingMeme from "@/hooks/meme/useValidateBuyingMeme";
 import { useToast } from "@/hooks/use-toast";
 import { shareToFacebook } from "@/lib/sharing/facebook";
 import { shareToTelegramWeb } from "@/lib/sharing/telegram";
@@ -16,12 +15,6 @@ import { shareToWarpcast } from "@/lib/sharing/warpcast";
 import { shareToWhatsApp } from "@/lib/sharing/whatsapp";
 import { MemeData } from "@/services/meme/types";
 import { Copy } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useAccount, useEnsAddress } from "wagmi";
-import { BuyMemeForm } from "../trade/BuyMemeForm";
-import { Address } from "viem";
-import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function MemeShareButton({
   meme,
@@ -45,47 +38,6 @@ export default function MemeShareButton({
       </DialogContent>
     </Dialog>
   );
-}
-
-function ValidateBuyingMeme({ meme }: { meme: MemeData }) {
-  const { valid, idle, pending, validate } = useValidateBuyingMeme({
-    address: meme.address,
-  });
-  const [buying, setBuying] = useState(false);
-  useEffect(() => {
-    validate();
-  }, []);
-
-  if (idle || pending) {
-    return (
-      <div className="w-full flex flex-row items-center justify-center h-[400px]">
-        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
-      </div>
-    );
-  }
-  if (!valid && !buying) {
-    return (
-      <>
-        {" "}
-        <BuyMemeForm
-          buyBtnText="Buy & Share2Earn"
-          token={{
-            contractAddress: meme.address as Address,
-            chainId: PGF_CONTRACT_CHAIN_ID,
-          }}
-          onSuccess={() => {
-            setBuying(true);
-          }}
-        />
-        <div className="text-center">
-          Buy tokens to get started and unlock Share2Earn feature! Share your
-          unique link, once your friend completes a transaction, both of you
-          will receive a 5% token reward!
-        </div>
-      </>
-    );
-  }
-  return <MemeShareContent meme={meme} />;
 }
 
 function MemeShareContent({

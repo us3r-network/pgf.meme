@@ -33,13 +33,13 @@ export default function ClaimRewordsAction({ data }: { data: OwnedMemeData }) {
       variant={"link"}
       disabled={!canClaim}
       onClick={() => {
-        claim({
-          token: data.meme.address,
-          index: data.referralReward?.index!,
-          account: data.user.walletAddress,
-          amount: parseUnits(String(data.referralReward?.amount || 0), 18),
-          merkleProof: data.referralReward?.proof,
-        });
+        // claim({
+        //   token: data.meme.address,
+        //   index: data.referralReward?.index!,
+        //   account: data.user.walletAddress,
+        //   amount: parseUnits(String(data.referralReward?.amount || 0), 18),
+        //   merkleProof: data.referralReward?.proof,
+        // });
       }}
     >
       Claim
