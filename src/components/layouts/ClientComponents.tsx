@@ -7,18 +7,11 @@ import AboutDialogButton from "../About";
 import { Button } from "../ui/button";
 import { ChevronLeft, Home } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { CreateMemeButton } from "../memes/create/CreateMemeButton";
 import { useAccount } from "wagmi";
 import { cn } from "@/lib/utils";
-import Share2EarnDialogButton from "../Share2Earn";
-import { CustomConnectButton } from "../CustomConnectButton";
 import { SearchInput } from "../ui/search-input";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import {
-  CreateMemeWithTwitter,
-  CreateMemeWithWarpcast,
-} from "../memes/create/CreateMemeWithBot";
 import Image from "next/image";
 
 export function DefaultHeader() {
@@ -47,7 +40,7 @@ export function DefaultHeader() {
               </div>
 
               <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
-                castcoin.fun✨
+                degencast.wtf✨
               </span>
             </Link>
           ) : (
@@ -80,20 +73,11 @@ export function DefaultHeader() {
           )}
 
           <div className="flex items-center gap-4 z-20 ml-auto max-sm:gap-2">
-            <div className="max-sm:hidden flex items-center gap-4">
-              <span className="text-2xl font-bold text-primary-foreground">
-                Create Meme From
-              </span>
-              <CreateMemeWithWarpcast />
-              <CreateMemeWithTwitter />
-              <CreateMemeButton />
-            </div>
             <AboutDialogButton />
             {/* <div className="max-sm:hidden">
               <Share2EarnDialogButton />
             </div> */}
             <div>
-              {/* rainbowkit styles */}
               <style jsx global>{`
                 [data-testid="rk-connect-button"],
                 [data-testid="rk-account-button"] {
@@ -137,7 +121,8 @@ export function DefaultMain({ children }: { children: ReactNode }) {
   return (
     <main
       className={cn(
-        "w-screen  max-w-screen-2xl mx-auto box-border overflow-hidden mt-[80px] max-sm:mt-[70px] p-6 max-sm:p-3",
+        "w-screen  max-w-screen-2xl mx-auto box-border overflow-hidden mt-[80px] max-sm:mt-[70px] p-6 max-sm:p-3 relative",
+        "min-h-[calc(100vh-80px)] max-sm:min-h-[calc(100vh-70px)]",
         showMessageMarquee && "mt-[138px] max-sm:mt-[110px]"
       )}
     >

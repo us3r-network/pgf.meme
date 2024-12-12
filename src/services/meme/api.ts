@@ -41,13 +41,13 @@ export function getMeme({
 export async function launchMeme(data: {
   name: string;
   symbol: string;
-  image?: string;
+  imageUrl?: string;
   description: string;
   topicId?: number;
   launcherEvmAddress: Address;
 }): RequestPromise<ApiResp<MemeData>> {
   return request({
-    url: `/memes/launch`,
+    url: `/memes`,
     method: "post",
     data,
   });

@@ -112,59 +112,67 @@ export function MemeCard({
         {noMemeDetailLink ? (
           memeInfo
         ) : (
-          <Link
-            className={cn("w-full", className)}
-            href={`/memes/${meme.address}`}
-          >
+          <Link className={cn("w-full", className)} href={`/memes/${meme.id}`}>
             {memeInfo}
           </Link>
         )}
-        <Separator className="h-1 w-full bg-primary my-3" />
+        {(!!baseToken || !!solToken) && (
+          <Separator className="h-1 w-full bg-primary my-3" />
+        )}
+
         <div className="flex flex-row gap-3 ">
-          <div className="flex-1">
-            <MemeInfoOnChain
-              token={meme.baseToken}
-              chainName={base.name}
-              scanName={base.blockExplorers.default.name}
-              scanIconUrl={`${base.blockExplorers.default.url}/favicon.ico`}
-              scanUrl={getScanUrl(base.id, baseToken?.tokenAddress)}
-              dexUrl={getDexTokenUrl(base.id, baseToken?.tokenAddress!)}
-              gmgnUrl={getGmgnTokenUrl(base.id, baseToken?.tokenAddress!)}
-              swapButton={
-                hideSwap ? null : (
-                  <MemeSwapDialogWithUniswap
-                    token={{
-                      contractAddress: (baseToken?.tokenAddress ||
-                        "") as Address,
-                      chainId: PGF_CONTRACT_CHAIN_ID,
-                      logoURI: meme.image,
-                    }}
-                  />
-                )
-              }
-            />
-          </div>
-          <Separator className="h-auto w-1 bg-primary" />
-          <div className="flex-1">
-            <MemeInfoOnChain
-              token={meme.solToken}
-              chainName={"Solana"}
-              scanName={"Solscan"}
-              scanIconUrl={solscanIconUrl}
-              scanUrl={getScanUrl("sol", solToken?.tokenAddress)}
-              dexUrl={getDexTokenUrl("sol", solToken?.tokenAddress!)}
-              gmgnUrl={getGmgnTokenUrl("sol", solToken?.tokenAddress!)}
-              swapButton={
-                hideSwap ? null : (
-                  <MemeSwapDialogWithJupiter
-                    token={{
-                      address: solToken?.tokenAddress || "",
-                    }}
-                  />
-                )
-              }
-            />
-          </div>
+          {baseToken && (
+            <div className="flex-1">
+              <MemeInfoOnChain
+                token={baseToken}
+                chainName={base.name}
+                scanName={base.blockExplorers.default.name}
+                scanIconUrl={`${base.blockExplorers.default.url}/favicon.ico`}
+                scanUrl={getScanUrl(base.id, baseToken?.tokenAddress)}
+                dexUrl={getDexTokenUrl(base.id, baseToken?.tokenAddress!)}
+                gmgnUrl={getGmgnTokenUrl(base.id, baseToken?.tokenAddress!)}
+                swapButton={
+                  hideSwap ? null : (
+                    <MemeSwapDialogWithUniswap
+                      token={{
+                        contractAddress: (baseToken?.tokenAddress ||
+                          "") as Address,
+                        chainId: PGF_CONTRACT_CHAIN_ID,
+                        logoURI: meme.image,
+                      }}
+                    />
+                  )
+                }
+              />
+            </div>
+          )}
+
+          {baseToken && solToken && (
+            <Separator className="h-auto w-1 bg-primary" />
+          )}
+
+          {solToken && (
+            <div className="flex-1">
+              <MemeInfoOnChain
+                token={solToken}
+                chainName={"Solana"}
+                scanName={"Solscan"}
+                scanIconUrl={solscanIconUrl}
+                scanUrl={getScanUrl("sol", solToken?.tokenAddress)}
+                dexUrl={getDexTokenUrl("sol", solToken?.tokenAddress!)}
+                gmgnUrl={getGmgnTokenUrl("sol", solToken?.tokenAddress!)}
+                swapButton={
+                  hideSwap ? null : (
+                    <MemeSwapDialogWithJupiter
+                      token={{
+                        address: solToken?.tokenAddress || "",
+                      }}
+                    />
+                  )
+                }
+              />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

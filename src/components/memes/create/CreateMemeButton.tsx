@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CreateMemeForm } from "./CreateMemeForm";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,39 +15,31 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateMemeFormWithApi } from "./CreateMemeFormWithApi";
 import Image from "next/image";
 
-export function CreateMemeButton({
-  variant = "pc",
-}: {
-  variant?: "pc" | "mobile" | null | undefined;
-}) {
+export function CreateMemeButton() {
   const { openConnectModal } = useConnectModal();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const createBtnEl = (
-    <img className="w-[48px] h-[48px]" src="/images/logo.png" />
+  const createBtnContent = (
+    <div className="w-full h-full relative overflow-hidden">
+      <Image src="/images/logo.png" alt="logo" fill />
+    </div>
   );
   if (openConnectModal) {
     return (
       <Button
-        className="p-0 m-0 w-[48px] h-[48px]"
+        className="p-0 m-0 w-full h-full"
         onClick={() => {
           openConnectModal();
         }}
       >
-        <div className="w-full h-full relative overflow-hidden">
-          <Image src="/images/logo.png" alt="logo" fill />
-        </div>
+        {createBtnContent}
       </Button>
     );
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="p-0 m-0 w-[48px] h-[48px]">
-          <div className="w-full h-full relative overflow-hidden">
-            <Image src="/images/logo.png" alt="logo" fill />
-          </div>
-        </Button>
+        <Button className="p-0 m-0 w-full h-full">{createBtnContent}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] gap-8 max-sm:h-screen max-sm:max-h-full max-h-[90%] flex flex-col">
         <DialogHeader>
@@ -58,7 +49,7 @@ export function CreateMemeButton({
           <CreateMemeFormWithApi
             onSuccess={(meme) => {
               setOpen(false);
-              const tokenAddress = meme.address;
+              const tokenAddress = meme.id;
               console.log("token route", `/memes/${tokenAddress}`);
               router.push(`/memes/${tokenAddress}`);
             }}

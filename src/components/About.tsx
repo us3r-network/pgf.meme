@@ -17,7 +17,7 @@ export default function AboutDialogButton() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[816px] max-h-[90vh] gap-8 max-sm:h-screen flex flex-col">
         <DialogHeader>
-          <DialogTitle>How castcoin.fun works?</DialogTitle>
+          <DialogTitle>How degencast.wtf works?</DialogTitle>
         </DialogHeader>
         <ScrollArea className="flex-col justify-start items-start gap-8 inline-flex flex-1 overflow-y-auto">
           <div className="flex flex-col gap-8">

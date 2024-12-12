@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { shareToTwitter } from "@/lib/sharing/twitter";
-import { shareToWarpcast } from "@/lib/sharing/warpcast";
+import { getCreateTweetWebUrl, shareToTwitter } from "@/lib/sharing/twitter";
+import { getCreateCastWebUrl, shareToWarpcast } from "@/lib/sharing/warpcast";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,40 +16,28 @@ const botText = `
 `;
 export function CreateMemeWithWarpcast() {
   return (
-    <>
-      <Button
-        variant={"link"}
-        className="p-0 m-0 w-[48px] h-[48px]"
-        onClick={(e) => {
-          e.preventDefault();
-          shareToWarpcast([], "", botText);
-        }}
-      >
-        {/* <img
-          src="/images/warpcast.png"
-          className="w-full h-full rounded-[10px]"
-        /> */}
-        <div className="w-full h-full rounded-[10px] relative overflow-hidden">
-          <Image src="/images/warpcast.png" alt="logo" fill />
-        </div>
-      </Button>
-    </>
+    <Link
+      className="block w-full h-full"
+      href={getCreateCastWebUrl([], "", botText)}
+      target="_blank"
+    >
+      <div className="w-full h-full rounded-full relative overflow-hidden">
+        <Image src="/images/warpcast.png" alt="logo" fill />
+      </div>
+    </Link>
   );
 }
 
 export function CreateMemeWithTwitter() {
   return (
-    <Button
-      variant={"link"}
-      className="p-0 m-0 w-[48px] h-[48px]"
-      onClick={(e) => {
-        e.preventDefault();
-        shareToTwitter("", botText);
-      }}
+    <Link
+      className="block w-full h-full"
+      href={getCreateTweetWebUrl("", botText)}
+      target="_blank"
     >
-      <div className="w-full h-full rounded-[10px] relative overflow-hidden">
+      <div className="w-full h-full rounded-full relative overflow-hidden">
         <Image src="/images/x.png" alt="logo" fill />
       </div>
-    </Button>
+    </Link>
   );
 }
