@@ -40,7 +40,7 @@ export function DefaultHeader() {
               </div>
 
               <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
-                degencast.wtf✨
+                degencast.fun✨
               </span>
             </Link>
           ) : (
