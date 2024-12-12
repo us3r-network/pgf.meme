@@ -8,8 +8,8 @@ import { Comic_Neue as ComicNeueFont } from "next/font/google";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "degencast.wtf",
-  description: "Welcome to degencast.wtf✨",
+  title: "degencast.fun",
+  description: "Welcome to degencast.fun✨",
 };
 
 const font = ComicNeueFont({
