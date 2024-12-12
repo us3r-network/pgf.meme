@@ -45,9 +45,9 @@ export default function OwnedMemesTable({
                   className="w-full h-16 py-3 px-5 bg-primary-foreground"
                 >
                   <TableCell className="rounded-l-2xl">
-                    <Link href={`/memes/${item.meme.address}`}>
+                    <Link href={`/memes/${item.meme.id}`}>
                       <span className=" font-bold">
-                        {shortPubKey(item.meme.address)} (${item.meme.symbol})
+                        {item.meme.name} (${item.meme.symbol})
                       </span>
                     </Link>
                   </TableCell>
