@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const botText = `
-  @bot Launch a new token!
+  @degencast.eth Launch a new token!
   Name: memename
   Symbol: SYMBOL
 
