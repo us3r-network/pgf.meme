@@ -16,7 +16,6 @@ export function MemeSwapDialogWithJupiter({
     address: string;
   };
 }) {
-  const t = { address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,7 +26,7 @@ export function MemeSwapDialogWithJupiter({
           <DialogTitle>Trade on Jupiter</DialogTitle>
         </DialogHeader>
         <div className="h-[420px] rounded-md overflow-hidden">
-          <MemeSwapWithJupiter token={t} />
+          <MemeSwapWithJupiter token={token} />
         </div>
       </DialogContent>
     </Dialog>

@@ -17,12 +17,10 @@ import {
 } from "@/lib/onchain";
 import MemeShareButton from "./details/MemeShareButton";
 import { Separator } from "../ui/separator";
-import { base } from "viem/chains";
 import CopyAddress from "../CopyAddress";
 import MemeSwapDialogWithUniswap from "./MemeSwapDialogWithUniswap";
-import { PGF_CONTRACT_CHAIN_ID } from "@/constants/pgf";
 import { MemeSwapDialogWithJupiter } from "./MemeSwapDialogWithJupiter";
-import { Address } from "viem";
+import { DEFAULT_CHAIN } from "@/constants/chain";
 
 export function MemeCard({
   meme,
@@ -41,8 +39,6 @@ export function MemeCard({
   const solToken = meme.solToken;
   const totalMarketCap =
     Number(baseToken?.marketCap || 0) + Number(solToken?.marketCap || 0);
-  const totalBuysNumber =
-    Number(baseToken?.txns?.h24 || 0) + Number(solToken?.txns?.h24 || 0);
   const deployerAddress = meme.deployerEVMAddress || meme.deployerSolanaAddress;
   const memeInfo = (
     <div className="flex flex-row gap-3 ">
@@ -54,7 +50,9 @@ export function MemeCard({
             className="hover:scale-105 transition-all"
           />
           <AvatarFallback className="w-full h-full object-cover rounded-lg">
-            Image failed
+            <span className="text-3xl font-bold text-secondary">
+              {meme.name[0].toUpperCase()}
+            </span>
           </AvatarFallback>
         </Avatar>
       </div>
@@ -72,11 +70,6 @@ export function MemeCard({
               minimumFractionDigits: 0,
               notation: "compact",
             }).format(totalMarketCap)}{" "}
-            (Total{" "}
-            {new Intl.NumberFormat("en-US", {
-              notation: "compact",
-            }).format(totalBuysNumber)}{" "}
-            bought)
           </div>
         </div>
 
@@ -129,22 +122,21 @@ export function MemeCard({
             <div className="flex-1">
               <MemeInfoOnChain
                 token={baseToken}
-                chainName={base.name}
-                scanName={base.blockExplorers.default.name}
-                scanIconUrl={`${base.blockExplorers.default.url}/favicon.ico`}
-                scanUrl={getScanUrl(base.id, baseToken?.tokenAddress)}
-                dexUrl={getDexTokenUrl(base.id, baseToken?.tokenAddress!)}
-                gmgnUrl={getGmgnTokenUrl(base.id, baseToken?.tokenAddress!)}
+                chainName={DEFAULT_CHAIN.name}
+                scanName={DEFAULT_CHAIN.blockExplorers.default.name}
+                scanIconUrl={`${DEFAULT_CHAIN.blockExplorers.default.url}/favicon.ico`}
+                scanUrl={getScanUrl(DEFAULT_CHAIN.id, baseToken?.tokenAddress)}
+                dexUrl={getDexTokenUrl(
+                  DEFAULT_CHAIN.id,
+                  baseToken?.tokenAddress!
+                )}
+                gmgnUrl={getGmgnTokenUrl(
+                  DEFAULT_CHAIN.id,
+                  baseToken?.tokenAddress!
+                )}
                 swapButton={
                   hideSwap ? null : (
-                    <MemeSwapDialogWithUniswap
-                      token={{
-                        contractAddress: (baseToken?.tokenAddress ||
-                          "") as Address,
-                        chainId: PGF_CONTRACT_CHAIN_ID,
-                        logoURI: meme.image,
-                      }}
-                    />
+                    <MemeSwapDialogWithUniswap token={baseToken} />
                   )
                 }
               />
@@ -214,11 +206,6 @@ function MemeInfoOnChain({
             minimumFractionDigits: 0,
             notation: "compact",
           }).format(token?.marketCap || 0)}{" "}
-          (
-          {new Intl.NumberFormat("en-US", {
-            notation: "compact",
-          }).format(token?.txns?.h24?.buys || 0)}{" "}
-          bought)
         </div>
       </div>
 
