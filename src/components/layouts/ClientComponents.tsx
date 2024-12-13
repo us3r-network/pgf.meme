@@ -13,6 +13,8 @@ import { SearchInput } from "../ui/search-input";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import { CAST_TOKEN_ADDRESS } from "@/constants";
+import { toast } from "@/hooks/use-toast";
 
 export function DefaultHeader() {
   const pathname = usePathname();
@@ -73,6 +75,22 @@ export function DefaultHeader() {
           )}
 
           <div className="flex items-center gap-4 z-20 ml-auto max-sm:gap-2">
+            <Button
+              className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6"
+              onClick={() => {
+                if (!CAST_TOKEN_ADDRESS) {
+                  toast({
+                    description: "CAST Token Address not found",
+                    duration: 5000,
+                  });
+                  return;
+                }
+                router.push(`/memes/${CAST_TOKEN_ADDRESS}`);
+              }}
+            >
+              <span>Buy</span>
+              <span>$CAST</span>
+            </Button>
             <AboutDialogButton />
             {/* <div className="max-sm:hidden">
               <Share2EarnDialogButton />
