@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import DefaultLayout from "@/components/layouts/DefaultLayout";
+import DefaultRootLayout from "@/components/layouts/DefaultRootLayout";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Comic_Neue as ComicNeueFont } from "next/font/google";
-import Script from "next/script";
+import LandingPageRootLayout from "@/components/layouts/LandingPageRootLayout";
 
-export const metadata: Metadata = {
-  title: "degencast.fun",
-  description: "Welcome to degencast.fun✨",
-};
+const isLandingPage = process.env.NEXT_PUBLIC_CAST_LANDING_PAGE === "true";
+
+export const metadata: Metadata = isLandingPage
+  ? { title: "degencast.ai", description: "Welcome to degencast.ai✨" }
+  : {
+      title: "degencast.fun",
+      description: "Welcome to degencast.fun✨",
+    };
 
 const font = ComicNeueFont({
   subsets: ["latin"],
@@ -24,10 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Script src="https://terminal.jup.ag/main-v3.js" data-preload></Script>
       <body className={`${font.className} antialiased`}>
         <Providers>
-          <DefaultLayout>{children}</DefaultLayout>
+          {isLandingPage ? (
+            <LandingPageRootLayout>{children}</LandingPageRootLayout>
+          ) : (
+            <DefaultRootLayout>{children}</DefaultRootLayout>
+          )}
         </Providers>
         <Toaster />
       </body>

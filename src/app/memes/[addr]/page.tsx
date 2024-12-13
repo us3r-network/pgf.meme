@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import MemeDetails from "@/components/memes/details/MemeDetails";
 import { getMeme } from "@/services/meme/api";
 import { ApiRespCode } from "@/services/types";
+import Script from "next/script";
 
 type Props = {
   params: Promise<{ addr: string }>;
@@ -44,5 +45,10 @@ export async function generateMetadata(
 
 export default async function MemePage({ params, searchParams }: Props) {
   const addr = (await params).addr;
-  return <MemeDetails addr={addr} />;
+  return (
+    <>
+      <Script src="https://terminal.jup.ag/main-v3.js" data-preload></Script>
+      <MemeDetails addr={addr} />
+    </>
+  );
 }
