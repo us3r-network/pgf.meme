@@ -53,6 +53,14 @@ export type EnsProfile = {
       link: string;
       handle: string;
     };
+    farcaster: {
+      handle: string;
+      links: string;
+    };
+    lens: {
+      handle: string;
+      links: string;
+    };
   };
   social: {};
 };
