@@ -10,12 +10,13 @@ import { getEvmChainName } from "@/lib/onchain";
 import { cn } from "@/lib/utils";
 // import { getEthersProvider } from "@/lib/onchain/ethers";
 import { PGFToken } from "@/services/contract/types";
+import { TokenData } from "@/services/meme/types";
 import { useRef, useState } from "react";
 // import { SwapWidget, Theme } from "@uniswap/widgets";
 // import "@uniswap/widgets/fonts.css";
 // import { useEffect, useState } from "react";
 
-export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
+export default function MemeSwapWithUniswap({ token }: { token: TokenData }) {
   // const provider = getEthersProvider(config);
   // const [tokenInfo, setTokenInfo] = useState<PGFToken>();
   // useEffect(() => {
@@ -63,8 +64,8 @@ export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
     <div className="w-full h-full relative">
       <iframe
         src={`https://app.uniswap.org/swap?outputCurrency=${
-          token.contractAddress
-        }&chain=${getEvmChainName(PGF_CONTRACT_CHAIN_ID)}&random=${Date.now()}`}
+          token.tokenAddress
+        }&chain=${getEvmChainName(PGF_CONTRACT_CHAIN_ID)}`}
         className={cn("w-full h-full")}
         onLoad={() => {
           if (loadingRef.current) {
@@ -89,7 +90,7 @@ export default function MemeSwapWithUniswap({ token }: { token: PGFToken }) {
         tokenList={tokenList}
         defaultChainId={PGF_CONTRACT_CHAIN_ID}
         defaultInputTokenAddress={NATIVE_TOKEN_METADATA.address} // Use provided amount or default to 2n
-        defaultOutputTokenAddress={tokenInfo.contractAddress}
+        defaultOutputTokenAddress={tokenInfo.tokenAddress}
       /> */}
     </div>
   );
