@@ -65,7 +65,7 @@ export function TopicAndMemes({
           {showMems.map((item, idx) => {
             return (
               <div
-                key={`${item.address}_${idx}`}
+                key={`${item.id}_${idx}`}
                 className={cn(
                   "h-full flex-1 aspect-auto",
                   idx > 1 && "max-sm:hidden"

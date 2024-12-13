@@ -40,10 +40,10 @@ export default function CreatedMemes({ address }: { address: string }) {
       {items.map((item, idx) => {
         return (
           <div
-            key={`${item.address}_${idx}`}
+            key={`${item.id}_${idx}`}
             ref={idx === items.length - 1 ? observe : null}
           >
-            <MemeCard key={item.address} meme={item} />
+            <MemeCard key={item.id} meme={item} />
           </div>
         );
       })}
