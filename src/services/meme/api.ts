@@ -27,11 +27,7 @@ export function getTopMemes(params: {
   });
 }
 
-export function getMeme({
-  address,
-}: {
-  address: string;
-}): RequestPromise<ApiResp<MemeData>> {
+export const getMemeApiPath = (address: string) => {
   let url = "";
   // EVM链地址：以0x开头，长度42，包含0-9和a-f
   const evmRegex = /^0x[a-fA-F0-9]{40}$/;
@@ -46,6 +42,14 @@ export function getMeme({
   } else {
     url = `/memes/${address}`;
   }
+  return url;
+};
+export function getMeme({
+  address,
+}: {
+  address: string;
+}): RequestPromise<ApiResp<MemeData>> {
+  const url = getMemeApiPath(address);
   return request({
     url,
     method: "get",

@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import MemeDetails from "@/components/memes/details/MemeDetails";
 import { getMeme } from "@/services/meme/api";
 import { ApiRespCode } from "@/services/types";
+import { CAST_TOKEN_ADDRESS } from "@/constants";
 
 type Props = {
   params: Promise<{ addr: string }>;
@@ -13,7 +14,12 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const addr = (await params).addr;
+  const addr = CAST_TOKEN_ADDRESS;
+  if (!addr) {
+    return {
+      title: "$CAST Not Found",
+    };
+  }
 
   // fetch data
   try {
@@ -42,7 +48,10 @@ export async function generateMetadata(
   }
 }
 
-export default async function MemePage({ params, searchParams }: Props) {
-  const addr = (await params).addr;
+export default async function MemePage() {
+  const addr = CAST_TOKEN_ADDRESS;
+  if (!addr) {
+    return null;
+  }
   return <MemeDetails addr={addr} />;
 }

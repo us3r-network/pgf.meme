@@ -43,12 +43,12 @@ export default function MemeBridge({
   const chain = isTestNet ? "BaseSepolia" : "Base";
   const wormholeConfig: WormholeConnectConfig = {
     network,
-    // rpcs: {
-    //   Solana: SOLANA_ENDPOINT,
-    //   Sepolia: "https://eth-sepolia.api.onfinality.io/public",
-    //   Base: "wss://base.callstaticrpc.com",
-    //   BaseSepolia: "wss://base-sepolia-rpc.publicnode.com",
-    // },
+    rpcs: {
+      Solana: SOLANA_ENDPOINT,
+      // Sepolia: "https://eth-sepolia.api.onfinality.io/public",
+      // Base: "wss://base.callstaticrpc.com",
+      // BaseSepolia: "wss://base-sepolia-rpc.publicnode.com",
+    },
     chains: [chain, "Solana"],
     tokens: ["WSVevm", "WSVsol"],
     ui: {

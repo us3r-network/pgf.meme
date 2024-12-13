@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import Loading from "@/components/Loading";
 
 const MemeSwap = dynamic(() => import("@/components/memes/MemeSwap"), {
   ssr: false,
@@ -58,27 +59,20 @@ export default function MemeDetails({ addr }: { addr: string }) {
   const [tradeActionType, setTradeActionType] = useState("trade");
   const isSol = chainType === "sol";
 
-  const { meme, pending, loadMeme } = useLoadMeme({
+  const { meme, pending } = useLoadMeme({
     address: addr,
   });
   const baseToke = meme?.baseToken;
   const solToken = meme?.solToken;
-  useEffect(() => {
-    loadMeme();
-  }, []);
   if (pending || !meme) {
-    return null;
+    return (
+      <div className="flex justify-center items-start mt-[20%]">
+        <Loading className="w-[30%] h-20 max-sm:w-[60%]" />
+      </div>
+    );
   }
-  const memeBaseInfoEl = (
-    <Suspense fallback={<Skeleton className="w-full h-[600px]" />}>
-      <MemeBaseInfo meme={meme} />
-    </Suspense>
-  );
-  const SwapEl = (
-    <Suspense fallback={<Skeleton className="w-full h-[400px]" />}>
-      <MemeSwap meme={meme} isSol={isSol} />
-    </Suspense>
-  );
+  const memeBaseInfoEl = <MemeBaseInfo meme={meme} />;
+  const SwapEl = <MemeSwap meme={meme} isSol={isSol} />;
   const enableBridge = !!baseToke?.nttConnect && !!solToken?.nttConnect;
   const tradeActionTab = (
     <>
@@ -89,8 +83,9 @@ export default function MemeDetails({ addr }: { addr: string }) {
           onChange={setTradeActionType}
         />
       )}
-
-      {tradeActionType === "trade" ? SwapEl : null}
+      <div className={cn("", tradeActionType === "trade" ? "block" : "hidden")}>
+        {SwapEl}
+      </div>
       {enableBridge && (
         <div
           className={cn("", tradeActionType === "trade" ? "hidden" : "block")}

@@ -47,16 +47,17 @@ function MemeShareContent({
   meme: MemeData;
   className?: string;
 }) {
-  const baseTokenAddress = meme?.baseToken?.tokenAddress;
-  const solTokenAddress = meme?.solToken?.tokenAddress;
-  const idLink = `${window.location.origin}/memes/${meme.id}`;
-  const baseLink = baseTokenAddress
-    ? `${window.location.origin}/memes/${baseTokenAddress}`
-    : "";
-  const solLink = baseTokenAddress
-    ? `${window.location.origin}/memes/${solTokenAddress}`
-    : "";
-  const shareLink = baseLink || solLink || idLink;
+  // const baseTokenAddress = meme?.baseToken?.tokenAddress;
+  // const solTokenAddress = meme?.solToken?.tokenAddress;
+  // const idLink = `${window.location.origin}/memes/${meme.id}`;
+  // const baseLink = baseTokenAddress
+  //   ? `${window.location.origin}/memes/${baseTokenAddress}`
+  //   : "";
+  // const solLink = baseTokenAddress
+  //   ? `${window.location.origin}/memes/${solTokenAddress}`
+  //   : "";
+  // const shareLink = baseLink || solLink || idLink;
+  const shareLink = window.location.href;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
       <span className="text-2xl font-normal max-sm:text-base self-start">

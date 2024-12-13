@@ -42,7 +42,7 @@ export function DefaultHeader() {
               <Button
                 className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-sm:size-11 p-0"
                 onClick={() => {
-                  router.back();
+                  router.push("/");
                 }}
               >
                 <ChevronLeft className="stroke-primary hover:stroke-primary  !size-8" />
@@ -77,39 +77,39 @@ export function DefaultHeader() {
                 >
                   Roadmap
                 </Button>
+                <Button
+                  className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6"
+                  onClick={() => {
+                    router.push("/buy");
+                  }}
+                >
+                  <span>Buy</span>
+                  <span>$CAST</span>
+                </Button>
+                <div>
+                  <style jsx global>{`
+                    [data-testid="rk-connect-button"],
+                    [data-testid="rk-account-button"] {
+                      height: 52px !important;
+                      font-size: 24px !important;
+                      font-weight: 700 !important;
+                      padding: 12px !important;
+                      padding-left: 24px !important;
+                      padding-right: 24px !important;
+                    }
+                    [data-testid="rk-connect-button"] > div,
+                    [data-testid="rk-account-button"] > div {
+                      padding: 0px !important;
+                    }
+                  `}</style>
+                  <ConnectButton
+                    showBalance={false}
+                    chainStatus={"none"}
+                    label="Connect"
+                  />
+                </div>
               </>
             )}
-            <Button
-              className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6"
-              onClick={() => {
-                router.push("/buy");
-              }}
-            >
-              <span>Buy</span>
-              <span>$CAST</span>
-            </Button>
-            <div>
-              <style jsx global>{`
-                [data-testid="rk-connect-button"],
-                [data-testid="rk-account-button"] {
-                  height: 52px !important;
-                  font-size: 24px !important;
-                  font-weight: 700 !important;
-                  padding: 12px !important;
-                  padding-left: 24px !important;
-                  padding-right: 24px !important;
-                }
-                [data-testid="rk-connect-button"] > div,
-                [data-testid="rk-account-button"] > div {
-                  padding: 0px !important;
-                }
-              `}</style>
-              <ConnectButton
-                showBalance={false}
-                chainStatus={"none"}
-                label="Connect"
-              />
-            </div>
           </div>
         </div>
       </header>

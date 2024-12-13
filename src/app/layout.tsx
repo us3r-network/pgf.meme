@@ -5,11 +5,11 @@ import DefaultRootLayout from "@/components/layouts/DefaultRootLayout";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Comic_Neue as ComicNeueFont } from "next/font/google";
-import LandingPageRootLayout from "@/components/layouts/LandingPageRootLayout";
+import LandingPageRootLayout from "@/components/landing-page/LandingPageRootLayout";
+import Script from "next/script";
+import { CAST_LANDING_PAGE } from "@/constants";
 
-const isLandingPage = process.env.NEXT_PUBLIC_CAST_LANDING_PAGE === "true";
-
-export const metadata: Metadata = isLandingPage
+export const metadata: Metadata = CAST_LANDING_PAGE
   ? { title: "degencast.ai", description: "Welcome to degencast.ai✨" }
   : {
       title: "degencast.fun",
@@ -28,9 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script src="https://terminal.jup.ag/main-v3.js" data-preload></Script>
       <body className={`${font.className} antialiased`}>
         <Providers>
-          {isLandingPage ? (
+          {CAST_LANDING_PAGE ? (
             <LandingPageRootLayout>{children}</LandingPageRootLayout>
           ) : (
             <DefaultRootLayout>{children}</DefaultRootLayout>

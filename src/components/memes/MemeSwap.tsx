@@ -21,6 +21,11 @@ export default function MemeSwap({
   return (
     <Card className={cn("w-full min-h-[400px] border-secondary")}>
       <CardContent className="w-full p-0">
+        {baseToken && (
+          <div className={cn("w-full h-[560px]", isSol ? "hidden" : "block")}>
+            <MemeSwapWithUniswap token={baseToken} />
+          </div>
+        )}
         {solToken && (
           <div className={cn("w-full h-[400px]", isSol ? "block" : "hidden")}>
             <MemeSwapWithJupiter
@@ -30,19 +35,6 @@ export default function MemeSwap({
             />
           </div>
         )}
-
-        {baseToken && !isSol && (
-          <div className="w-full h-[560px]">
-            <MemeSwapWithUniswap token={baseToken} />
-          </div>
-        )}
-        {/* {isSol ? (
-          <MemeSwapWithJupiter
-            token={{ address: "A53BzB7297SXdF6mguQQ8kzqjVYt8pUeHW5m1i8pD6hf" }}
-          />
-        ) : (
-          <MemeSwapWithUniswap token={token} />
-        )} */}
       </CardContent>
     </Card>
   );
