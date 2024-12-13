@@ -56,10 +56,10 @@ export default function MemeList({
       {items.map((item, idx) => {
         return (
           <div
-            key={`${item.address}_${idx}`}
+            key={`${item.id}_${idx}`}
             ref={idx === items.length - 1 ? observe : null}
           >
-            <MemeCard key={item.address} meme={item} hideShare />
+            <MemeCard key={item.id} meme={item} hideShare />
           </div>
         );
       })}
