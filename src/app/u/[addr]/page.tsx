@@ -16,6 +16,7 @@ export default function UserDetails({
         <UserBaseInfo address={addr} />
       </div>
       <div className="flex-1 max-sm:w-full">
+        <h2 className="font-bold text-4xl text-primary">Created Memes</h2>
         <CreatedMemes address={addr} />
         {/* <UserTabs address={addr} /> */}
       </div>

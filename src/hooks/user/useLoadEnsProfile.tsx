@@ -4,18 +4,18 @@ import { EnsProfile } from "@/services/user/types";
 import { useRef, useState } from "react";
 
 export default function useLoadEnsProfile({ address }: { address: string }) {
-  const [ensProfile, setEnsProfile] = useState<EnsProfile | null>(null);
+  const [profiles, setProfiles] = useState<EnsProfile[]>([]);
   const [status, setStatus] = useState(AsyncRequestStatus.IDLE);
   const addressRef = useRef(address);
 
   const idle = status === AsyncRequestStatus.IDLE;
   const pending = status === AsyncRequestStatus.PENDING;
 
-  const loadEnsProfile = async () => {
+  const loadProfiles = async () => {
     const address = addressRef.current;
 
     if (!address) {
-      setEnsProfile(null);
+      setProfiles([]);
       return;
     }
     setStatus(AsyncRequestStatus.PENDING);
@@ -24,9 +24,9 @@ export default function useLoadEnsProfile({ address }: { address: string }) {
         address,
       });
       const profiles = resp?.data || [];
-      const findAvatarProfile = profiles.find((p) => !!p.avatar);
-      const profile = findAvatarProfile || profiles[0];
-      setEnsProfile(profile);
+      // const findAvatarProfile = profiles.find((p) => !!p.avatar);
+      // const profile = findAvatarProfile || profiles[0];
+      setProfiles(profiles);
       setStatus(AsyncRequestStatus.FULFILLED);
     } catch (err) {
       console.error(err);
@@ -37,7 +37,7 @@ export default function useLoadEnsProfile({ address }: { address: string }) {
   return {
     idle,
     pending,
-    ensProfile,
-    loadEnsProfile,
+    profiles,
+    loadProfiles,
   };
 }
