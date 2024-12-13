@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Script src="https://terminal.jup.ag/main-v3.js" data-preload></Script>
+      <Script src="https://terminal.jup.ag/main-v3.js"></Script>
       <body className={`${font.className} antialiased`}>
         <Providers>
           {CAST_LANDING_PAGE ? (

@@ -21,6 +21,7 @@ import CopyAddress from "../CopyAddress";
 import MemeSwapDialogWithUniswap from "./MemeSwapDialogWithUniswap";
 import { MemeSwapDialogWithJupiter } from "./MemeSwapDialogWithJupiter";
 import { DEFAULT_CHAIN } from "@/constants/chain";
+import { CAST_TOKEN_ADDRESS } from "@/constants";
 
 export function MemeCard({
   meme,
@@ -75,19 +76,31 @@ export function MemeCard({
 
         <div className="flex items-center gap-3">
           <div className="font-bold text-secondary">Created By</div>
-          {deployerAddress && (
+          {baseToken.tokenAddress === CAST_TOKEN_ADDRESS ? (
             <Link
               className="flex items-center gap-1"
-              href={`/u/${deployerAddress}`}
+              href="https://degencast.ai"
               onClick={(e) => e.stopPropagation()}
+              target="_blank"
             >
-              <DefaultUserAvatar
-                address={deployerAddress}
-                className="w-6 h-6 rounded-full"
-              />
-              <span className="text-xs">{shortPubKey(deployerAddress)}</span>
+              <span className="text-xs font-bold">degencast.ai</span>
               <div className="text-xs">{dayjs(meme.createdAt).fromNow()}</div>
             </Link>
+          ) : (
+            deployerAddress && (
+              <Link
+                className="flex items-center gap-1"
+                href={`/u/${deployerAddress}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DefaultUserAvatar
+                  address={deployerAddress}
+                  className="w-6 h-6 rounded-full"
+                />
+                <span className="text-xs">{shortPubKey(deployerAddress)}</span>
+                <div className="text-xs">{dayjs(meme.createdAt).fromNow()}</div>
+              </Link>
+            )
           )}
         </div>
       </div>
