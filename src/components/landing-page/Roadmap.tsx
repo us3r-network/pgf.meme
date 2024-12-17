@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+// import Image from "next/image";
+// import { cn } from "@/lib/utils";
 
 // const timelineData = [
 //   {
@@ -116,65 +116,65 @@ export default function Roadmap() {
   );
 }
 
-interface TimelineItemProps {
-  label: string;
-  image: string;
-  position: "left" | "right";
-}
+// interface TimelineItemProps {
+//   label: string;
+//   image: string;
+//   position: "left" | "right";
+// }
 
-export function TimelineItem({ label, image, position }: TimelineItemProps) {
-  return (
-    <div className="w-full flex flex-row justify-center items-center h-[200px]">
-      <div
-        className={cn(
-          "flex flex-row gap-2 items-center",
-          position === "left" ? " -translate-x-1/2" : "translate-x-1/2"
-        )}
-      >
-        {position === "right" && (
-          <div className="bg-primary w-[130px] h-[8px] ml-[24px] rounded-full" />
-        )}
-        <div className={cn("flex flex-col items-center gap-6 ")}>
-          <p className="text-white font-bold text-[40px]">{label}</p>
-          <img src={image} alt={label} width={410} loading="lazy" />
-        </div>
-        {position === "left" && (
-          <div className="bg-primary w-[130px] h-[8px] mr-[24px] rounded-full" />
-        )}
-      </div>
-    </div>
-  );
-}
+// export function TimelineItem({ label, image, position }: TimelineItemProps) {
+//   return (
+//     <div className="w-full flex flex-row justify-center items-center h-[200px]">
+//       <div
+//         className={cn(
+//           "flex flex-row gap-2 items-center",
+//           position === "left" ? " -translate-x-1/2" : "translate-x-1/2"
+//         )}
+//       >
+//         {position === "right" && (
+//           <div className="bg-primary w-[130px] h-[8px] ml-[24px] rounded-full" />
+//         )}
+//         <div className={cn("flex flex-col items-center gap-6 ")}>
+//           <p className="text-white font-bold text-[40px]">{label}</p>
+//           <img src={image} alt={label} width={410} loading="lazy" />
+//         </div>
+//         {position === "left" && (
+//           <div className="bg-primary w-[130px] h-[8px] mr-[24px] rounded-full" />
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
 
-function Line() {
-  return (
-    <div className="w-full h-full">
-      {" "}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="11px"
-        height="100%"
-        viewBox="0 0 11 100%"
-        fill="none"
-      >
-        <path
-          d="M10.3438 0L0.34375 87.09V1134.62L10.3438 1074.52V0Z"
-          fill="url(#roadmap_paint0_linear_6415_3415)"
-        />
-        <defs>
-          <linearGradient
-            id="roadmap_paint0_linear_6415_3415"
-            x1="5.34375"
-            y1="0"
-            x2="5.34375"
-            y2="1134.62"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#F475BC" />
-            <stop offset="1" stop-color="#92C7F5" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-  );
-}
+// function Line() {
+//   return (
+//     <div className="w-full h-full">
+//       {" "}
+//       <svg
+//         xmlns="http://www.w3.org/2000/svg"
+//         width="11px"
+//         height="100%"
+//         viewBox="0 0 11 100%"
+//         fill="none"
+//       >
+//         <path
+//           d="M10.3438 0L0.34375 87.09V1134.62L10.3438 1074.52V0Z"
+//           fill="url(#roadmap_paint0_linear_6415_3415)"
+//         />
+//         <defs>
+//           <linearGradient
+//             id="roadmap_paint0_linear_6415_3415"
+//             x1="5.34375"
+//             y1="0"
+//             x2="5.34375"
+//             y2="1134.62"
+//             gradientUnits="userSpaceOnUse"
+//           >
+//             <stop stop-color="#F475BC" />
+//             <stop offset="1" stop-color="#92C7F5" />
+//           </linearGradient>
+//         </defs>
+//       </svg>
+//     </div>
+//   );
+// }
