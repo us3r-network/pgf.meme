@@ -10,10 +10,19 @@ import Script from "next/script";
 import { CAST_LANDING_PAGE } from "@/constants";
 
 export const metadata: Metadata = CAST_LANDING_PAGE
-  ? { title: "degencast.ai", description: "Welcome to degencast.ai✨" }
+  ? {
+      title: "degencast.ai",
+      description: "Welcome to degencast.ai✨",
+      icons: {
+        icon: "/landing-page/images/logo.png",
+      },
+    }
   : {
       title: "degencast.fun",
       description: "Welcome to degencast.fun✨",
+      icons: {
+        icon: "/images/logo.png",
+      },
     };
 
 const font = ComicNeueFont({

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import useSearchTerms from "@/hooks/app/useSearchTerms";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import AudioBtns from "./AudioBtns";
 
 export function DefaultHeader() {
   const pathname = usePathname();
@@ -23,19 +24,16 @@ export function DefaultHeader() {
       <header className="w-screen h-[80px]  fixed top-0 left-0 bg-primary z-10 max-sm:h-[70px]">
         <div className="w-full max-w-screen-2xl mx-auto h-full flex shrink-0 items-center px-6 gap-2 box-border max-sm:px-3">
           {isHomePage ? (
-            <Link
-              className="h-12 justify-start items-center gap-4 inline-flex hover:no-underline"
-              href="/"
-            >
+            <div className="h-12 justify-start items-center gap-4 inline-flex hover:no-underline">
               {/* <img src="/images/logo.png" className="size-12 max-sm:size-10" /> */}
               <div className="size-12 max-sm:size-10 relative">
-                <Image src="/images/logo.png" alt="logo" fill />
+                <Image src="/landing-page/images/logo.png" alt="logo" fill />
               </div>
 
-              <span className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
+              <div className="text-primary-foreground text-4xl font-bold max-sm:text-2xl">
                 degencast.ai✨
-              </span>
-            </Link>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-row items-center gap-4">
               <Link href="/">
@@ -67,10 +65,10 @@ export function DefaultHeader() {
                 </Link>
                 <Link href="/buy">
                   <Button className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6">
-                    <span>Buy</span>
-                    <span>$CAST</span>
+                    <div>Buy $CAST</div>
                   </Button>
                 </Link>
+                <AudioBtns />
               </>
             )}
           </div>

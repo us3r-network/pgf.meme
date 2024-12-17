@@ -1,102 +1,98 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-const timelineData = [
-  {
-    time: "2024",
-    items: [
-      {
-        position: "left",
-        label: "Farcaster",
-        image: "/landing-page/images/roadmap/farcaster.png",
-      },
-      {
-        position: "right",
-        label: "Solana",
-        image: "/landing-page/images/roadmap/solana.png",
-      },
-      {
-        position: "left",
-        label: "Ethereum",
-        image: "/landing-page/images/roadmap/ethereum.png",
-      },
-    ],
-  },
-  {
-    time: "2025 Q1",
-    items: [
-      {
-        position: "right",
-        label: "Hyperliquid",
-        image: "/landing-page/images/roadmap/hyperliquid.png",
-      },
-    ],
-  },
-  {
-    time: "2025 Q2",
-    items: [
-      {
-        position: "left",
-        label: "Telegram",
-        image: "/landing-page/images/roadmap/telegram.png",
-      },
-      {
-        position: "right",
-        label: "X",
-        image: "/landing-page/images/roadmap/x.png",
-      },
-    ],
-  },
-  {
-    time: "2025 Q3",
-    items: [
-      {
-        position: "left",
-        label: "AI",
-        image: "/landing-page/images/roadmap/ai.png",
-      },
-    ],
-  },
-  {
-    time: "2025 Q4",
-    items: [
-      {
-        position: "right",
-        label: "iOS",
-        image: "/landing-page/images/roadmap/ios.png",
-      },
-      {
-        position: "left",
-        label: "Android",
-        image: "/landing-page/images/roadmap/android.png",
-      },
-    ],
-  },
-];
+// const timelineData = [
+//   {
+//     time: "2024",
+//     items: [
+//       {
+//         position: "left",
+//         label: "Farcaster",
+//         image: "/landing-page/images/roadmap/farcaster.png",
+//       },
+//       {
+//         position: "right",
+//         label: "Solana",
+//         image: "/landing-page/images/roadmap/solana.png",
+//       },
+//       {
+//         position: "left",
+//         label: "Ethereum",
+//         image: "/landing-page/images/roadmap/ethereum.png",
+//       },
+//     ],
+//   },
+//   {
+//     time: "2025 Q1",
+//     items: [
+//       {
+//         position: "right",
+//         label: "Hyperliquid",
+//         image: "/landing-page/images/roadmap/hyperliquid.png",
+//       },
+//     ],
+//   },
+//   {
+//     time: "2025 Q2",
+//     items: [
+//       {
+//         position: "left",
+//         label: "Telegram",
+//         image: "/landing-page/images/roadmap/telegram.png",
+//       },
+//       {
+//         position: "right",
+//         label: "X",
+//         image: "/landing-page/images/roadmap/x.png",
+//       },
+//     ],
+//   },
+//   {
+//     time: "2025 Q3",
+//     items: [
+//       {
+//         position: "left",
+//         label: "AI",
+//         image: "/landing-page/images/roadmap/ai.png",
+//       },
+//     ],
+//   },
+//   {
+//     time: "2025 Q4",
+//     items: [
+//       {
+//         position: "right",
+//         label: "iOS",
+//         image: "/landing-page/images/roadmap/ios.png",
+//       },
+//       {
+//         position: "left",
+//         label: "Android",
+//         image: "/landing-page/images/roadmap/android.png",
+//       },
+//     ],
+//   },
+// ];
 export default function Roadmap() {
   return (
     <div className="w-full">
       {" "}
-      <div className="relative w-full flex flex-col ">
-        {/* Timeline line */}
+      {/* <div className="relative w-full flex flex-col ">
         <div className="absolute left-1/2 top-0 bottom-0 w-[10px] h-full bg-pink-500 transform -translate-x-1/2">
           <Line />
         </div>
 
-        {/* Timeline content */}
         {timelineData.map((period, index) => (
           <div
             key={period.time}
             className="w-full relative pb-14 min-h-[400px]"
           >
-            {/* Year marker */}
             <div className="w-fit bg-white px-4 py-1 rounded-full shadow-md mx-auto mb-10">
               <p className="text-primary text-[32px] font-bold">
                 {period.time}
               </p>
             </div>
 
-            {/* Grid for timeline items */}
             <div className="flex flex-col items-center">
               {period.items.map((item, itemIndex) => (
                 <TimelineItem
@@ -109,6 +105,9 @@ export default function Roadmap() {
             </div>
           </div>
         ))}
+      </div> */}
+      <div className="w-full">
+        <img src="/landing-page/images/roadmap/roadmap.png" alt={"roadmap"} />
       </div>
       <div className="mt-12 text-sm font-normal text-white text-center">
         Cuz 100% according to plan...
