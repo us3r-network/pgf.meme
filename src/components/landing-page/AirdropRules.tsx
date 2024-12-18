@@ -34,27 +34,44 @@ export default function AirdropRules() {
   return (
     <div className="w-full h-fit flex flex-col md:flex-row gap-3">
       {/* Menu Buttons */}
-      <div className="flex-1 flex flex-col gap-3 max-sm:w-full">
+      <div className="flex-1 flex flex-col gap-3 max-md:w-full">
         {menuItems.map((item, idx) => (
-          <motion.button
-            key={idx}
-            onClick={() => setActiveIdx(idx)}
-            className={cn(
-              "py-6 px-12 text-left rounded-lg transition-colors border-primary border-4 box-border text-2xl font-bold",
-              " focus-visible:outline-none focus-visible:ring-2 ",
-              activeIdx === idx ? "bg-primary text-white " : "bg-[#FFFACD]"
+          <div className="flex-1 flex flex-col gap-3 max-md:w-full" key={idx}>
+            <motion.button
+              onClick={() => setActiveIdx(idx)}
+              className={cn(
+                "py-6 px-12 text-left rounded-lg transition-colors border-primary border-4 box-border text-2xl font-bold",
+                "max-md:p-6",
+                " focus-visible:outline-none focus-visible:ring-2 ",
+                activeIdx === idx ? "bg-primary text-white " : "bg-[#FFFACD]"
+              )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {item.title}
+            </motion.button>
+            {/* 在移动端内容面板放在当前按钮下方，而不是右侧，有展开收起的过渡效果 */}
+
+            {activeIdx === idx && (
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: 248 }}
+                exit={{ height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="border-4 border-primary bg-white rounded-lg overflow-hidden w-full hidden max-md:flex"
+              >
+                <div className="w-full h-full p-6 box-border flex items-center justify-center text-[20px] font-normal lenading-[140%]">
+                  {item.content}
+                </div>
+              </motion.div>
             )}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {item.title}
-          </motion.button>
+          </div>
         ))}
       </div>
 
       {/* Content Panel */}
       <motion.div
-        className="flex-1 border-4 border-primary bg-white rounded-lg overflow-hidden max-sm:w-full max-sm:h-[458px]"
+        className="flex-1 border-4 border-primary bg-white rounded-lg overflow-hidden max-md:hidden"
         layout
       >
         <AnimatePresence mode="wait">

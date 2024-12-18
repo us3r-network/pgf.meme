@@ -107,9 +107,18 @@ export default function Roadmap() {
         ))}
       </div> */}
       <div className="w-full">
-        <img src="/landing-page/images/roadmap/roadmap.png" alt={"roadmap"} />
+        <img
+          src="/landing-page/images/roadmap/roadmap.png"
+          alt={"roadmap"}
+          className="w-full max-md:hidden"
+        />
+        <img
+          src="/landing-page/images/roadmap/roadmap-sm.png"
+          alt={"roadmap"}
+          className="w-full hidden max-md:block"
+        />
       </div>
-      <div className="mt-12 text-[40px] font-normal text-white text-center">
+      <div className="mt-12 text-[40px] font-normal text-white text-center max-md:text-2xl">
         Cuz 100% according to plan...
       </div>
     </div>
