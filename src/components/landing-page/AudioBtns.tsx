@@ -31,7 +31,7 @@ export default function AudioBtns() {
             stop();
           }}
         >
-          <StopIcon />
+          <PlayingIcon />
         </Button>
       ) : (
         <Button
@@ -40,14 +40,14 @@ export default function AudioBtns() {
             play();
           }}
         >
-          <PlayIcon />
+          <StopIcon />
         </Button>
       )}
     </div>
   );
 }
 
-function PlayIcon() {
+function PlayingIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
