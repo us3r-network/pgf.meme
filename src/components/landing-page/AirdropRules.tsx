@@ -50,7 +50,6 @@ export default function AirdropRules() {
             >
               {item.title}
             </motion.button>
-            {/* 在移动端内容面板放在当前按钮下方，而不是右侧，有展开收起的过渡效果 */}
 
             {activeIdx === idx && (
               <motion.div
