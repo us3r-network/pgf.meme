@@ -109,7 +109,7 @@ export default function Roadmap() {
       <div className="w-full">
         <img src="/landing-page/images/roadmap/roadmap.png" alt={"roadmap"} />
       </div>
-      <div className="mt-12 text-sm font-normal text-white text-center">
+      <div className="mt-12 text-[40px] font-normal text-white text-center">
         Cuz 100% according to plan...
       </div>
     </div>
