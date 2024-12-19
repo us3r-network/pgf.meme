@@ -1,3 +1,8 @@
+import {
+  PARAGRAPH_LINK,
+  TG_LINK,
+  WARPCAST_LINK,
+} from "@/constants/landing-page";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +12,7 @@ export default function Footer() {
       <div className="justify-start items-center gap-6 flex">
         <Link
           className="justify-start items-center gap-2 flex"
-          href="/"
+          href={TG_LINK}
           target="_blank"
         >
           <div className="w-8 h-8 relative">
@@ -21,7 +26,7 @@ export default function Footer() {
         </Link>
         <Link
           className="justify-start items-center gap-2 flex"
-          href="/"
+          href={WARPCAST_LINK}
           target="_blank"
         >
           <div className="w-8 h-8 relative">
@@ -35,7 +40,7 @@ export default function Footer() {
         </Link>
         <Link
           className="justify-start items-center gap-2 flex"
-          href="/"
+          href={PARAGRAPH_LINK}
           target="_blank"
         >
           <div className="w-8 h-8 relative">
