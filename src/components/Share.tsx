@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,51 +12,33 @@ import { shareToTelegramWeb } from "@/lib/sharing/telegram";
 import { shareToTwitter } from "@/lib/sharing/twitter";
 import { shareToWarpcast } from "@/lib/sharing/warpcast";
 import { shareToWhatsApp } from "@/lib/sharing/whatsapp";
-import { MemeData } from "@/services/meme/types";
-import { Copy } from "lucide-react";
+import { Copy, Share2 } from "lucide-react";
 
-export default function MemeShareButton({
-  meme,
-  className,
-}: {
-  meme: MemeData;
-  className?: string;
-}) {
+export function SharePageButton({ className }: { className?: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size={"lg"} className="w-full max-sm:text-base">
-          Share
+        <Button className="size-[46px] rounded-[12px] p-3 bg-white hover:bg-white">
+          <Share2 className="size-[22px] stroke-primary" />
         </Button>
       </DialogTrigger>
       <DialogContent className="gap-8">
         <DialogHeader>
           <DialogTitle>Share</DialogTitle>
         </DialogHeader>
-        <MemeShareContent />
+        <ShareLinkContent link={window.location.href} />
       </DialogContent>
     </Dialog>
   );
 }
 
-function MemeShareContent({
-  // meme,
+function ShareLinkContent({
+  link,
   className,
 }: {
-  // meme: MemeData;
+  link: string;
   className?: string;
 }) {
-  // const baseTokenAddress = meme?.baseToken?.tokenAddress;
-  // const solTokenAddress = meme?.solToken?.tokenAddress;
-  // const idLink = `${window.location.origin}/memes/${meme.id}`;
-  // const baseLink = baseTokenAddress
-  //   ? `${window.location.origin}/memes/${baseTokenAddress}`
-  //   : "";
-  // const solLink = baseTokenAddress
-  //   ? `${window.location.origin}/memes/${solTokenAddress}`
-  //   : "";
-  // const shareLink = baseLink || solLink || idLink;
-  const shareLink = window.location.href;
   return (
     <div className="w-full flex flex-col justify-start items-center gap-6">
       <span className="text-2xl font-normal max-sm:text-base self-start">
@@ -73,39 +54,39 @@ function MemeShareContent({
           icon="/images/farcaster.png"
           name="Warpcast"
           onClick={() => {
-            shareToWarpcast([shareLink], "");
+            shareToWarpcast([link], "");
           }}
         />
         <ShareItem
           icon="/images/telegram.png"
           name="Telegram"
           onClick={() => {
-            shareToTelegramWeb(shareLink);
+            shareToTelegramWeb(link);
           }}
         />
         <ShareItem
           icon="/images/x.png"
           name="Twitter"
           onClick={() => {
-            shareToTwitter(shareLink);
+            shareToTwitter(link);
           }}
         />
         <ShareItem
           icon="/images/whatsapp.png"
           name="WhatsApp"
           onClick={() => {
-            shareToWhatsApp(shareLink);
+            shareToWhatsApp(link);
           }}
         />
         <ShareItem
           icon="/images/facebook.png"
           name="Facebook"
           onClick={() => {
-            shareToFacebook(shareLink);
+            shareToFacebook(link);
           }}
         />
       </div>
-      <CopyLink link={shareLink} />
+      <CopyLink link={link} />
     </div>
   );
 }

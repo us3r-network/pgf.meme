@@ -119,7 +119,7 @@ export default function MemeBridge({
 
   return (
     <Card className={cn("w-full min-h-[400px] border-secondary")}>
-      <CardContent className="w-full h-full p-0">
+      <CardContent className="w-full h-full p-0 max-sm:p-0">
         <style>
           {`
           .MuiScopedCssBaseline-root div{

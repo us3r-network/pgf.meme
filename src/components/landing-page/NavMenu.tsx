@@ -18,27 +18,28 @@ import {
   WARPCAST_LINK,
   X_LINK,
 } from "@/constants/landing-page";
+import { PositionLink } from "../PositionLink";
 
 export function NavMenu() {
   return (
     <div className="flex items-center gap-4 z-20 ml-auto max-md:gap-2">
-      <Link href="#rules" className="max-md:hidden">
+      <PositionLink href="#rules" className="max-md:hidden">
         <Button className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6">
           Rules
         </Button>
-      </Link>
+      </PositionLink>
 
-      <Link href="#tokenomics" className="max-md:hidden">
+      <PositionLink href="#tokenomics" className="max-md:hidden">
         <Button className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6">
           Tokenomics
         </Button>
-      </Link>
+      </PositionLink>
 
-      <Link href="#roadmap" className="max-md:hidden">
+      <PositionLink href="#roadmap" className="max-md:hidden">
         <Button className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6">
           Roadmap
         </Button>
-      </Link>
+      </PositionLink>
 
       <Link href="/buy" className="max-md:hidden">
         <Button className="h-[52px] rounded-full bg-primary-foreground hover:bg-primary-foreground text-primary text-2xl font-bold px-6">
@@ -68,13 +69,13 @@ export function NavMenuMobile({ className }: { className?: string }) {
       <DropdownMenuContent className="bg-primary border-none p-2">
         <div className=" flex flex-col gap-2 overflow-hidden rounded-sm">
           <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal justify-center">
-            <Link href="#rules">Rules</Link>
+            <PositionLink href="#rules">Rules</PositionLink>
           </DropdownMenuItem>
           <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal justify-center">
-            <Link href="#tokenomics">Tokenomics</Link>
+            <PositionLink href="#tokenomics">Tokenomics</PositionLink>
           </DropdownMenuItem>
           <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal justify-center">
-            <Link href="#roadmap">Roadmap</Link>
+            <PositionLink href="#roadmap">Roadmap</PositionLink>
           </DropdownMenuItem>
           <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal justify-center">
             <Link href="/buy">Buy $CAST</Link>

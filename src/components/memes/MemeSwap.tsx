@@ -19,8 +19,8 @@ export default function MemeSwap({
   const solToken = meme?.solToken;
 
   return (
-    <Card className={cn("w-full min-h-[400px] border-secondary")}>
-      <CardContent className="w-full p-0">
+    <Card className={cn("w-full min-h-[400px] border-secondary p-0")}>
+      <CardContent className="w-full p-0 max-sm:p-0">
         {baseToken && (
           <div className={cn("w-full h-[560px]", isSol ? "hidden" : "block")}>
             <MemeSwapWithUniswap token={baseToken} />

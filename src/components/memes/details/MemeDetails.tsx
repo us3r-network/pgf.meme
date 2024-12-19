@@ -3,13 +3,15 @@
 import { MemeCard } from "@/components/memes/MultiChainMemeCard";
 import ButtonToggle from "@/components/ui/button-toggle";
 import useLoadMeme from "@/hooks/meme/useLoadMeme";
-import { Suspense, useEffect, useState } from "react";
+import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import Loading from "@/components/Loading";
+import Link, { LinkProps } from "next/link";
+import { PositionLink } from "@/components/PositionLink";
 
 const MemeSwap = dynamic(() => import("@/components/memes/MemeSwap"), {
   ssr: false,
@@ -34,7 +36,7 @@ const chainOptions = [
       <img
         src="/images/chain/base.png"
         alt="base"
-        className="size-[40px] rounded-full"
+        className="size-[40px] rounded-full max-sm:size-[16px]"
       />
     ),
   },
@@ -45,7 +47,7 @@ const chainOptions = [
       <img
         src="/images/chain/solana.png"
         alt="solana"
-        className="size-[40px] rounded-full"
+        className="size-[40px] rounded-full max-sm:size-[16px]"
       />
     ),
   },
@@ -96,31 +98,61 @@ export default function MemeDetails({ addr }: { addr: string }) {
     </>
   );
   return (
-    <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
-      <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
-        <MemeCard meme={meme} hideSwap noMemeDetailLink />
-        <ButtonToggle
-          options={chainOptions}
-          value={chainType}
-          onChange={setChainType}
-          disabledValues={[!baseToke ? "evm" : null, !solToken ? "sol" : null]}
-          onClickDisableOption={(opt) => {
-            toast({
-              title: `Not yet deployed to ${opt.label}`,
-            });
-          }}
-        />
-        <MemeTradeChart meme={meme} isSol={isSol} />
+    <>
+      {" "}
+      <div className="w-full flex flex-row gap-6 max-sm:flex-col max-sm:gap-3">
+        <div className="flex-1 flex flex-col justify-start items-start gap-6 max-sm:gap-3">
+          <div id="info" className="w-full">
+            <MemeCard meme={meme} hideSwap noMemeDetailLink />
+          </div>
+          <div id="chart" className="w-full">
+            <ButtonToggle
+              options={chainOptions}
+              value={chainType}
+              onChange={setChainType}
+              disabledValues={[
+                !baseToke ? "evm" : null,
+                !solToken ? "sol" : null,
+              ]}
+              onClickDisableOption={(opt) => {
+                toast({
+                  title: `Not yet deployed to ${opt.label}`,
+                });
+              }}
+            />
+          </div>
+          <MemeTradeChart meme={meme} isSol={isSol} />
 
-        <div className="w-full flex-col gap-6 hidden max-sm:flex">
+          <div className="w-full flex-col gap-6 hidden max-sm:flex max-sm:gap-3">
+            <div id="swap" className="w-full flex flex-col gap-3">
+              {tradeActionTab}
+            </div>
+            <div id="posts" className="w-full">
+              {memeBaseInfoEl}
+            </div>
+          </div>
+        </div>
+        <div className="w-[400px] flex flex-col gap-6 max-sm:hidden">
           {tradeActionTab}
           {memeBaseInfoEl}
         </div>
       </div>
-      <div className="w-[400px] flex flex-col gap-6 max-sm:hidden">
-        {tradeActionTab}
-        {memeBaseInfoEl}
+      <div className="w-full h-[56px] hidden max-sm:block">
+        <div className="w-screen p-3 flex flex-row items-center justify-evenly fixed bottom-0 left-0 bg-primary text-white text-2xl font-bold">
+          <PositionLink href="#info" topOffset={80}>
+            Info
+          </PositionLink>
+          <PositionLink href="#chart" topOffset={80}>
+            Chart
+          </PositionLink>
+          <PositionLink href="#swap" topOffset={80}>
+            Buy/Sell
+          </PositionLink>
+          <PositionLink href="#posts" topOffset={80}>
+            Posts
+          </PositionLink>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

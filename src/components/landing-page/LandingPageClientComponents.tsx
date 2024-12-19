@@ -8,10 +8,12 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { NavMenu } from "./NavMenu";
+import { SharePageButton } from "../Share";
 
 export function DefaultHeader() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const isBuyPage = pathname === "/buy";
   return (
     <>
       {" "}
@@ -33,7 +35,7 @@ export function DefaultHeader() {
           ) : (
             <div className="flex flex-row items-center gap-4">
               <Link href="/">
-                <Button className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-md:size-11 p-0">
+                <Button className="size-14 rounded-xl bg-primary-foreground hover:bg-primary-foreground max-md:size-[46px] p-0">
                   <ChevronLeft className="stroke-primary hover:stroke-primary  !size-8" />
                 </Button>
               </Link>
@@ -44,6 +46,11 @@ export function DefaultHeader() {
             <>
               <NavMenu />
             </>
+          )}
+          {isBuyPage && (
+            <div className="ml-auto hidden max-sm:block">
+              <SharePageButton />
+            </div>
           )}
         </div>
       </header>

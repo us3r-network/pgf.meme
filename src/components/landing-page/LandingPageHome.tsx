@@ -87,8 +87,8 @@ function SectionTitle({ children }: PropsWithChildren) {
   return (
     <h1
       className={cn(
-        " text-white text-[64px] font-bold leading-[120%] text-center pt-[128px] mb-12 ",
-        "max-md:pt-[48px] max-md:mb-4 max-md:text-[32px]"
+        " text-white text-[64px] font-bold leading-[120%] text-center mt-[128px] mb-12 ",
+        "max-md:mt-[48px] max-md:mb-4 max-md:text-[32px]"
       )}
       style={{ textShadow: "4px 4px 0px #FF1393" }}
     >

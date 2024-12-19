@@ -30,7 +30,7 @@ export default function ButtonToggle({
   };
 
   return (
-    <div className="flex rounded-lg bg-primary p-1 w-full h-[68px]">
+    <div className="flex rounded-lg bg-primary p-1 w-full h-[68px] max-sm:h-[42px]">
       {options.map((option) => (
         <button
           key={option.value}
@@ -44,6 +44,7 @@ export default function ButtonToggle({
           }}
           className={cn(
             "flex-1 text-[36px] font-bold rounded-md transition-colors flex justify-center items-center gap-2",
+            "max-sm:text-base",
             selected === option.value
               ? "bg-white text-foreground"
               : "bg-primary text-primary-foreground"
