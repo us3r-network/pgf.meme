@@ -16,6 +16,7 @@ import {
   PARAGRAPH_LINK,
   TG_LINK,
   WARPCAST_LINK,
+  X_LINK,
 } from "@/constants/landing-page";
 
 export function NavMenu() {
@@ -79,9 +80,9 @@ export function NavMenuMobile({ className }: { className?: string }) {
             <Link href="/buy">Buy $CAST</Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal">
+          {/* <DropdownMenuItem className="bg-white rounded-none text-xl font-normal">
             <Link
-              className="justify-start items-center gap-2 flex"
+              className="justify-start items-center gap-2 flex w-full p-4"
               href={TG_LINK}
               target="_blank"
             >
@@ -94,10 +95,22 @@ export function NavMenuMobile({ className }: { className?: string }) {
               </div>
               <span className="text-xl font-normal">Telegram</span>
             </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal">
+          </DropdownMenuItem> */}
+          <DropdownMenuItem className=" bg-white rounded-none text-xl font-normal">
             <Link
-              className="justify-start items-center gap-2 flex"
+              className="justify-start items-center gap-2 flex w-full p-4"
+              href={X_LINK}
+              target="_blank"
+            >
+              <div className="w-6 h-6 relative rounded-[10px] overflow-hidden">
+                <Image src="/images/x.png" alt="x" fill />
+              </div>
+              <span className="text-xl font-normal">X</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="bg-white rounded-none text-xl font-normal">
+            <Link
+              className="justify-start items-center gap-2 flex w-full p-4"
               href={WARPCAST_LINK}
               target="_blank"
             >
@@ -111,15 +124,15 @@ export function NavMenuMobile({ className }: { className?: string }) {
               <span className="text-xl font-normal">Warpcast</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="p-4 bg-white rounded-none text-xl font-normal">
+          <DropdownMenuItem className="bg-white rounded-none text-xl font-normal">
             <Link
-              className="justify-start items-center gap-2 flex"
+              className="justify-start items-center gap-2 flex w-full p-4"
               href={PARAGRAPH_LINK}
               target="_blank"
             >
               <div className="w-6 h-6 relative">
                 <Image
-                  src="/landing-page/images/paragraph.png"
+                  src="/landing-page/images/logo.png"
                   alt="paragraph"
                   fill
                 />
