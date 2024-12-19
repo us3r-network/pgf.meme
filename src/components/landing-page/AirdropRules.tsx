@@ -52,17 +52,11 @@ export default function AirdropRules() {
             </motion.button>
 
             {activeIdx === idx && (
-              <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: 248 }}
-                exit={{ height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="border-4 border-primary bg-white rounded-lg overflow-hidden w-full hidden max-md:flex"
-              >
+              <div className="border-4 border-primary bg-white rounded-lg overflow-hidden w-full hidden max-md:flex">
                 <div className="w-full h-full p-6 box-border flex items-center justify-center text-[20px] font-normal lenading-[140%]">
                   {item.content}
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
         ))}
